@@ -57,8 +57,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void routeUserByRole(String role) {
+    // --- FIX: Renamed from 'routeUserByRole' to 'routeUser' to match calls above ---
+    private void routeUser(String role) {
         Intent intent = null;
+
+        // Safety check to prevent crash if role is null
+        if (role == null) {
+            Toast.makeText(this, "Error: User role is missing.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         switch (role) {
             case "Admin":

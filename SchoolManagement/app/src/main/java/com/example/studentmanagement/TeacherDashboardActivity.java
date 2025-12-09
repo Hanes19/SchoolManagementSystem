@@ -2,31 +2,30 @@ package com.example.studentmanagement;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TeacherDashboardActivity extends AppCompatActivity {
-
     SessionManager session;
-    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.teacher_dashboard); // References your XML
+        setContentView(R.layout.teacher_dashboard);
 
         session = new SessionManager(this);
 
-        // Security Check: If user isn't logged in, kick them out
-        if (!session.isLoggedIn()) {
+        // --- SECURITY CHECK ---
+        if (!session.isLoggedIn() || !session.getRole().equals("Teacher")) {
+            Toast.makeText(this, "Access Denied", Toast.LENGTH_SHORT).show();
             session.logoutUser();
             finish();
+            return;
         }
 
-        // Bind Logout Button (ID from your XML is button43)
-        btnLogout = findViewById(R.id.button43);
-
+        // Logout Button Logic (ID: button43 from your XML)
+        Button btnLogout = findViewById(R.id.button43);
         btnLogout.setOnClickListener(v -> {
-            // This clears the data and sends them back to LoginActivity
             session.logoutUser();
             finish();
         });

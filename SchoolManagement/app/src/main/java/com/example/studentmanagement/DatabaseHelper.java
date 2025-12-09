@@ -45,10 +45,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Bart Simpson', '" + testPassHash + "', 'Student', 'Active')");
 
 // Create Parent
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES ('parent01', 'Homer Simpson', '" + testPassHash + "', 'Parent', 'Active')");
-
-        // --- SEED DEFAULT ADMIN USER ---
+//        db.execSQL("INSERT INTO " + TABLE_USERS +
+//                " (user_id, full_name, password_hash, role, status) VALUES ('parent01', 'Homer Simpson', '" + testPassHash + "', 'Parent', 'Active')");
+//
+//        // --- SEED DEFAULT ADMIN USER ---
         // ID: admin, Password: admin123
         // We MUST hash the default password before inserting it
         String defaultPassHash = SecurityUtil.hashPassword("admin123");
@@ -56,6 +56,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_USERS +
                 " (user_id, full_name, password_hash, role, status) VALUES " +
                 " ('admin', 'System Admin', '" + defaultPassHash + "', 'Admin', 'Active')");
+
+        // 1. Common Password Hash (e.g., "123456")
+        String commonPass = SecurityUtil.hashPassword("123456");
+
+        // 2. Insert Test Users
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin', 'Admin User', '" + commonPass + "', 'Admin', 'Active')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teacher', 'Teacher User', '" + commonPass + "', 'Teacher', 'Active')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('student', 'Student User', '" + commonPass + "', 'Student', 'Active')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('parent', 'Parent User', '" + commonPass + "', 'Parent', 'Active')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('staff', 'Staff User', '" + commonPass + "', 'Staff', 'Active')");
+
     }
 
     @Override

@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void routeUser(String role) {
+    private void routeUserByRole(String role) {
         Intent intent = null;
 
         switch (role) {
@@ -71,20 +71,19 @@ public class LoginActivity extends AppCompatActivity {
                 intent = new Intent(this, StudentDashboardActivity.class);
                 break;
             case "Parent":
-                // intent = new Intent(this, ParentDashboardActivity.class);
+                intent = new Intent(this, ParentDashboardActivity.class);
                 break;
             case "Staff":
-                // intent = new Intent(this, StaffDashboardActivity.class);
+                intent = new Intent(this, StaffDashboardActivity.class);
                 break;
             default:
-                // Fallback for unknown roles
-                Toast.makeText(this, "Role not recognized", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Role not recognized: " + role, Toast.LENGTH_LONG).show();
                 return;
         }
 
         if (intent != null) {
             startActivity(intent);
-            finish(); // Prevents user from pressing 'Back' to go to Login
+            finish(); // Prevents user from going back to Login screen
         }
     }
 }

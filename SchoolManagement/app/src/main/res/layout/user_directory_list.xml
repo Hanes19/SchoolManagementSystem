@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- 1. HEADER -->
+    <View
+        android:id="@+id/headerBg"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#33A1E0"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:padding="8dp"
+        android:src="@drawable/bck_btn"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerBg" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvHeaderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Users Directory List"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerBg" />
+
+    <!-- 2. SEARCH BAR -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/btn_background"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="12dp"
+        android:hint="Search users..."
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerBg" />
+
+    <!-- 3. FILTER & SORT ICONS -->
+    <LinearLayout
+        android:id="@+id/layoutFilters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSearch">
+
+        <!-- Filter Icon -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/filter"
+            app:tint="#33A1E0" />
+
+        <!-- Sort Icon -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/menu_2"
+            app:tint="#BDBDBD" />
+
+        <!-- Arrow Right -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/arrow_forward"
+            app:tint="#BDBDBD" />
+    </LinearLayout>
+
+    <!-- 4. LIST HEADERS -->
+    <LinearLayout
+        android:id="@+id/layoutListHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/layoutFilters">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textColor="#424242" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Role"
+            android:textStyle="bold"
+            android:textColor="#424242" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Action"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#424242" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/dividerHeader"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/layoutListHeader" />
+
+    <!-- 5. USER LIST (ScrollView) -->
+    <!-- UPDATED: Removed pagination, anchored Bottom to BottomNav -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@+id/dividerHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ROW 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0"/>
+
+            <!-- ROW 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Jane Doe"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Teacher"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0"/>
+
+            <!-- ROW 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Bob Johnson"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Parent"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="John Smith"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0"/>
+
+            <!-- ROW 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Sarah Connor"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Student"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0"/>
+
+            <!-- ROW 5 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Mike Ross"
+                    android:textStyle="bold"
+                    android:textColor="#424242" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Active"
+                    android:textColor="#757575" />
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#33A1E0"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:padding="0dp"
+                    android:minHeight="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 6. BOTTOM NAVIGATION (Pagination Removed) -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#33A1E0"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/home"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_weight="1"
+            android:src="@drawable/home"
+            app:tint="@color/white"
+            tools:src="@drawable/profile"/>
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_weight="1"
+            android:src="@drawable/menu"
+            app:tint="@color/white" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

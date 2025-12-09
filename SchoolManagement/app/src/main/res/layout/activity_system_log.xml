@@ -15,8 +15,6 @@
         android:background="#33A1E0"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Back Button (Circle with Arrow) -->
-    <!-- You can replace @android:drawable/ic_menu_revert with your specific back icon -->
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="40dp"
@@ -29,9 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/headerBg"
         tools:ignore="ContentDescription" />
-    <!-- Note: Create a shape drawable for the circle outline if needed, or remove background -->
 
-    <!-- Header Title -->
     <TextView
         android:id="@+id/tvHeaderTitle"
         android:layout_width="wrap_content"

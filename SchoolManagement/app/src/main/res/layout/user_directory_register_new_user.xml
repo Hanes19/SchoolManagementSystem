@@ -299,7 +299,6 @@
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Back Arrow -->
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -314,9 +313,7 @@
             android:src="@drawable/home"
             app:tint="@color/white"
             tools:src="@drawable/profile"/>
-        <!-- Replace with actual house icon -->
 
-        <!-- Menu -->
         <ImageView
             android:layout_width="23dp"
             android:layout_height="23dp"

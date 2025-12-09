@@ -17,23 +17,20 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login); // References your XML file
+        setContentView(R.layout.activity_login);
 
         db = new DatabaseHelper(this);
         session = new SessionManager(this);
 
-        // 1. Check if user is ALREADY logged in
+        // Check if already logged in
         if (session.isLoggedIn()) {
-            // Skip login screen and go to dashboard
             routeUser(session.getRole());
         }
 
-        // 2. Bind Views
         etId = findViewById(R.id.etId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
-        // 3. Login Logic
         btnLogin.setOnClickListener(v -> {
             String userId = etId.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -41,31 +38,26 @@ public class LoginActivity extends AppCompatActivity {
             if (userId.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter ID and Password", Toast.LENGTH_SHORT).show();
             } else {
-                // Secure check against DB
+                // Check Credentials
                 if (db.checkUser(userId, password)) {
                     String role = db.getUserRole(userId);
 
-                    // Create Session
-                    session.createLoginSession(userId, role);
+                    // --- NEW: LOG THE LOGIN ACTION ---
+                    db.logAction(userId, "User Logged In");
+                    // ---------------------------------
 
-                    // Navigate
+                    session.createLoginSession(userId, role);
                     routeUser(role);
                 } else {
-                    Toast.makeText(this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Invalid Credentials or Account Inactive", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    // --- FIX: Renamed from 'routeUserByRole' to 'routeUser' to match calls above ---
     private void routeUser(String role) {
         Intent intent = null;
-
-        // Safety check to prevent crash if role is null
-        if (role == null) {
-            Toast.makeText(this, "Error: User role is missing.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (role == null) return;
 
         switch (role) {
             case "Admin":
@@ -83,14 +75,11 @@ public class LoginActivity extends AppCompatActivity {
             case "Staff":
                 intent = new Intent(this, StaffDashboardActivity.class);
                 break;
-            default:
-                Toast.makeText(this, "Role not recognized: " + role, Toast.LENGTH_LONG).show();
-                return;
         }
 
         if (intent != null) {
             startActivity(intent);
-            finish(); // Prevents user from going back to Login screen
+            finish();
         }
     }
 }

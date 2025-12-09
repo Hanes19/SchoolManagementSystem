@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button20"
+        android:layout_width="142dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#2B333D45"
+        android:text="Cancel"
+        android:textColor="@color/black"
+        tools:layout_editor_absoluteX="209dp"
+        tools:layout_editor_absoluteY="745dp" />
+
+    <Button
+        android:id="@+id/button19"
+        android:layout_width="138dp"
+        android:layout_height="54dp"
+        android:backgroundTint="#33A1E0"
+        android:text="Save Changes"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="745dp" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account Status"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="55dp"
+        tools:layout_editor_absoluteY="595dp" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Roles"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="489dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar21"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:background="#2B333D45"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="530dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar20"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:background="#2B333D45"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="422dp" />
+
+    <EditText
+        android:id="@+id/editTextText5"
+        android:layout_width="304dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        android:textColor="#2B333D45"
+        tools:layout_editor_absoluteX="54dp"
+        tools:layout_editor_absoluteY="425dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar19"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:background="#2B333D45"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="351dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar18"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:background="#2B333D45"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="280dp" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddress2"
+        android:layout_width="301dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Email Address"
+        android:textColor="#2B333D45"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="282dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar17"
+        android:layout_width="317dp"
+        android:layout_height="47dp"
+        android:background="#2B333D45"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="206dp" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="304dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        android:textColor="#2B333D45"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="206dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar16"
+        android:layout_width="417dp"
+        android:layout_height="61dp"
+        android:background="#33A1E0"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="-3dp"
+        tools:layout_editor_absoluteY="-2dp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="95dp"
+        android:layout_height="81dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="86dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="98dp" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="46dp"
+        android:layout_height="37dp"
+        tools:layout_editor_absoluteX="349dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student ID:02-23-0105"
+        android:textStyle="bold"
+        android:textColor="#9A333D45"
+        tools:layout_editor_absoluteX="139dp"
+        tools:layout_editor_absoluteY="134dp" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="292dp"
+        android:layout_height="42dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="Phone Number"
+        android:textColor="#2B333D45"
+        tools:layout_editor_absoluteX="54dp"
+        tools:layout_editor_absoluteY="354dp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student"
+        android:textStyle="bold"
+        android:textColor="#72333D45"
+        android:textSize="16sp"
+        tools:layout_editor_absoluteX="94dp"
+        tools:layout_editor_absoluteY="541dp" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="32dp"
+        android:layout_height="24dp"
+        app:srcCompat="@drawable/lock"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="539dp" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inactive"
+        android:textStyle="bold"
+        android:textColor="#D81B60"
+        tools:layout_editor_absoluteX="268dp"
+        tools:layout_editor_absoluteY="595dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar89"
+        android:layout_width="383dp"
+        android:layout_height="149dp"
+        android:background="#E0DCDC"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="197dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar90"
+        android:layout_width="383dp"
+        android:layout_height="149dp"
+        android:background="#E0DCDC"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="354dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar91"
+        android:layout_width="383dp"
+        android:layout_height="151dp"
+        android:background="#E0DCDC"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="511dp" />
+
+    <TextView
+        android:id="@+id/textView130"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daily Student Attendance"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="208dp" />
+
+    <TextView
+        android:id="@+id/textView135"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teacher's Attendance"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="363dp" />
+
+    <TextView
+        android:id="@+id/textView137"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leave Applications and Approval"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="521dp" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar88"
+        android:layout_width="411dp"
+        android:layout_height="73dp"
+        android:background="#33A1E0"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView45"
+        android:layout_width="43dp"
+        android:layout_height="48dp"
+        app:srcCompat="@drawable/user__1_"
+        tools:layout_editor_absoluteX="352dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/button64"
+        android:layout_width="117dp"
+        android:layout_height="40dp"
+        android:text="Student"
+        android:backgroundTint="#33A1E0"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/button67"
+        android:layout_width="203dp"
+        android:layout_height="37dp"
+        android:backgroundTint="#33A1E0"
+        android:text="+ Record Attendance"
+        tools:layout_editor_absoluteX="184dp"
+        tools:layout_editor_absoluteY="299dp" />
+
+    <Button
+        android:id="@+id/button68"
+        android:layout_width="203dp"
+        android:layout_height="37dp"
+        android:backgroundTint="#33A1E0"
+        android:text="View Full Report"
+        tools:layout_editor_absoluteX="184dp"
+        tools:layout_editor_absoluteY="455dp" />
+
+    <Button
+        android:id="@+id/button69"
+        android:layout_width="153dp"
+        android:layout_height="35dp"
+        android:backgroundTint="#33A1E0"
+        android:text="View Details"
+        tools:layout_editor_absoluteX="234dp"
+        tools:layout_editor_absoluteY="615dp" />
+
+    <Button
+        android:id="@+id/button65"
+        android:layout_width="117dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#33A1E0"
+        android:text="Teachers"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <Button
+        android:id="@+id/button66"
+        android:layout_width="117dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#33A1E0"
+        android:text="Approval"
+        tools:layout_editor_absoluteX="278dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <SearchView
+        android:layout_width="363dp"
+        android:layout_height="43dp"
+        android:background="#E0DCDC"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="141dp" />
+
+    <ImageView
+        android:id="@+id/imageView46"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/checked"
+        tools:layout_editor_absoluteX="24dp"
+        tools:layout_editor_absoluteY="245dp" />
+
+    <TextView
+        android:id="@+id/textView131"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Present"
+        tools:layout_editor_absoluteX="51dp"
+        tools:layout_editor_absoluteY="244dp" />
+
+    <ImageView
+        android:id="@+id/imageView47"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/delete_button"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="246dp" />
+
+    <TextView
+        android:id="@+id/textView132"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Late"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="246dp" />
+
+    <ImageView
+        android:id="@+id/imageView48"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/exclamation__1_"
+        tools:layout_editor_absoluteX="209dp"
+        tools:layout_editor_absoluteY="246dp" />
+
+    <TextView
+        android:id="@+id/textView133"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Absent"
+        tools:layout_editor_absoluteX="229dp"
+        tools:layout_editor_absoluteY="247dp" />
+
+    <TextView
+        android:id="@+id/textView134"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Present: 97%"
+        android:textColor="#7CB342"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="280dp" />
+
+    <ImageView
+        android:id="@+id/imageView49"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/padlock__1_"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="405dp" />
+
+    <TextView
+        android:id="@+id/textView136"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendance History"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="406dp" />
+
+    <Button
+        android:id="@+id/button70"
+        android:layout_width="161dp"
+        android:layout_height="52dp"
+        android:backgroundTint="#33A1E0"
+        android:text="Leave Request"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="693dp" />
+
+    <ImageView
+        android:id="@+id/imageView50"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/circle"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="710dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

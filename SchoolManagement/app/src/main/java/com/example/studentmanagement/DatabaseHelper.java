@@ -9,8 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incremented version to force update
     private static final String TABLE_USERS = "users";
+    private static final String TABLE_LOGS = "system_logs"; // New Table
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -18,63 +19,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // 1. Create Users Table
         String createUsers = "CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT UNIQUE, " +
                 "full_name TEXT, " +
-                "password_hash TEXT, " + // Note: storing HASH, not password
+                "password_hash TEXT, " +
                 "role TEXT, " +
                 "status TEXT)";
         db.execSQL(createUsers);
 
-        // Inside DatabaseHelper.java -> onCreate
+        // 2. Create System Logs Table
+        String createLogs = "CREATE TABLE " + TABLE_LOGS + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id TEXT, " +
+                "action TEXT, " +
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
+        db.execSQL(createLogs);
 
-// Password for all test users is: 123456
+        // --- SEED DATA ---
         String testPassHash = SecurityUtil.hashPassword("123456");
-
-// Create Admin
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
-
-// Create Teacher
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Edna Krabappel', '" + testPassHash + "', 'Teacher', 'Active')");
-
-// Create Student
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Bart Simpson', '" + testPassHash + "', 'Student', 'Active')");
-
-// Create Parent
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES ('parent01', 'Homer Simpson', '" + testPassHash + "', 'Parent', 'Active')");
-
-        // --- SEED DEFAULT ADMIN USER ---
-        // ID: admin, Password: admin123
-        // We MUST hash the default password before inserting it
         String defaultPassHash = SecurityUtil.hashPassword("admin123");
 
-        db.execSQL("INSERT INTO " + TABLE_USERS +
-                " (user_id, full_name, password_hash, role, status) VALUES " +
-                " ('admin', 'System Admin', '" + defaultPassHash + "', 'Admin', 'Active')");
+        // Admin
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
+        // Teacher
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Edna Krabappel', '" + testPassHash + "', 'Teacher', 'Active')");
+        // Student
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Bart Simpson', '" + testPassHash + "', 'Student', 'Active')");
+        // Default Admin
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin', 'System Admin', '" + defaultPassHash + "', 'Admin', 'Active')");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGS);
         onCreate(db);
     }
 
-    // Secure Login Check
+    // --- USER METHODS ---
+
     public boolean checkUser(String userId, String rawPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // 1. Hash the entered password to match what is in the DB
         String hashedInput = SecurityUtil.hashPassword(rawPassword);
-
         String[] columns = { "id" };
         String selection = "user_id = ? AND password_hash = ? AND status = 'Active'";
         String[] selectionArgs = { userId, hashedInput };
-
         Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
         int count = cursor.getCount();
         cursor.close();
@@ -90,5 +81,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return role;
         }
         return null;
+    }
+
+    // --- ACCOUNT MANAGEMENT METHODS (Activation/Reset) ---
+
+    // Update Account Status (Active/Inactive)
+    public boolean updateUserStatus(String userId, boolean isActive) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", isActive ? "Active" : "Inactive");
+        int rows = db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId});
+        return rows > 0;
+    }
+
+    // Reset Password
+    public boolean resetPassword(String userId, String newPlainPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String passwordHash = SecurityUtil.hashPassword(newPlainPassword);
+        values.put("password_hash", passwordHash);
+        int rows = db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId});
+        return rows > 0;
+    }
+
+    // Check if user is currently active
+    public boolean isUserActive(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{"status"}, "user_id = ?", new String[]{userId}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String status = cursor.getString(0);
+            cursor.close();
+            return "Active".equalsIgnoreCase(status);
+        }
+        return false;
+    }
+
+    // --- SYSTEM LOG METHODS ---
+
+    // Record an action
+    public void logAction(String userId, String action) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("action", action);
+        db.insert(TABLE_LOGS, null, values);
+    }
+
+    // Get all logs (Newest first)
+    public Cursor getAllLogs() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_LOGS + " ORDER BY id DESC", null);
     }
 }

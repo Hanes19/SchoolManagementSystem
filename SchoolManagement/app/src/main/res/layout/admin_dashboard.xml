@@ -234,7 +234,7 @@
                                 android:textStyle="bold"
                                 android:textColor="#FFFFFF"
                                 android:layout_below="@id/date_1"
-                                android:layout_marginTop="16dp"/>
+                                android:layout_marginTop="30dp"/>
 
 
                             <TextView
@@ -381,7 +381,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/date_3"
-                                android:layout_marginTop="16dp"
+                                android:layout_marginTop="30dp"
                                 android:text="Fees &amp;\nBilling"
                                 android:textColor="#1B254B"
                                 android:textSize="18sp"
@@ -456,7 +456,7 @@
                                 android:textStyle="bold"
                                 android:textColor="#1B254B"
                                 android:layout_below="@id/date_4"
-                                android:layout_marginTop="16dp"/>
+                                android:layout_marginTop="30dp"/>
 
 
                             <TextView

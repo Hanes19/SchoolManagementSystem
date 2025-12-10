@@ -7,7 +7,7 @@ public class ParentDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing_page); // Placeholder
+        setContentView(R.layout.welcome_landing_page); // Placeholder
         // Add Security Check here...
     }
 }

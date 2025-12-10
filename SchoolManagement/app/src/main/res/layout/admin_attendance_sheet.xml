@@ -22,6 +22,7 @@
             android:padding="8dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
+            android:background="@drawable/rounded_corner_white_bg"
             tools:ignore="ContentDescription"/>
 
         <LinearLayout
@@ -29,19 +30,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="16dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Attendance"
+                android:textSize="14sp"
+                android:textColor="#1B254B"/>
+
+            <!-- Added Subject Name for clarity -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mathematics"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#1B254B"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Grade 10-A"
                 android:textColor="#1B254B"
-                android:textSize="12sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -87,7 +98,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- List Header (Added) -->
+    <!-- List Header -->
     <LinearLayout
         android:id="@+id/list_header"
         android:layout_width="match_parent"
@@ -102,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Student Name"
-            android:textColor="#1B254B"
+            android:textColor="#A3AED0"
             android:textStyle="bold"
             android:textSize="12sp"/>
 
@@ -110,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status"
-            android:textColor="#1B254B"
+            android:textColor="#A3AED0"
             android:textStyle="bold"
             android:textSize="12sp"
             android:layout_marginEnd="16dp"/>

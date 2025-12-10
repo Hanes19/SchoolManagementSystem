@@ -111,19 +111,11 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/camera"
+                        android:src="@drawable/profile"
                         android:padding="20dp"
                         app:tint="#A3AED0"/>
                 </androidx.cardview.widget.CardView>
                 <!-- FIXED: Added width and height attributes below -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Upload Photo"
-                    android:textSize="12sp"
-                    android:textColor="#A3AED0"
-                    android:textStyle="bold"
-                    android:layout_marginTop="2dp"/>
             </LinearLayout>
 
             <!-- Field 1: Name -->

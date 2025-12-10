@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Directory"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <!-- Custom Segmented Tabs (Teachers Selected) -->
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/rounded_corner_white_bg"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Students"
+            android:gravity="center"
+            android:textColor="#A3AED0"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Teachers"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_blue_bg_placeholder"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Staff"
+            android:gravity="center"
+            android:textColor="#A3AED0"/>
+    </LinearLayout>
+
+    <!-- Search Bar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tab_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/search"
+                app:tint="#A3AED0"
+                tools:ignore="ContentDescription"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search teacher..."
+                android:textColor="#A3AED0"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Teachers List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/search_bar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="100dp">
+
+            <!-- Teacher Item 1 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mr. Walter White"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chemistry | Senior Faculty"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="On Leave"
+                        android:textColor="#FF9800"
+                        android:background="#FFF3E0"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 2 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mrs. McGonagall"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Administration | Head"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
+                        android:background="#E8F5E9"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 3 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mr. Severus Snape"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Science | Potions"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
+                        android:background="#E8F5E9"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 4 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mr. John Keating"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="English | Literature"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
+                        android:background="#E8F5E9"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 5 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ms. Jennifer Honey"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Primary Education"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
+                        android:background="#E8F5E9"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 6 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mr. Kesuke Miyagi"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Physical Education"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="On Leave"
+                        android:textColor="#FF9800"
+                        android:background="#FFF3E0"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Teacher Item 7 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/profile_pic"
+                        android:background="#F4F7FE"
+                        android:padding="10dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prof. Charles Xavier"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Psychology"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
+                        android:background="#E8F5E9"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FAB Add User -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="#111C44"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="30dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="+"
+            android:textColor="#FFF"
+            android:textSize="32sp"
+            android:gravity="center"/>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

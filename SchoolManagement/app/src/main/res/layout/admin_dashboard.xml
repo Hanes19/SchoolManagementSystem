@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="Good Morning"
                         android:textSize="16sp"
-                        android:textColor="#ffff"/>
+                        android:textColor="#1B254B"/>
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView

@@ -641,7 +641,7 @@
                 android:layout_width="0dp"
                 android:layout_height="28dp"
                 android:layout_weight="1"
-                android:src="@drawable/finance"
+                android:src="@drawable/bell"
                 app:tint="#1B254B"
                 tools:ignore="ContentDescription"/>
 
@@ -649,7 +649,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:src="@drawable/profile"
+                android:src="@drawable/menu"
                 app:tint="#1B254B"
                 tools:ignore="ContentDescription"/>
         </LinearLayout>

@@ -3,7 +3,7 @@ package com.example.studentmanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView; // Imported ImageView
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -28,6 +28,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // --- NEW BUTTON INITIALIZATION ---
 
         // 1. Burger Menu Button
+        // This will now work because we added btn_burger_menu to the XML
         ImageView btnBurger = findViewById(R.id.btn_burger_menu);
         btnBurger.setOnClickListener(v -> {
             Toast.makeText(AdminDashboardActivity.this, "Menu Clicked", Toast.LENGTH_SHORT).show();
@@ -35,12 +36,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
 
         // 2. Settings Button
+        // This will now work because we renamed btnSettings to btn_settings in the XML
         ImageView btnSettings = findViewById(R.id.btn_settings);
         btnSettings.setOnClickListener(v -> {
             Toast.makeText(AdminDashboardActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to settings activity
-            // Intent intent = new Intent(AdminDashboardActivity.this, SettingsActivity.class);
-            // startActivity(intent);
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminSettingsActivity.class);
+            startActivity(intent);
         });
 
         // --- END NEW BUTTONS ---
@@ -78,8 +79,5 @@ public class AdminDashboardActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(v -> {
             // Quick action dialog or generic add
         });
-
-        // This finds the menu icon (which you are using as settings) and opens the settings page
-
     }
 }

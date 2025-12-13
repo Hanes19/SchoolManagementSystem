@@ -126,7 +126,8 @@
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="#FFFFFF"
+                android:id="@+id/sampleStudentItem">
 
                 <LinearLayout
                     android:layout_width="match_parent"

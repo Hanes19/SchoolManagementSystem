@@ -49,10 +49,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // 5. Setup Click Listeners
 
-        // --- Module 1: Users & Staff ---
+
         btnUsersStaff.setOnClickListener(v -> {
-            // Navigate to the User Directory (AdminRoleActivity)
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminRoleActivity.class);
+            // OLD: Intent intent = new Intent(AdminDashboardActivity.this, AdminRoleActivity.class);
+
+            // NEW: Open Students Directory directly
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminStudentListActivity.class);
             startActivity(intent);
         });
 

@@ -27,10 +27,12 @@
         <activity android:name=".StudentDashboardActivity" android:exported="false" />
         <activity android:name=".ParentDashboardActivity" android:exported="false" />
         <activity android:name=".StaffDashboardActivity" android:exported="false" />
-
-        <activity android:name=".SystemLogActivity" android:exported="false" />
+        <activity android:name=".AdminStudentListActivity" android:exported="false" /> <activity android:name=".AdminTeacherListActivity" android:exported="false" /> <activity android:name=".AdminStaffListActivity" android:exported="false" />   <activity android:name=".SystemLogActivity" android:exported="false" />
         <activity android:name=".AdminRoleActivity" android:exported="false" />
         <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".AdminStudentProfileActivity" android:exported="false" />
+        <activity android:name=".AdminTeacherProfileActivity" android:exported="false" />
+        <activity android:name=".AdminStaffProfileActivity" android:exported="false" />
 
     </application>
 

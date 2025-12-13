@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Integrations"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
+
+            <!-- Payment Gateways -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAYMENTS"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Stripe -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/peso"
+                            app:tint="#6772E5"
+                            android:background="#F4F7FE"
+                            android:padding="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stripe" android:textColor="#1B254B" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Credit/Debit Cards" android:textColor="#A3AED0" android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Config"
+                            android:textColor="#4318FF"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="12dp"/>
+
+                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
+
+                    <!-- PayPal -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/peso"
+                            app:tint="#003087"
+                            android:background="#F4F7FE"
+                            android:padding="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PayPal" android:textColor="#1B254B" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="International Payments" android:textColor="#A3AED0" android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Config"
+                            android:textColor="#4318FF"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="12dp"/>
+
+                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Communication -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMMUNICATION"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@android:drawable/ic_dialog_email"
+                            app:tint="#FF9800"
+                            android:background="#FFF3E0"
+                            android:padding="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Twilio SMS" android:textColor="#1B254B" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="API Key: •••••••••••" android:textColor="#A3AED0" android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Hardware -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HARDWARE"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@android:drawable/ic_lock_lock"
+                            app:tint="#4CAF50"
+                            android:background="#E8F5E9"
+                            android:padding="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Biometric Devices" android:textColor="#1B254B" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fingerprint Scanners (ZKTeco)" android:textColor="#A3AED0" android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Setup"
+                            android:textColor="#4318FF"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,7 +33,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // 2. Settings Button
         // This will now work because we renamed btnSettings to btn_settings in the XML
-        ImageView btnSettings = findViewById(R.id.btn_settings);
+        ImageView btnSettings = findViewById(R.id.btnSettings);
         btnSettings.setOnClickListener(v -> {
             Toast.makeText(AdminDashboardActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AdminDashboardActivity.this, AdminSettingsActivity.class);
@@ -68,6 +68,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
         CardView btnConfig = findViewById(R.id.btn_system_config);
         btnConfig.setOnClickListener(v -> {
             Toast.makeText(this, "System logs coming soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminSystemConfigActivity.class);
+            startActivity(intent);
         });
 
         // FAB Add

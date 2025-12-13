@@ -53,6 +53,7 @@
 
         <activity android:name=".AdminFeesActivity" />
         <activity android:name=".AdminSettingsActivity" />
+        <activity android:name=".AdminSystemConfigActivity" />
 
     </application>
 

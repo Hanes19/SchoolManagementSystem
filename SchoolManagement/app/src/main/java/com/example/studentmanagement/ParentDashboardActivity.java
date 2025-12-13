@@ -41,7 +41,7 @@ public class ParentDashboardActivity extends AppCompatActivity {
         // Bind Views
         tvWelcome = findViewById(R.id.tvWelcome);
         tvRole = findViewById(R.id.tvRole);
-        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout = findViewById(R.id.btn_logout);
 
         // Fetch user data
         String userId = session.getUserId();

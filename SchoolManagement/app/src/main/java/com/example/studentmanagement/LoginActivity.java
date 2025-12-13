@@ -63,18 +63,11 @@ public class LoginActivity extends AppCompatActivity {
             case "Admin":
                 intent = new Intent(this, AdminDashboardActivity.class);
                 break;
-            case "Teacher":
-                intent = new Intent(this, TeacherDashboardActivity.class);
-                break;
-            case "Student":
-                intent = new Intent(this, StudentDashboardActivity.class);
-                break;
+
             case "Parent":
                 intent = new Intent(this, ParentDashboardActivity.class);
                 break;
-            case "Staff":
-                intent = new Intent(this, StaffDashboardActivity.class);
-                break;
+
         }
 
         if (intent != null) {

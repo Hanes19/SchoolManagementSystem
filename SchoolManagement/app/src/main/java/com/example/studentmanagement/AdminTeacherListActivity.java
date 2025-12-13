@@ -21,6 +21,11 @@ public class AdminTeacherListActivity extends AppCompatActivity {
             android.content.Intent intent = new android.content.Intent(this, AdminTeacherProfileActivity.class);
             startActivity(intent);
         });
+        // --- NEW: Floating Action Button (Add Teacher) ---
+        findViewById(R.id.btn_add_teacher).setOnClickListener(v -> {
+            Intent intent = new Intent(AdminTeacherListActivity.this, AddTeacherActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setupTabs() {

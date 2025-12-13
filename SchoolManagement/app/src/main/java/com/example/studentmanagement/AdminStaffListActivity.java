@@ -21,6 +21,11 @@ public class AdminStaffListActivity extends AppCompatActivity {
             android.content.Intent intent = new android.content.Intent(this, AdminStaffProfileActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.btn_add_staff).setOnClickListener(v -> {
+            Intent intent = new Intent(AdminStaffListActivity.this, AddStaffActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setupTabs() {

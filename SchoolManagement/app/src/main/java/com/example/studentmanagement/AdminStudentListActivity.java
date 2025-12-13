@@ -14,13 +14,17 @@ public class AdminStudentListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_user_directory_students);
 
-        // ... inside onCreate
         setupTabs();
 
-// Link the Sample Data Click
+// Existing Profile Click
         findViewById(R.id.card_student_1).setOnClickListener(v -> {
-            // Open the Profile
-            android.content.Intent intent = new android.content.Intent(this, AdminStudentProfileActivity.class);
+            Intent intent = new Intent(this, AdminStudentProfileActivity.class);
+            startActivity(intent);
+        });
+
+// --- NEW: Floating Action Button (Add Student) ---
+        findViewById(R.id.btn_add_student).setOnClickListener(v -> {
+            Intent intent = new Intent(AdminStudentListActivity.this, AddStudentActivity.class);
             startActivity(intent);
         });
     }

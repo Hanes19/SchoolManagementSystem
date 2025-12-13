@@ -200,7 +200,7 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_agenda" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/attendance" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attendance" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 

@@ -1,6 +1,5 @@
 package com.example.studentmanagement;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,29 +14,28 @@ public class AdminSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_settings); // Connects to your XML
+        setContentView(R.layout.admin_settings);
 
         session = new SessionManager(this);
 
-        // 1. HEADER / BACK BUTTON LOGIC
-        // Using the header container as the back button trigger for larger touch area
+        // 1. HEADER / BACK BUTTON
         LinearLayout header = findViewById(R.id.header);
-        header.setOnClickListener(v -> finish()); // Closes this activity and goes back
+        header.setOnClickListener(v -> finish());
 
-        // 2. LOG OUT BUTTON LOGIC
+        // 2. LOG OUT BUTTON
         TextView btnLogout = findViewById(R.id.btn_logout);
         btnLogout.setOnClickListener(v -> {
-            session.logoutUser(); // Clear session
+            // Display message
             Toast.makeText(AdminSettingsActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
 
-            // Redirect to Login Activity and clear the back stack
-            Intent intent = new Intent(AdminSettingsActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            // SessionManager handles the Intent to LoginActivity internally
+            session.logoutUser();
+
+            // Close this activity so it doesn't stay in the background
             finish();
         });
 
-        // 3. Optional: Add click listeners for other settings here (e.g., Change Password)
+        // 3. Optional: Settings click listeners
         findViewById(R.id.btn_change_password).setOnClickListener(v -> {
             Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
         });

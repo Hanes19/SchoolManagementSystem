@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -20,8 +19,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Welcome," android:textColor="#A3AED0" android:textSize="14sp"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mrs. Smith" android:textSize="24sp" android:textStyle="bold" android:textColor="#1B254B"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome,"
+                android:textColor="#A3AED0"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tvWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mrs. Smith"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#1B254B"/>
+            <TextView
+                android:id="@+id/tvRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parent"
+                android:textColor="#A3AED0"
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -29,8 +47,21 @@
             android:layout_height="50dp"
             app:cardCornerRadius="25dp"
             app:cardElevation="0dp">
-            <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/profile" android:scaleType="centerCrop"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/profile"
+                android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:backgroundTint="#FF0000"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"/>
     </LinearLayout>
 
     <ScrollView
@@ -46,7 +77,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="20dp">
 
-            <!-- Child Selector Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +134,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Fee Status Alert -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +154,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Features Grid -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

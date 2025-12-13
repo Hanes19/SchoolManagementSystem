@@ -77,6 +77,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Edna Krabappel', '" + testPassHash + "', 'Teacher', 'Active')");
         // Student
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Bart Simpson', '" + testPassHash + "', 'Student', 'Active')");
+        // Parent (Username: parent01, Password: 123456)
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('parent01', 'Mrs. Smith', '" + testPassHash + "', 'Parent', 'Active')");
         // Default System Admin
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin', 'System Admin', '" + defaultPassHash + "', 'Admin', 'Active')");
     }
@@ -116,6 +118,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return role;
         }
         return null;
+    }
+
+    // Get Full Name by User ID
+    public String getUserName(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{"full_name"}, "user_id = ?", new String[]{userId}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String name = cursor.getString(0);
+            cursor.close();
+            return name;
+        }
+        return userId; // Return ID if name not found
     }
 
     // ==========================================

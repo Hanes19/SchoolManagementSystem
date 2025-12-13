@@ -1,5 +1,6 @@
 package com.example.studentmanagement;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import androidx.cardview.widget.CardView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class AdminFeesBillingActivity extends AppCompatActivity {
@@ -32,10 +32,9 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_fees_billings);
 
-        // Initialize Back Button
-        ImageView btnBack = findViewById(R.id.header).findViewWithTag("back_btn"); // Or use traverse if tag not set
+        // 1. Initialize Back Button
+        ImageView btnBack = findViewById(R.id.header).findViewWithTag("back_btn");
         if(btnBack == null) {
-            // Fallback: finding the first image view in header acting as back button based on XML structure
             LinearLayout header = findViewById(R.id.header);
             if(header != null && header.getChildCount() > 0 && header.getChildAt(0) instanceof ImageView) {
                 btnBack = (ImageView) header.getChildAt(0);
@@ -45,24 +44,57 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
             btnBack.setOnClickListener(v -> finish());
         }
 
-        // Initialize Filter Button
+        // 2. Initialize Filter Button
         ImageView btnFilter = findViewById(R.id.btn_filter);
-        btnFilter.setOnClickListener(v -> showFilterBottomSheet());
+        if (btnFilter != null) {
+            btnFilter.setOnClickListener(v -> showFilterBottomSheet());
+        }
 
-        // Initialize Generate Invoice Button
+        // 3. Initialize Generate Invoice Button
+        // UPDATED: Now navigates to the Generate Invoice Activity
         CardView btnInvoice = findViewById(R.id.btn_invoice);
-        btnInvoice.setOnClickListener(v -> {
-            Toast.makeText(this, "Generate Invoice Module Coming Soon", Toast.LENGTH_SHORT).show();
-        });
+        if (btnInvoice != null) {
+            btnInvoice.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminFeesBillingActivity.this, AdminGenerateInvoiceActivity.class);
+                startActivity(intent);
+            });
+        }
 
-        // Locate the container for student cards.
-        // Since the LinearLayout inside the ScrollView doesn't have an ID in your XML,
-        // we find it by looking at the parent of one of the hardcoded cards.
+        // 4. Locate the container for student cards for filtering
         View firstCard = findViewById(R.id.card_student_1);
         if (firstCard != null) {
             recordsContainer = (LinearLayout) firstCard.getParent();
         }
+
+        // 5. Setup Click Listeners for the Cards (To open Details)
+        setupCardClickListeners();
     }
+
+    // ==========================================
+    //           NAVIGATION & ACTIONS
+    // ==========================================
+
+    private void setupCardClickListeners() {
+        // List of your hardcoded student card IDs
+        int[] cardIds = {R.id.card_student_1, R.id.card_student_2, R.id.card_student_3};
+
+        for (int id : cardIds) {
+            View card = findViewById(id);
+            if (card != null) {
+                card.setOnClickListener(v -> {
+                    // Navigate to the Invoice Details Activity
+                    Intent intent = new Intent(AdminFeesBillingActivity.this, AdminInvoiceDetailsActivity.class);
+                    // Example of passing data (optional):
+                    // intent.putExtra("STUDENT_NAME", "Jason Statham");
+                    startActivity(intent);
+                });
+            }
+        }
+    }
+
+    // ==========================================
+    //           FILTER & SORT LOGIC
+    // ==========================================
 
     private void showFilterBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -74,9 +106,11 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         setupChipGroup(statusChipsContainer, currentStatusFilter, newSelection -> currentStatusFilter = newSelection);
 
         // --- 2. Class Level Logic ---
-        // Note: In your XML, the grades are inside a ScrollView -> LinearLayout
-        LinearLayout gradeScrollContainer = (LinearLayout) ((ViewGroup) view.findViewById(R.id.scroll_grades)).getChildAt(0);
-        setupChipGroup(gradeScrollContainer, currentGradeFilter, newSelection -> currentGradeFilter = newSelection);
+        ViewGroup scrollGrades = view.findViewById(R.id.scroll_grades);
+        if (scrollGrades != null && scrollGrades.getChildCount() > 0) {
+            LinearLayout gradeScrollContainer = (LinearLayout) scrollGrades.getChildAt(0);
+            setupChipGroup(gradeScrollContainer, currentGradeFilter, newSelection -> currentGradeFilter = newSelection);
+        }
 
         // --- 3. Sort By Logic ---
         RadioGroup rgSort = view.findViewById(R.id.rg_sort);
@@ -93,10 +127,6 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         });
 
         // --- 4. Reset Logic ---
-        TextView btnReset = view.findViewById(R.id.tv_filter_title).getRootView().findViewById(R.id.separator).getRootView().findViewWithTag("reset");
-        // Or simpler finding by traversing relative to title if ID missing,
-        // but let's assume you add android:id="@+id/btn_reset" to the "Reset" TextView in XML.
-        // For now, finding "Reset" text manually if ID is missing in your XML snippet:
         TextView resetBtn = findTextViewWithText((ViewGroup) view, "Reset");
         if (resetBtn != null) {
             resetBtn.setOnClickListener(v -> {
@@ -104,7 +134,7 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
                 currentGradeFilter = "All";
                 currentSortOrder = "None";
                 bottomSheetDialog.dismiss();
-                applyFilters(); // Refresh list
+                applyFilters(); // Refresh list to show all
             });
         }
 
@@ -118,8 +148,9 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
-    // Helper to handle the "Chip" selection logic (visual toggling)
     private void setupChipGroup(LinearLayout container, String initialSelection, OnSelectionChanged listener) {
+        if (container == null) return;
+
         int childCount = container.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = container.getChildAt(i);
@@ -127,8 +158,10 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
                 TextView chip = (TextView) child;
                 String chipText = chip.getText().toString();
 
-                // Set initial state
-                updateChipVisual(chip, chipText.equalsIgnoreCase(initialSelection) || (initialSelection.equals("All") && chipText.equals("All")));
+                // Set initial visual state
+                boolean isSelected = chipText.equalsIgnoreCase(initialSelection) ||
+                        (initialSelection.equals("All") && chipText.equals("All"));
+                updateChipVisual(chip, isSelected);
 
                 chip.setOnClickListener(v -> {
                     // Deselect all others
@@ -158,7 +191,7 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         if (recordsContainer == null) return;
 
         List<View> allCards = new ArrayList<>();
-        // Collect all children first (visible or not)
+        // Collect all children first
         for (int i = 0; i < recordsContainer.getChildCount(); i++) {
             allCards.add(recordsContainer.getChildAt(i));
         }
@@ -172,7 +205,6 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
             boolean statusMatch = currentStatusFilter.equalsIgnoreCase("All") ||
                     data.status.equalsIgnoreCase(currentStatusFilter);
 
-            // "Grade 10" matches "Grade 10"
             boolean gradeMatch = currentGradeFilter.equalsIgnoreCase("All") ||
                     data.details.contains(currentGradeFilter);
 
@@ -193,13 +225,13 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
             });
 
             // Re-order views: Remove all and add back in sorted order
-            // (We keep GONE views at the end or just append them back)
             recordsContainer.removeAllViews();
 
+            // Add visible sorted cards
             for (View v : visibleCards) {
                 recordsContainer.addView(v);
             }
-            // Add back the hidden ones so they aren't lost forever
+            // Add back the hidden ones (so they aren't lost if filter is reset)
             for (View v : allCards) {
                 if (!visibleCards.contains(v)) {
                     recordsContainer.addView(v);
@@ -208,14 +240,17 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         }
     }
 
-    // Helper class to hold scraped data
+    // ==========================================
+    //           DATA PARSING HELPERS
+    // ==========================================
+
     private static class CardData {
         String status;
         String details;
         double amountVal;
     }
 
-    // This method parses the hardcoded XML structure of your cards
+    // Parses the hardcoded XML structure to extract data for filtering/sorting
     private CardData extractDataFromCard(View card) {
         CardData data = new CardData();
         data.status = "";
@@ -223,8 +258,7 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         data.amountVal = 0.0;
 
         try {
-            // Based on your XML structure:
-            // Card -> LinearLayout (Horizontal)
+            // Structure: Card -> LinearLayout (Horizontal)
             LinearLayout mainLayout = (LinearLayout) ((CardView) card).getChildAt(0);
 
             // Middle Column (Index 1) -> Name and Details

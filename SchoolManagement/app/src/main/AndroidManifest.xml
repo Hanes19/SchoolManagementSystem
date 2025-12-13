@@ -36,6 +36,10 @@
         <activity android:name=".AddStudentActivity" android:exported="false" />
         <activity android:name=".AddTeacherActivity" android:exported="false" />
         <activity android:name=".AddStaffActivity" android:exported="false" />
+        <activity android:name=".AdminClassListActivity" android:exported="false"/>
+        <activity android:name=".AdminAddClassActivity" android:exported="false"/>
+        <activity android:name=".AdminMasterTimetableActivity" android:exported="false"/>
+        <activity android:name=".AdminClassTimetableActivity" android:exported="false"/>
 
     </application>
 

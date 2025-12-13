@@ -86,17 +86,25 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingHorizontal="16dp">
+
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/search"
                 app:tint="#A3AED0"
                 tools:ignore="ContentDescription"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search staff..."
-                android:textColor="#A3AED0"
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="Search staff..."
+                android:textColor="#1B254B"
+                android:textColorHint="#A3AED0"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:layout_marginStart="12dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -109,6 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/listContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

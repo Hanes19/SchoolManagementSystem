@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -34,7 +33,6 @@
             android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <!-- Main Form Container -->
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,7 +51,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Field 1: Grade Level -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,6 +65,7 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
                 <EditText
+                    android:id="@+id/et_grade_level"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_corner_white_bg"
@@ -79,7 +77,6 @@
                     android:inputType="textCapWords"/>
             </LinearLayout>
 
-            <!-- Field 2: Section Name -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +91,7 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
                 <EditText
+                    android:id="@+id/et_section_name"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_corner_white_bg"
@@ -105,7 +103,6 @@
                     android:inputType="textCapCharacters"/>
             </LinearLayout>
 
-            <!-- Field 3: Room Number -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,6 +117,7 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp"/>
                 <EditText
+                    android:id="@+id/et_room_number"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_corner_white_bg"
@@ -130,7 +128,6 @@
                     android:textSize="14sp"/>
             </LinearLayout>
 
-            <!-- Field 4: Class Teacher (Simulated Dropdown) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,6 +142,7 @@
                     android:layout_marginBottom="8dp"/>
 
                 <LinearLayout
+                    android:id="@+id/layout_select_teacher"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_corner_white_bg"
@@ -154,6 +152,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_selected_teacher"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -172,7 +171,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Create Button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_create"
         android:layout_width="match_parent"

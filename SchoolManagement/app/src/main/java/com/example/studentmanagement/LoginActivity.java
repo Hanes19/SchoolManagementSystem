@@ -22,10 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         session = new SessionManager(this);
 
-        // Check if already logged in
-        if (session.isLoggedIn()) {
-            routeUser(session.getRole());
-        }
+        // --- REMOVED Auto-Login Logic ---
+        // The check "if (session.isLoggedIn()) { routeUser(session.getRole()); }" has been removed.
+        // This prevents the app from automatically skipping the login screen.
 
         etId = findViewById(R.id.etId);
         etPassword = findViewById(R.id.etPassword);

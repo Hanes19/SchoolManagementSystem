@@ -29,11 +29,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // 1. Burger Menu Button
         // This will now work because we added btn_burger_menu to the XML
-        ImageView btnBurger = findViewById(R.id.btn_burger_menu);
-        btnBurger.setOnClickListener(v -> {
-            Toast.makeText(AdminDashboardActivity.this, "Menu Clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Add drawer opening logic here
-        });
+
 
         // 2. Settings Button
         // This will now work because we renamed btnSettings to btn_settings in the XML

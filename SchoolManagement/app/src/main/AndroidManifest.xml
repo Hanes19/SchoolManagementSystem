@@ -51,7 +51,8 @@
         <activity android:name=".SystemLogActivity" />
         <activity android:name=".AdminFeesBillingActivity" />
 
-
+        <activity android:name=".AdminFeesActivity" />
+        <activity android:name=".AdminSettingsActivity" />
 
     </application>
 

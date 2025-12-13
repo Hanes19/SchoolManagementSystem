@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:gravity="center_vertical">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_money" app:tint="#1B254B"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/peso" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="My Payslips" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
                     <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
                 </LinearLayout>

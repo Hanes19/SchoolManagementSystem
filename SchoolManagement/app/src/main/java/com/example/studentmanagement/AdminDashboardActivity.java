@@ -24,14 +24,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return;
         }
 
-        // --- BUTTON INITIALIZATION ---
+
 
         // 1. Users Module
         CardView btnUsers = findViewById(R.id.btn_users_staff);
         btnUsers.setOnClickListener(v -> {
             Toast.makeText(this, "Opening User Management...", Toast.LENGTH_SHORT).show();
-            // Intent intent = new Intent(this, AdminUserDirectoryActivity.class);
-            // startActivity(intent);
+            Intent intent = new Intent(this, AdminStudentListActivity.class);
+            startActivity(intent);
         });
 
         // 2. Classes & Timetable Module

@@ -22,15 +22,14 @@ public class LoginActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         session = new SessionManager(this);
 
-        // --- REMOVED Auto-Login Logic ---
-        // The check "if (session.isLoggedIn()) { routeUser(session.getRole()); }" has been removed.
-        // This prevents the app from automatically skipping the login screen.
+
+       if (session.isLoggedIn()) { routeUser(session.getRole()); }
+
 
         etId = findViewById(R.id.etId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
 
-        // --- REMOVED Register Button Logic Here ---
 
         btnLogin.setOnClickListener(v -> {
             String userId = etId.getText().toString().trim();

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="School Profile"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="#4318FF"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
+
+            <!-- Branding Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="24dp">
+
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/profile"
+                            android:background="@drawable/rounded_corner_white_bg"
+                            android:backgroundTint="#F4F7FE"
+                            android:padding="20dp"
+                            app:tint="#A3AED0"/>
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@android:drawable/ic_menu_camera"
+                            app:tint="#FFFFFF"
+                            android:background="@drawable/rounded_corner_white_bg"
+                            android:backgroundTint="#4318FF"
+                            android:padding="6dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="School Logo"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recommended: 500x500px PNG"
+                        android:textColor="#A3AED0"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Basic Info -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BASIC INFORMATION"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- School Name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="School Name"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:text="Springfield High School"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+
+                    <!-- School Code -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="School Code / Affiliation No."
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:text="SHS-2025-NY"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+
+                    <!-- Tagline/Motto -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Motto / Tagline"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:text="Excellence in Education"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Contact Info -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONTACT DETAILS"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Email -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Official Email"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:text="admin@springfield.edu"
+                        android:inputType="textEmailAddress"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+
+                    <!-- Phone -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Phone Number"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:text="+1 (555) 123-4567"
+                        android:inputType="phone"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+
+                    <!-- Address -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:padding="16dp"
+                        android:gravity="top|start"
+                        android:text="742 Evergreen Terrace,\nSpringfield, IL 62704"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

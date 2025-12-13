@@ -4,7 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_admin_bg"> <ScrollView
+    android:background="@drawable/gradient_admin_bg">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1B254B" />
+
+    <ScrollView
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:scrollbars="none"
@@ -128,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:text="1,250 Students Active"
                         android:textSize="14sp"
-                        android:textColor="#A3AED0"
+                        android:textColor="#1B254B"
                         android:layout_marginTop="8dp"/>
 
                     <TextView
@@ -265,7 +273,7 @@
                             android:layout_height="wrap_content"
                             android:text="Academic
                                 Structure"
-                            android:textColor="#A3AED0"
+                            android:textColor="#1B254B"
                             android:textSize="12sp"/>
 
                         <androidx.cardview.widget.CardView
@@ -341,7 +349,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Financial Status"
-                            android:textColor="#A3AED0"
+                            android:textColor="#1B254B"
                             android:textSize="12sp" />
 
                         <androidx.cardview.widget.CardView
@@ -412,7 +420,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Management"
-                            android:textColor="#A3AED0"
+                            android:textColor="#1B254B"
                             android:textSize="12sp"/>
 
                         <androidx.cardview.widget.CardView

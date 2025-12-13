@@ -183,7 +183,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/ic_money"
+                        android:src="@drawable/peso"
                         app:tint="#4CAF50"
                         android:background="#E8F5E9"
                         android:padding="10dp"/>

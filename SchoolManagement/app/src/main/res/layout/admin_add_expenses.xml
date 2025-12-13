@@ -176,7 +176,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/clock"
-                            app:tint="#4318FF"/>
+                            app:tint="#1B254B"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -238,7 +238,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@android:drawable/ic_menu_camera"
-                    app:tint="#4318FF"
+                    app:tint="#1B254B"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView

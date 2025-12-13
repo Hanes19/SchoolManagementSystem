@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F7FE">
+
+    <View
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/gradient_admin_bg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Directory"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/bck_btn"
+        android:padding="5dp"
+        android:background="@drawable/circle_outline_white"
+        app:tint="@color/white"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerView">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStudents"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/iconStud"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/academic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Students"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#1B254B"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconStud"
+                    app:layout_constraintTop_toTopOf="@+id/iconStud" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View, Add, or Edit Students"
+                    android:textSize="14sp"
+                    android:textColor="#A3AED0"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconStud"
+                    app:layout_constraintTop_toBottomOf="@+id/iconStud"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconStud"
+                    app:layout_constraintVertical_bias="0.8"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/arrow_forward"
+                    app:tint="#A3AED0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTeachers"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/iconTeach"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/teacher"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teachers"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#1B254B"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconTeach"
+                    app:layout_constraintTop_toTopOf="@+id/iconTeach" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Faculty Members"
+                    android:textSize="14sp"
+                    android:textColor="#A3AED0"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconTeach"
+                    app:layout_constraintTop_toBottomOf="@+id/iconTeach"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconTeach"
+                    app:layout_constraintVertical_bias="0.8"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/arrow_forward"
+                    app:tint="#A3AED0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStaff"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/iconStaff"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/people"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Staff"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#1B254B"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconStaff"
+                    app:layout_constraintTop_toTopOf="@+id/iconStaff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Admins, Clerks, Support"
+                    android:textSize="14sp"
+                    android:textColor="#A3AED0"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/iconStaff"
+                    app:layout_constraintTop_toBottomOf="@+id/iconStaff"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconStaff"
+                    app:layout_constraintVertical_bias="0.8"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/arrow_forward"
+                    app:tint="#A3AED0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

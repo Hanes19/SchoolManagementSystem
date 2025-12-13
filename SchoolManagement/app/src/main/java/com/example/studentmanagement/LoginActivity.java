@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView; // Imported TextView
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText etId, etPassword;
     Button btnLogin;
+    TextView tvRegister, tvForgotPass; // 1. Added these variables
     DatabaseHelper db;
     SessionManager session;
 
@@ -27,10 +29,14 @@ public class LoginActivity extends AppCompatActivity {
             routeUser(session.getRole());
         }
 
+        // Bind Views
         etId = findViewById(R.id.etId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        tvRegister = findViewById(R.id.tvRegister);     // 2. Connected to XML
+        tvForgotPass = findViewById(R.id.tvForgotPass); // 2. Connected to XML
 
+        // Login Listener
         btnLogin.setOnClickListener(v -> {
             String userId = etId.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -42,9 +48,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (db.checkUser(userId, password)) {
                     String role = db.getUserRole(userId);
 
-                    // --- NEW: LOG THE LOGIN ACTION ---
+                    // --- LOG THE LOGIN ACTION ---
                     db.logAction(userId, "User Logged In");
-                    // ---------------------------------
 
                     session.createLoginSession(userId, role);
                     routeUser(role);
@@ -52,6 +57,20 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Invalid Credentials or Account Inactive", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        // 3. Register Listener (Placeholder for now)
+        tvRegister.setOnClickListener(v -> {
+            Toast.makeText(this, "Redirect to Register Activity", Toast.LENGTH_SHORT).show();
+            // Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            // startActivity(intent);
+        });
+
+        // 4. Forgot Password Listener (Placeholder for now)
+        tvForgotPass.setOnClickListener(v -> {
+            Toast.makeText(this, "Redirect to Forgot Password Activity", Toast.LENGTH_SHORT).show();
+            // Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            // startActivity(intent);
         });
     }
 

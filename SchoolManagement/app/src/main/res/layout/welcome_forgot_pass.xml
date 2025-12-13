@@ -17,7 +17,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/wallpaper"
         android:alpha="0.8"
-        android:renderEffect="blur(50dp, 50dp)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

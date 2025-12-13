@@ -15,7 +15,7 @@ public class AdminStudentProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_user_student_profile);
-        
+
 
         ImageView btnBack = findViewById(R.id.btn_back_profile);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());

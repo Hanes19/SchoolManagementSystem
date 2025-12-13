@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -39,6 +39,7 @@
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/btn_mark_read"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mark all read"
@@ -47,7 +48,6 @@
             android:textSize="12sp"/>
     </LinearLayout>
 
-    <!-- Filter Tabs -->
     <HorizontalScrollView
         android:id="@+id/filter_scroll"
         android:layout_width="match_parent"
@@ -66,7 +66,6 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Notification List -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -91,7 +90,6 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Item 1: Unread Registration -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +162,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Item 2: Unread Payment -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -247,7 +244,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Item 3: System Alert -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -305,7 +301,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Item 4: Leave Request -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

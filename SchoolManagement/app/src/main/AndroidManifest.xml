@@ -63,7 +63,18 @@
 
         <activity android:name=".AdminGenerateInvoiceActivity"/>
         <activity android:name=".AdminInvoiceDetailsActivity"/>
-        <activity android:name=".AdminFeesBillingActivity"/>
+        <activity android:name=".AdminNotificationActivity"/>
+        <activity android:name=".AdminCalendarActivity"/>
+        <activity android:name=".AdminAddEventActivity"/>
+
+        <activity android:name=".AdminExpensesActivity"/>
+        <activity android:name=".AdminExpenseDetailsActivity"/>
+
+
+        <activity android:name=".AdminExpenseDetailsActivity"/>
+
+
+
 
     </application>
 

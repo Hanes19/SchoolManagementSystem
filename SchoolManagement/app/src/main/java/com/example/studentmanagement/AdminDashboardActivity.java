@@ -28,10 +28,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return;
         }
 
-        // --- NEW BUTTON INITIALIZATION ---
 
-        // 1. Burger Menu Button
-        // This will now work because we added btn_burger_menu to the XML
 
 
         // 2. Settings Button
@@ -42,12 +39,22 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // --- END NEW BUTTONS ---
+        ImageView btn_bell = findViewById(R.id.btn_bell);
+        btn_bell.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminNotificationActivity.class);
+            startActivity(intent);
+        });
+
+        ImageView btn_calendar = findViewById(R.id.btn_calendar);
+        btn_calendar.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminCalendarActivity.class);
+            startActivity(intent);
+        });
+
 
         // 1. Users Module
         CardView btnUsers = findViewById(R.id.btn_users_staff);
         btnUsers.setOnClickListener(v -> {
-            Toast.makeText(this, "Opening User Management...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, AdminStudentListActivity.class);
             startActivity(intent);
         });

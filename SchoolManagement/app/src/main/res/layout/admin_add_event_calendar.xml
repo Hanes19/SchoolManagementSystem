@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -34,7 +34,6 @@
             android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <!-- Main Form Container -->
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -59,7 +58,6 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +76,6 @@
                     android:textSize="14sp"
                     android:layout_marginBottom="20dp"/>
 
-                <!-- Category Selection -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -122,14 +119,12 @@
                     </RadioGroup>
                 </HorizontalScrollView>
 
-                <!-- Date & Time Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="20dp">
 
-                    <!-- Date Input -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -166,7 +161,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Time Input -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -204,7 +198,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Description -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -227,7 +220,6 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Save Button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_save"
         android:layout_width="match_parent"

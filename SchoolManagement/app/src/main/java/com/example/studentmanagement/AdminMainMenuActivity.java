@@ -54,7 +54,8 @@ public class AdminMainMenuActivity extends AppCompatActivity {
         btnFees.setOnClickListener(v -> startActivity(new Intent(this, AdminFeesBillingActivity.class)));
 
         LinearLayout btnPayroll = findViewById(R.id.btn_module_payroll);
-        btnPayroll.setOnClickListener(v -> Toast.makeText(this, "Payroll Module Coming Soon", Toast.LENGTH_SHORT).show());
+        btnTimetable.setOnClickListener(v -> startActivity(new Intent(this, AdminMasterTimetableActivity.class)));
+
 
         LinearLayout btnExpenses = findViewById(R.id.btn_module_expenses);
         btnExpenses.setOnClickListener(v -> Toast.makeText(this, "Expenses Module Coming Soon", Toast.LENGTH_SHORT).show());

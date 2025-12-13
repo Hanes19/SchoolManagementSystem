@@ -17,7 +17,7 @@ public class AdminStaffListActivity extends AppCompatActivity {
         setupTabs();
 
 // Link the Sample Data Click
-        findViewById(R.id.sampleStaffItem).setOnClickListener(v -> {
+        findViewById(R.id.card_staff_1).setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(this, AdminStaffProfileActivity.class);
             startActivity(intent);
         });

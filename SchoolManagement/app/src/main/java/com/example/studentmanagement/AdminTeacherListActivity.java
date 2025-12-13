@@ -17,7 +17,7 @@ public class AdminTeacherListActivity extends AppCompatActivity {
         setupTabs();
 
 // Link the Sample Data Click
-        findViewById(R.id.sampleTeacherItem).setOnClickListener(v -> {
+        findViewById(R.id.card_teacher_1).setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(this, AdminTeacherProfileActivity.class);
             startActivity(intent);
         });

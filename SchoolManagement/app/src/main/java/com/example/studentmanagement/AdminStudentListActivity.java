@@ -18,7 +18,7 @@ public class AdminStudentListActivity extends AppCompatActivity {
         setupTabs();
 
 // Link the Sample Data Click
-        findViewById(R.id.sampleStudentItem).setOnClickListener(v -> {
+        findViewById(R.id.card_student_1).setOnClickListener(v -> {
             // Open the Profile
             android.content.Intent intent = new android.content.Intent(this, AdminStudentProfileActivity.class);
             startActivity(intent);

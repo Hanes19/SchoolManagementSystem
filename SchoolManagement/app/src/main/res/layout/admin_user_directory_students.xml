@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -34,7 +33,6 @@
             android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <!-- Custom Segmented Tabs -->
     <LinearLayout
         android:id="@+id/tab_container"
         android:layout_width="match_parent"
@@ -53,7 +51,7 @@
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:background="@drawable/rounded_blue_bg_placeholder"/> <!-- Imagine a dark blue rounded bg here -->
+            android:background="@drawable/rounded_blue_bg_placeholder"/>
 
         <TextView
             android:layout_width="0dp"
@@ -72,7 +70,6 @@
             android:textColor="#A3AED0"/>
     </LinearLayout>
 
-    <!-- Search Bar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -104,7 +101,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- User List Mockup -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -117,17 +113,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingBottom="100dp"> <!-- Added padding bottom so FAB doesn't cover last item -->
+            android:paddingBottom="100dp">
 
-            <!-- User Item 1 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF"
-                android:id="@+id/sampleStudentItem">
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -178,8 +173,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 2 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -236,8 +231,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 3 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -294,8 +289,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 4 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -352,8 +347,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 5 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -410,8 +405,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 6 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -468,8 +463,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- User Item 7 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -528,8 +523,8 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- FAB Add User -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/btn_add_student"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:cardCornerRadius="30dp"

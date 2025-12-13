@@ -85,17 +85,89 @@
             android:orientation="vertical"
             android:paddingBottom="80dp"> <!-- Padding for Bottom Nav -->
 
-            <!-- Section 1: Academics & People -->
+            <!-- Section 1: People Directory -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ACADEMICS &amp; PEOPLE"
+                android:text="PEOPLE &amp; ROLES"
                 android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:letterSpacing="0.1"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"/>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:alignmentMode="alignMargins"
+                android:padding="16dp">
+
+                <!-- Item: Students -->
+                <LinearLayout
+                    android:id="@+id/btn_module_students"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/profile" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Students" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Teachers -->
+                <LinearLayout
+                    android:id="@+id/btn_module_teachers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/teacher" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teachers" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Staff -->
+                <LinearLayout
+                    android:id="@+id/btn_module_staff"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/profile" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Staff" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Parents -->
+                <LinearLayout
+                    android:id="@+id/btn_module_parents"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_my_calendar" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4CAF50"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Parents" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </GridLayout>
+
+            <!-- Section 2: Academics -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ACADEMICS"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"/>
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -113,7 +185,6 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to Agenda -->
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/classess" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Classes" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
@@ -127,31 +198,56 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to Calendar -->
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/timetable" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Timetable" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
-                <!-- Item: Teachers -->
+                <!-- Item: Attendance -->
                 <LinearLayout
-                    android:id="@+id/btn_module_teachers"
+                    android:id="@+id/btn_module_attendance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to Profile/People -->
-                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/teacher" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teachers" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_agenda" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attendance" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
+
+                <!-- Item: Exams -->
+                <LinearLayout
+                    android:id="@+id/btn_module_exams"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_edit" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exams" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Grades -->
+                <LinearLayout
+                    android:id="@+id/btn_module_grades"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/star_on" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grades" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
             </GridLayout>
 
-            <!-- Section 2: Management -->
+            <!-- Section 3: Finance & Management -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MANAGEMENT"
+                android:text="FINANCE &amp; ADMIN"
                 android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
@@ -175,10 +271,56 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to Money -->
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/peso" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fees" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
+
+                <!-- Item: Payroll -->
+                <LinearLayout
+                    android:id="@+id/btn_module_payroll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_manage" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Payroll" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Expenses -->
+                <LinearLayout
+                    android:id="@+id/btn_module_expenses"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_send" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Expenses" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+            </GridLayout>
+
+            <!-- Section 4: Facilities & Resources -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FACILITIES"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"/>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:alignmentMode="alignMargins"
+                android:padding="16dp">
 
                 <!-- Item: Library -->
                 <LinearLayout
@@ -189,9 +331,21 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to Sort/Books -->
-                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_sort_by_size" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_sort_by_size" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#00BCD4"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Library" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Transport -->
+                <LinearLayout
+                    android:id="@+id/btn_module_transport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_dialog_map" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#00BCD4"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transport" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
                 <!-- Item: Inventory -->
@@ -203,13 +357,86 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="8dp">
-                    <!-- Icon Changed to View/Box -->
-                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_view" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_view" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#00BCD4"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Inventory" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
+
+                <!-- Item: Hostel -->
+                <LinearLayout
+                    android:id="@+id/btn_module_hostel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_compass" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#00BCD4"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hostel" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
             </GridLayout>
 
-            <!-- Section 3: General -->
+            <!-- Section 5: Communication -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMMUNICATION"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"/>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:alignmentMode="alignMargins"
+                android:padding="16dp">
+
+                <!-- Item: Notice Board -->
+                <LinearLayout
+                    android:id="@+id/btn_module_notices"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_popup_reminder" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#E91E63"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Notices" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Events -->
+                <LinearLayout
+                    android:id="@+id/btn_module_events"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_month" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#E91E63"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Events" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <!-- Item: Messages -->
+                <LinearLayout
+                    android:id="@+id/btn_module_messages"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_dialog_email" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#E91E63"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Messages" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+            </GridLayout>
+
+            <!-- Section 6: General -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,9 +455,9 @@
                 android:paddingHorizontal="24dp"
                 android:paddingTop="16dp">
 
-                <!-- Profile Row -->
+                <!-- System Logs Row -->
                 <LinearLayout
-                    android:id="@+id/btn_general_profile"
+                    android:id="@+id/btn_system_logs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -239,8 +466,8 @@
                     android:padding="16dp"
                     android:layout_marginBottom="12dp">
 
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/profile" app:tint="#1B254B"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="My Profile" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_info_details" app:tint="#1B254B"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="System Logs" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_play" android:rotation="0" app:tint="#A3AED0"/>
                 </LinearLayout>
 

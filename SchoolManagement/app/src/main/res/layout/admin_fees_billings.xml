@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -38,7 +37,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <!-- Filter Icon -->
         <ImageView
             android:id="@+id/btn_filter"
             android:layout_width="40dp"
@@ -49,7 +47,6 @@
             tools:ignore="ContentDescription"/>
     </LinearLayout>
 
-    <!-- Summary Cards Container -->
     <LinearLayout
         android:id="@+id/summary_container"
         android:layout_width="match_parent"
@@ -59,7 +56,6 @@
         android:weightSum="2"
         app:layout_constraintTop_toBottomOf="@id/header">
 
-        <!-- Collected Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,7 +98,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Pending Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -146,7 +141,6 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-    <!-- Section Title -->
     <TextView
         android:id="@+id/tv_records"
         android:layout_width="wrap_content"
@@ -160,7 +154,6 @@
         app:layout_constraintTop_toBottomOf="@id/summary_container"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Search Bar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -196,7 +189,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Student List -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -211,11 +203,14 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="20dp">
 
-            <!-- Item 1: PAID -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF">
@@ -288,11 +283,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Item 2: PENDING -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF">
@@ -365,11 +363,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Item 3: OVERDUE -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_student_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF">
@@ -445,7 +446,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Create Invoice Button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_invoice"
         android:layout_width="match_parent"

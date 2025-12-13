@@ -174,12 +174,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="view all"
-                    android:textColor="#1B254B"
-                    android:textStyle="bold" />
+
             </LinearLayout>
 
             <LinearLayout

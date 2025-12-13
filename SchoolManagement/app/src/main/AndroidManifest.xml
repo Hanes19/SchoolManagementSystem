@@ -61,7 +61,9 @@
         <activity android:name=".StudentGradesActivity" />
         <activity android:name=".StudentScheduleActivity" />
 
-        <activity android:name=".AdminGenerateInvoiceActivity" />
+        <activity android:name=".AdminGenerateInvoiceActivity"/>
+        <activity android:name=".AdminInvoiceDetailsActivity"/>
+        <activity android:name=".AdminFeesBillingActivity"/>
 
     </application>
 

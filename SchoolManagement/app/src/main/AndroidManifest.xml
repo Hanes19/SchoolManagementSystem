@@ -54,7 +54,12 @@
         <activity android:name=".AdminFeesActivity" />
         <activity android:name=".AdminSettingsActivity" />
         <activity android:name=".AdminSystemConfigActivity" />
+        <activity android:name=".AdminMainMenuActivity" />
 
+        <activity android:name=".StudentAttendanceActivity" />
+        <activity android:name=".StudentFeesActivity" />
+        <activity android:name=".StudentGradesActivity" />
+        <activity android:name=".StudentScheduleActivity" />
     </application>
 
 </manifest>

@@ -72,10 +72,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // FAB Add
         CardView fabAdd = findViewById(R.id.fab_add_new);
         fabAdd.setOnClickListener(v -> {
-            // Quick action dialog or generic add
+            // Connects to admin_main_menu.xml via a class.
+            // Ensure you have created AdminMainMenuActivity.java for this.
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminMainMenuActivity.class);
+            startActivity(intent);
         });
     }
 }

@@ -270,4 +270,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_FEES + " WHERE student_id = ? ORDER BY date DESC", new String[]{studentId});
     }
+    public boolean addFee(String studentId, String description, double amount, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("description", description);
+        values.put("amount", amount);
+        values.put("type", type);
+
+        // Get current date
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+        String date = sdf.format(new java.util.Date());
+        values.put("date", date);
+
+        long result = db.insert("fees", null, values);
+        return result != -1;
+    }
 }

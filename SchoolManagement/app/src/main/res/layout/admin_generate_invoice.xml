@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -47,7 +47,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="20dp">
 
-            <!-- Student Selection Card -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +110,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Fee Details -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,7 +119,6 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Tuition Fee Item -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,6 +135,7 @@
                     android:gravity="center_vertical">
 
                     <CheckBox
+                        android:id="@+id/cb_tuition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -160,7 +158,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Transport Fee Item -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,6 +174,7 @@
                     android:gravity="center_vertical">
 
                     <CheckBox
+                        android:id="@+id/cb_transport"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -199,7 +197,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Books Item -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,6 +213,7 @@
                     android:gravity="center_vertical">
 
                     <CheckBox
+                        android:id="@+id/cb_books"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="#1B254B"/>
@@ -237,7 +235,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Total Summary -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -250,7 +247,13 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Subtotal" android:textColor="#1B254B"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱1,750.00" android:textColor="#1B254B" android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_subtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₱1,750.00"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -259,7 +262,13 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tax (5%)" android:textColor="#1B254B"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱87.50" android:textColor="#1B254B" android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₱87.50"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
                 <View
@@ -273,14 +282,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Amount" android:textColor="#1B254B" android:textSize="18sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱1,837.50" android:textColor="#1B254B" android:textSize="22sp" android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₱1,837.50"
+                        android:textColor="#1B254B"
+                        android:textSize="22sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Issue Button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_issue_invoice"
         android:layout_width="match_parent"

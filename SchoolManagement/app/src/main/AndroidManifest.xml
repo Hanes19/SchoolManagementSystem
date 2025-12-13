@@ -60,6 +60,9 @@
         <activity android:name=".StudentFeesActivity" />
         <activity android:name=".StudentGradesActivity" />
         <activity android:name=".StudentScheduleActivity" />
+
+        <activity android:name=".AdminGenerateInvoiceActivity" />
+
     </application>
 
 </manifest>

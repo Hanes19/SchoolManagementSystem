@@ -22,24 +22,33 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AdminDashboardActivity" android:exported="false" />
-        <activity android:name=".TeacherDashboardActivity" android:exported="false" />
-        <activity android:name=".StudentDashboardActivity" android:exported="false" />
-        <activity android:name=".ParentDashboardActivity" android:exported="false" />
-        <activity android:name=".StaffDashboardActivity" android:exported="false" />
-        <activity android:name=".AdminStudentListActivity" android:exported="false" /> <activity android:name=".AdminTeacherListActivity" android:exported="false" /> <activity android:name=".AdminStaffListActivity" android:exported="false" />   <activity android:name=".SystemLogActivity" android:exported="false" />
-        <activity android:name=".AdminRoleActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".AdminStudentProfileActivity" android:exported="false" />
-        <activity android:name=".AdminTeacherProfileActivity" android:exported="false" />
-        <activity android:name=".AdminStaffProfileActivity" android:exported="false" />
-        <activity android:name=".AddStudentActivity" android:exported="false" />
-        <activity android:name=".AddTeacherActivity" android:exported="false" />
-        <activity android:name=".AddStaffActivity" android:exported="false" />
-        <activity android:name=".AdminClassListActivity" android:exported="false"/>
-        <activity android:name=".AdminAddClassActivity" android:exported="false"/>
-        <activity android:name=".AdminMasterTimetableActivity" android:exported="false"/>
-        <activity android:name=".AdminClassTimetableActivity" android:exported="false"/>
+        <activity android:name=".MainActivity" />
+
+        <activity android:name=".AdminDashboardActivity" />
+        <activity android:name=".TeacherDashboardActivity" />
+        <activity android:name=".StudentDashboardActivity" />
+        <activity android:name=".ParentDashboardActivity" />
+        <activity android:name=".StaffDashboardActivity" />
+
+        <activity android:name=".AdminClassListActivity" />
+        <activity android:name=".AdminAddClassActivity" />
+        <activity android:name=".AdminMasterTimetableActivity" />
+        <activity android:name=".AdminClassTimetableActivity" />
+
+        <activity android:name=".AdminStudentListActivity" />
+        <activity android:name=".AdminTeacherListActivity" />
+        <activity android:name=".AdminStaffListActivity" />
+
+        <activity android:name=".AddStudentActivity" />
+        <activity android:name=".AddTeacherActivity" />
+        <activity android:name=".AddStaffActivity" />
+
+        <activity android:name=".AdminStudentProfileActivity" />
+        <activity android:name=".AdminTeacherProfileActivity" />
+        <activity android:name=".AdminStaffProfileActivity" />
+
+        <activity android:name=".AdminRoleActivity" />
+        <activity android:name=".SystemLogActivity" />
 
     </application>
 

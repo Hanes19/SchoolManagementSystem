@@ -2,3 +2,8 @@ admin_payroll_process_payment
 admin_payroll_edit_details
 admin_payroll
 
+admin_academic_session.xml
+admin_backup_restore.xml
+admin_integration_config.xml
+admin_roles_permission.xml
+admin_school_profile.xml

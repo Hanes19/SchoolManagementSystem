@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -47,7 +46,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- System Status -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,15 +93,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Actions Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="24dp">
 
-                <!-- Create Backup -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_create_backup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -132,8 +129,8 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Restore -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_restore"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -163,7 +160,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Recent Backups List -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,7 +170,6 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- List Item 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,7 +222,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- List Item 2 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -39,6 +38,7 @@
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
@@ -60,7 +60,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Branding Section -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,7 +118,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Basic Info -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +142,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- School Name -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,6 +150,7 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_school_name"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/rounded_corner_white_bg"
@@ -162,7 +160,6 @@
                         android:textColor="#1B254B"
                         android:textSize="14sp"/>
 
-                    <!-- School Code -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -172,6 +169,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_school_code"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/rounded_corner_white_bg"
@@ -181,7 +179,6 @@
                         android:textColor="#1B254B"
                         android:textSize="14sp"/>
 
-                    <!-- Tagline/Motto -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -191,6 +188,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_motto"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/rounded_corner_white_bg"
@@ -202,7 +200,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Contact Info -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -226,7 +223,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Email -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -235,6 +231,7 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/rounded_corner_white_bg"
@@ -245,7 +242,6 @@
                         android:textColor="#1B254B"
                         android:textSize="14sp"/>
 
-                    <!-- Phone -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -255,6 +251,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_phone"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/rounded_corner_white_bg"
@@ -265,7 +262,6 @@
                         android:textColor="#1B254B"
                         android:textSize="14sp"/>
 
-                    <!-- Address -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -275,6 +271,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"/>
                     <EditText
+                        android:id="@+id/et_address"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:background="@drawable/rounded_corner_white_bg"

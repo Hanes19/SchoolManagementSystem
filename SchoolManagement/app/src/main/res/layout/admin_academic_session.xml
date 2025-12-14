@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -48,7 +47,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Active Session Card -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,7 +106,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Past Sessions -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -208,7 +205,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- FAB Add Session -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_add_session"
         android:layout_width="60dp"

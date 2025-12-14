@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -46,7 +45,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Payment Gateways -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +68,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Stripe -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,12 +101,11 @@
                             android:textStyle="bold"
                             android:layout_marginEnd="12dp"/>
 
-                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+                        <Switch android:id="@+id/switch_stripe" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                    <!-- PayPal -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -143,12 +139,11 @@
                             android:textStyle="bold"
                             android:layout_marginEnd="12dp"/>
 
-                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+                        <Switch android:id="@+id/switch_paypal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Communication -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -197,12 +192,11 @@
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="API Key: •••••••••••" android:textColor="#A3AED0" android:textSize="12sp"/>
                         </LinearLayout>
 
-                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+                        <Switch android:id="@+id/switch_twilio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Hardware -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

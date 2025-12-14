@@ -72,6 +72,11 @@
 
 
         <activity android:name=".AdminPayrollActivity"/>
+        <activity android:name=".AdminAcademicSessionActivity" />
+        <activity android:name=".AdminBackupRestoreActivity" />
+        <activity android:name=".AdminIntegrationConfigActivity" />
+        <activity android:name=".AdminRolesPermissionActivity" />
+        <activity android:name=".AdminSchoolProfileActivity" />
 
 
 

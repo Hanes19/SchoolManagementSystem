@@ -47,7 +47,6 @@
             android:padding="8dp"
             android:src="@drawable/filter"
             app:tint="#1B254B"
-            android:background="@drawable/rounded_corner_white_bg"
             tools:ignore="ContentDescription"/>
     </LinearLayout>
 

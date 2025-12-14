@@ -8,3 +8,10 @@ admin_integration_config.xml
 admin_roles_permission.xml
 admin_school_profile.xml
 
+admin_exam.xml
+admin_exam_categories.xml
+admin_marks_entry.xml
+admin_schedule_exams.xml
+admin_analytics.xml
+admin_question_bank.xml
+admin_admit_cards.xml

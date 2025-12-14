@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -41,7 +40,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <!-- Filter Icon -->
         <ImageView
             android:id="@+id/btn_filter_payroll"
             android:layout_width="40dp"
@@ -52,7 +50,6 @@
             tools:ignore="ContentDescription"/>
     </LinearLayout>
 
-    <!-- Payroll Summary Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/summary_card"
         android:layout_width="match_parent"
@@ -109,7 +106,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Payslip List Title -->
     <TextView
         android:id="@+id/tv_records"
         android:layout_width="wrap_content"
@@ -123,7 +119,6 @@
         app:layout_constraintTop_toBottomOf="@id/summary_card"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Changed to NestedScrollView for better performance/compatibility -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -141,14 +136,17 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="20dp">
 
-            <!-- Payslip 1: Paid -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_payslip_walter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -157,7 +155,6 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <!-- Removed tint if this is a real photo, keep if icon -->
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -219,15 +216,17 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Payslip 2: Pending -->
-            <!-- FIXED: Changed width from match_match to match_parent -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_payslip_argus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"

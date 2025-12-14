@@ -1,6 +1,7 @@
 package com.example.studentmanagement;
 
 import android.app.DatePickerDialog;
+import android.content.Intent; // Import added
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,6 +54,11 @@ public class AdminExpensesActivity extends AppCompatActivity {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                // 1. Retrieve the ID (Assumes your table has a column named "id")
+                // If your column is named "_id", change "id" to "_id" below.
+                int idIndex = cursor.getColumnIndex("id");
+                int id = (idIndex != -1) ? cursor.getInt(idIndex) : -1;
+
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -81,6 +87,17 @@ public class AdminExpensesActivity extends AppCompatActivity {
                     tvStatus.setTextColor(android.graphics.Color.parseColor("#FF9800"));
                     tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFF3E0")));
                 }
+
+                // 2. Click Listener to Open Details
+                itemView.setOnClickListener(v -> {
+                    if (id != -1) {
+                        Intent intent = new Intent(AdminExpensesActivity.this, AdminExpenseDetailsActivity.class);
+                        intent.putExtra("EXPENSE_ID", id); // Pass ID to details
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(AdminExpensesActivity.this, "Error: Item ID missing", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 llExpensesList.addView(itemView);
 
@@ -144,7 +161,7 @@ public class AdminExpensesActivity extends AppCompatActivity {
             double amount = Double.parseDouble(amountStr);
             String currentUser = session.getUserId(); // Get ID from session
 
-            boolean success = db.addExpense(title, amount, date, category, currentUser);
+            boolean success = db.addExpense(title, currentUser, category, amount, "Expense Claim", date);
             if (success) {
                 Toast.makeText(this, "Expense Claim Submitted!", Toast.LENGTH_SHORT).show();
                 loadExpenses(); // Refresh List

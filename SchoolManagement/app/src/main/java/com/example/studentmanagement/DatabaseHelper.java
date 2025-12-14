@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 5; // Version 5 includes Expenses table
+    private static final int DATABASE_VERSION = 5; // Updated version to create the new table
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_ATTENDANCE = "attendance";
     private static final String TABLE_GRADES = "grades";
     private static final String TABLE_FEES = "fees";
-    private static final String TABLE_EXPENSES = "expenses";
+    private static final String TABLE_EXPENSES = "expenses"; // New Table
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -93,16 +93,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT)";
         db.execSQL(createFees);
 
-        // 8. Expenses Table
+        // 8. Expenses Table (New)
         String createExpenses = "CREATE TABLE " + TABLE_EXPENSES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
+                "requested_by TEXT, " +
                 "category TEXT, " +
                 "amount REAL, " +
-                "date TEXT, " +
                 "description TEXT, " +
-                "status TEXT, " +
-                "requested_by TEXT)";
+                "date TEXT, " +
+                "status TEXT DEFAULT 'Pending')";
         db.execSQL(createExpenses);
 
         seedData(db);
@@ -116,34 +116,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Edna Krabappel', '" + testPassHash + "', 'Teacher', 'Active')");
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 'Active')");
 
-        // Schedule
+        // Schedule Data
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (day_of_week, start_time, end_time, subject, room, teacher_name) VALUES ('Mon', '08:00', '09:00', 'Mathematics', '101', 'Mrs. Krabappel')");
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (day_of_week, start_time, end_time, subject, room, teacher_name) VALUES ('Mon', '10:00', '11:00', 'History', '102', 'Mr. Hoover')");
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (day_of_week, start_time, end_time, subject, room, teacher_name) VALUES ('Tue', '09:00', '10:30', 'Science', 'Lab 1', 'Prof. Frink')");
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (day_of_week, start_time, end_time, subject, room, teacher_name) VALUES ('Wed', '08:00', '09:00', 'English', '103', 'Ms. Hoover')");
 
-        // Attendance
+        // Attendance Data
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '2025-10-01', 'Present')");
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '2025-10-02', 'Present')");
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '2025-10-03', 'Absent')");
 
-        // Grades
+        // Grades Data
         db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Mathematics', '95', '1st Sem')");
         db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Science', '88', '1st Sem')");
 
-        // Fees
+        // Fees Data
         db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES ('stud01', 'Tuition Fee', 5000.00, 'Bill', '2025-08-01')");
         db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES ('stud01', 'Payment - Cash', 2500.00, 'Payment', '2025-08-10')");
-
-        // Expenses Sample Data
-        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description, status, requested_by) " +
-                "VALUES ('Science Lab Microscopes', 'Education', 12500.00, '2025-10-15', 'Purchase of 5 new microscopes for the Biology lab.', 'Pending', 'teach01')");
-        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description, status, requested_by) " +
-                "VALUES ('Sports Day Refreshments', 'Events', 3500.00, '2025-09-20', 'Water and snacks for the annual sports meet.', 'Approved', 'admin01')");
-        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description, status, requested_by) " +
-                "VALUES ('Office Party Pizza', 'Miscellaneous', 1500.00, '2025-10-01', 'Pizza for staff meeting.', 'Rejected', 'teach01')");
-        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description, status, requested_by) " +
-                "VALUES ('Printer Maintenance', 'Maintenance', 850.00, '2025-10-18', 'Fixing the library printer paper jam issue.', 'Pending', 'admin01')");
     }
 
     @Override
@@ -155,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENDANCE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GRADES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES); // Drop new table
         onCreate(db);
     }
 
@@ -267,14 +257,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
+    // ==========================================
+    //       NEW STUDENT PROFILE METHODS
+    // ==========================================
+
     public Cursor getScheduleForDay(String dayOfWeek) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_TIMETABLE + " WHERE day_of_week = ? ORDER BY start_time ASC", new String[]{dayOfWeek});
     }
-
-    // ==========================================
-    //       STUDENT DATA METHODS
-    // ==========================================
 
     public Cursor getStudentAttendance(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -302,79 +292,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("amount", amount);
         values.put("type", type);
 
+        // Get current date
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
         String date = sdf.format(new java.util.Date());
         values.put("date", date);
 
-        long result = db.insert(TABLE_FEES, null, values);
+        long result = db.insert("fees", null, values);
         return result != -1;
     }
 
     // ==========================================
-    //             EXPENSE METHODS
+    //           EXPENSE METHODS
     // ==========================================
 
-    // Original method (Full parameters)
-    public boolean addExpense(String title, String category, double amount, String date, String description, String userId) {
+    public boolean addExpense(String title, String requestedBy, String category, double amount, String description, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", title);
+        values.put("requested_by", requestedBy);
         values.put("category", category);
         values.put("amount", amount);
-        values.put("date", date);
         values.put("description", description);
+        values.put("date", date);
         values.put("status", "Pending");
-        values.put("requested_by", userId);
 
         long result = db.insert(TABLE_EXPENSES, null, values);
         return result != -1;
     }
 
-    // Overloaded method to match Activity call (5 parameters)
-    // Map: title, amount, date, category, userId
-    public boolean addExpense(String title, double amount, String date, String category, String userId) {
-        return addExpense(title, category, amount, date, "No description provided", userId);
-    }
-
     public Cursor getAllExpenses() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " ORDER BY date DESC", null);
+        String query = "SELECT e.id, e.title, e.amount, e.date, e.category, e.status, e.requested_by, u.full_name " +
+                "FROM " + TABLE_EXPENSES + " e " +
+                "LEFT JOIN " + TABLE_USERS + " u ON e.requested_by = u.user_id " +
+                "ORDER BY e.date DESC";
+        return db.rawQuery(query, null);
     }
 
-    public Cursor getExpenseById(int id) {
+    public Cursor getExpenseById(int expenseId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE id = ?", new String[]{String.valueOf(id)});
+        return db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE id = ?", new String[]{String.valueOf(expenseId)});
     }
 
-    public boolean updateExpenseStatus(int id, String newStatus) {
+    public boolean updateExpenseStatus(int expenseId, String newStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("status", newStatus);
-        int rows = db.update(TABLE_EXPENSES, values, "id = ?", new String[]{String.valueOf(id)});
+        int rows = db.update(TABLE_EXPENSES, values, "id = ?", new String[]{String.valueOf(expenseId)});
         return rows > 0;
     }
 
-    // ADDED: Method to get total claimed amount
     public double getTotalClaimedAmount() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_EXPENSES, null);
+        Cursor cursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_EXPENSES + " WHERE status = 'Approved'", null);
         if (cursor.moveToFirst()) {
             double total = cursor.getDouble(0);
             cursor.close();
             return total;
         }
-        return 0;
+        return 0.0;
     }
 
-    // ADDED: Method to get total pending amount
     public double getPendingAmount() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_EXPENSES + " WHERE status = 'Pending'", null);
         if (cursor.moveToFirst()) {
-            double pending = cursor.getDouble(0);
+            double total = cursor.getDouble(0);
             cursor.close();
-            return pending;
+            return total;
         }
-        return 0;
+        return 0.0;
     }
 }

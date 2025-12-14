@@ -212,7 +212,7 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-                <!-- Row 2: Question Bank & Grading -->
+                <!-- Row 2: Question Bank & Marks Entry -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -301,19 +301,111 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
+
+                <!-- Row 3: Admit Cards & Attendance (NEW) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Admit Cards / Hall Tickets -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_admit_cards"
+                        android:layout_width="0dp"
+                        android:layout_height="140dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_my_calendar"
+                                app:tint="#E91E63"
+                                android:background="#FCE4EC"
+                                android:padding="10dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Admit Cards"
+                                android:textColor="#1B254B"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:layout_marginTop="12dp"
+                                android:textAlignment="center"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Exam Attendance -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_exam_attendance"
+                        android:layout_width="0dp"
+                        android:layout_height="140dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/attendance"
+                                app:tint="#2196F3"
+                                android:background="#E3F2FD"
+                                android:padding="10dp"/>
+                            <!-- Ensure attendance drawable exists or use ic_menu_agenda -->
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Exam Attendance"
+                                android:textColor="#1B254B"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:layout_marginTop="12dp"
+                                android:textAlignment="center"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Reports Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="REPORTS"
+                android:text="REPORTS &amp; ANALYTICS"
                 android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"/>
 
+            <!-- Report Cards -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_report_cards"
                 android:layout_width="match_parent"
@@ -321,6 +413,7 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginBottom="12dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
@@ -359,6 +452,65 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Download and print student results"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_media_play"
+                        android:rotation="0"
+                        app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Performance Analytics (NEW) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_performance_analytics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@android:drawable/ic_menu_sort_by_size"
+                        app:tint="#009688"
+                        android:background="#E0F2F1"
+                        android:padding="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Performance Analytics"
+                            android:textColor="#1B254B"
+                            android:textStyle="bold"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View class averages and trends"
                             android:textColor="#A3AED0"
                             android:textSize="12sp"/>
                     </LinearLayout>

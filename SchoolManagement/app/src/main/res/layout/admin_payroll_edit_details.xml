@@ -7,7 +7,6 @@
     android:background="@drawable/rounded_top_corners_white"
     android:paddingBottom="24dp">
 
-    <!-- Drag Handle Indicator -->
     <View
         android:id="@+id/view_drag_handle"
         android:layout_width="40dp"
@@ -18,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Header Title -->
     <TextView
         android:id="@+id/tv_edit_title"
         android:layout_width="wrap_content"
@@ -32,7 +30,6 @@
         app:layout_constraintTop_toBottomOf="@id/view_drag_handle"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Close Button -->
     <ImageView
         android:id="@+id/btn_close_edit"
         android:layout_width="32dp"
@@ -45,7 +42,6 @@
         app:layout_constraintTop_toTopOf="@id/tv_edit_title"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Form Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +51,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_edit_title"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Staff Name (Read Only) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +68,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Basic Salary Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,14 +98,12 @@
                 android:inputType="numberDecimal"/>
         </androidx.cardview.widget.CardView>
 
-        <!-- Allowances & Deductions Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="16dp">
 
-            <!-- Allowances Input -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -134,8 +126,6 @@
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#E8F5E9">
-                    <!-- Light Green bg for additions -->
-
                     <EditText
                         android:id="@+id/et_allowances"
                         android:layout_width="match_parent"
@@ -150,7 +140,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Deductions Input -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -173,8 +162,6 @@
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFEBEE">
-                    <!-- Light Red bg for deductions -->
-
                     <EditText
                         android:id="@+id/et_deductions"
                         android:layout_width="match_parent"
@@ -190,7 +177,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Remarks / Note -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -222,7 +208,6 @@
                 android:inputType="textMultiLine"/>
         </androidx.cardview.widget.CardView>
 
-        <!-- Save Button -->
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_save_changes"
             android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package com.example.studentmanagement;
 
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,7 +30,7 @@ public class StudentScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_schedule);
+        setContentView(R.layout.student_schedule);
 
         dbHelper = new DatabaseHelper(this);
 

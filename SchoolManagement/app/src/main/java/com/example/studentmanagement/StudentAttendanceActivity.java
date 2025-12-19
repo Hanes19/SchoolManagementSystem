@@ -24,7 +24,7 @@ public class StudentAttendanceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_attendance);
+        setContentView(R.layout.student_attendance);
 
         studentId = getIntent().getStringExtra("STUDENT_ID");
         dbHelper = new DatabaseHelper(this);

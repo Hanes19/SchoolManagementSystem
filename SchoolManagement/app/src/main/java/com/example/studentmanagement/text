@@ -12,3 +12,15 @@ admin_schedule_exams.xml
 admin_analytics.xml
 admin_question_bank.xml
 admin_admit_cards.xml
+
+
+staff_add_books_library.xml
+staff_apply_for_leave.xml
+staff_collection_fee.xml
+staff_dashboard.xml
+staff_fees_collection.xml
+staff_issue_books_library.xml
+staff_library_catalog.xml
+staff_my_payslips.xml
+staff_notification.xml
+staff_to_do_list_details.xml

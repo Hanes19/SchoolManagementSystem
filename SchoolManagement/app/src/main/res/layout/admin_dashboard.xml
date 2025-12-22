@@ -628,7 +628,7 @@
                 android:layout_width="0dp"
                 android:layout_height="28dp"
                 android:layout_weight="1"
-                android:src="@drawable/bell"
+                android:src="@drawable/ic_notification"
                 app:tint="#1B254B"
                 tools:ignore="ContentDescription" />
 

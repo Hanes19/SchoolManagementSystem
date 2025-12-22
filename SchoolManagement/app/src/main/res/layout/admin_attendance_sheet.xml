@@ -22,7 +22,6 @@
             android:padding="8dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
-            android:background="@drawable/rounded_corner_white_bg"
             tools:ignore="ContentDescription"/>
 
         <LinearLayout

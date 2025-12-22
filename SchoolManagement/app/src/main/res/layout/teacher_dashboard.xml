@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Good Morning,"
-                android:textColor="#A3AED0"
+                android:textColor="#1B254B"
                 android:textSize="14sp"
                 android:letterSpacing="0.02"/>
             <TextView
@@ -57,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_notification"
+                app:tint="#1B254B"
                 android:padding="12dp"
                 tools:ignore="ContentDescription"/>
         </androidx.cardview.widget.CardView>
@@ -96,7 +97,7 @@
                 android:layout_marginBottom="28dp"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#4318FF">
+                app:cardBackgroundColor="#1B254B">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -159,18 +160,10 @@
                         android:layout_marginTop="12dp"
                         android:progressDrawable="@android:drawable/progress_horizontal"
                         android:progressTint="#FFFFFF"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="24 of 32 papers graded"
-                        android:textColor="#E0E5F2"
-                        android:textSize="11sp"
-                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Classroom Tools Section -->
+            <!-- Classroom Tools Section (Updated with Messages) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,35 +177,55 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
+                android:columnCount="3"
                 android:alignmentMode="alignMargins"
                 android:layout_marginBottom="28dp">
 
+                <!-- Attendance -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_attendance_tool"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="6dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/blackboard" app:tint="#4318FF" android:background="#F4F7FE" android:padding="12dp" tools:ignore="ContentDescription"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attendance" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
+                        <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/blackboard" app:tint="#4318FF" android:background="#F4F7FE" android:padding="8dp" tools:ignore="ContentDescription"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atten." android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Gradebook -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_gradebook_tool"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginHorizontal="6dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/star_on" app:tint="#FFB547" android:background="#FFF8E1" android:padding="12dp" tools:ignore="ContentDescription"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gradebook" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
+                        <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@android:drawable/star_on" app:tint="#FFB547" android:background="#FFF8E1" android:padding="8dp" tools:ignore="ContentDescription"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grades" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- NEW: Messages (Communication) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_messages_tool"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="6dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#FFFFFF">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
+                        <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@android:drawable/ic_dialog_email" app:tint="#9C27B0" android:background="#F3E5F5" android:padding="8dp" tools:ignore="ContentDescription"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Messages" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </GridLayout>
@@ -262,7 +275,7 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Reminder Item 1 -->
+            <!-- Reminder Item -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -305,59 +318,6 @@
                     android:textStyle="bold"
                     android:background="@drawable/rounded_corner_white_bg"
                     android:backgroundTint="#FFEBEE"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E5F2"
-                android:layout_marginBottom="8dp"/>
-
-            <!-- Reminder Item 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#4318FF"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prep Lab for Class 11-B"
-                        android:textColor="#1B254B"
-                        android:textStyle="bold"
-                        android:textSize="14sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Check chemical inventory"
-                        android:textColor="#A3AED0"
-                        android:textSize="11sp"/>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MED"
-                    android:textColor="#FF9800"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/rounded_corner_white_bg"
-                    android:backgroundTint="#FFF3E0"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="4dp"/>
             </LinearLayout>

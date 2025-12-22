@@ -56,6 +56,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:tint="#1B254B"
                 android:src="@drawable/ic_notification"
                 android:padding="12dp"/>
         </androidx.cardview.widget.CardView>

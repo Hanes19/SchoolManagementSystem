@@ -40,3 +40,11 @@ teacher_reschedule_reminder.xml
 teacher_schedule.xml
 teacher_schedule_calendar.xml
 teacher_student_attendance_detail.xml
+teacher_message.xml
+
+parent_attendance_view.xml
+parent_child_selector.xml
+parent_dashboard.xml
+parent_fees_view.xml
+parent_grades.xml
+parent_message_dashboard.xml

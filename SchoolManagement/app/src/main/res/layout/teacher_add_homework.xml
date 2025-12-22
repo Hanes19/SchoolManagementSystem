@@ -273,7 +273,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     app:cardCornerRadius="30dp"
-                    app:cardBackgroundColor="#111C44"
+                    app:cardBackgroundColor="#1B254B"
                     app:cardElevation="6dp">
                     <TextView
                         android:layout_width="match_parent"

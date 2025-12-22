@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_student_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/profile"
+            android:background="#F4F7FE"
+            android:padding="10dp"
+            app:tint="#1B254B"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+            <TextView
+                android:id="@+id/tv_student_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student Name"
+                android:textStyle="bold"
+                android:textColor="#1B254B"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/tv_roll_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Roll No. --"
+                android:textColor="#A3AED0"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <!-- Custom Toggle Style -->
+        <RadioGroup
+            android:id="@+id/rg_attendance_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_present"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="P"
+                android:buttonTint="#05CD99"
+                android:textColor="#05CD99"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/rb_absent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:buttonTint="#F44336"
+                android:textColor="#F44336"/>
+        </RadioGroup>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

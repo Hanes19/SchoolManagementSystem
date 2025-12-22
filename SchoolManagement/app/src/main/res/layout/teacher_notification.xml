@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear All"
+            android:textColor="#4318FF"
+            android:textStyle="bold"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
+
+            <!-- Today's Notifications -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TODAY"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Item 1: Grading Update -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/star_on"
+                    app:tint="#FFB547"
+                    android:background="@drawable/rounded_corner_white_bg"
+                    android:backgroundTint="#FFF8E1"
+                    android:padding="12dp"
+                    tools:ignore="ContentDescription"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gradebook Sync"
+                        android:textStyle="bold"
+                        android:textColor="#1B254B"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Midterm grades for Chemistry 101 have been synced to parent portals."
+                        android:textColor="#1B254B"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5 mins ago"
+                        android:textColor="#4318FF"
+                        android:textStyle="bold"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <!-- Unread Indicator -->
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/rounded_corner_white_bg"
+                    android:backgroundTint="#4318FF"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E5F2"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Item 2: Assignment Submission -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="#4318FF"
+                    android:background="@drawable/rounded_corner_white_bg"
+                    android:backgroundTint="#F4F7FE"
+                    android:padding="12dp"
+                    tools:ignore="ContentDescription"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Submissions"
+                        android:textStyle="bold"
+                        android:textColor="#1B254B"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12 new students submitted 'Organic Bonds Worksheet'."
+                        android:textColor="#1B254B"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 hour ago"
+                        android:textColor="#1B254B"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E5F2"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Yesterday's Notifications -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YESTERDAY"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Item 3: Admin Message -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/config"
+                    app:tint="#F44336"
+                    android:background="@drawable/rounded_corner_white_bg"
+                    android:backgroundTint="#FFEBEE"
+                    android:padding="12dp"
+                    tools:ignore="ContentDescription"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meeting Rescheduled"
+                        android:textStyle="bold"
+                        android:textColor="#1B254B"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="The Faculty Meeting has been moved to Oct 25, 10:00 AM."
+                        android:textColor="#1B254B"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yesterday, 03:45 PM"
+                        android:textColor="#1B254B"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E5F2"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Item 4: Leave Approval -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_menu_agenda"
+                    app:tint="#05CD99"
+                    android:background="@drawable/rounded_corner_white_bg"
+                    android:backgroundTint="#E6FFF5"
+                    android:padding="12dp"
+                    tools:ignore="ContentDescription"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave Request Approved"
+                        android:textStyle="bold"
+                        android:textColor="#1B254B"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your sick leave request for Oct 28 has been approved."
+                        android:textColor="#1B254B"
+                        android:textSize="12sp"
+                        android:layout_marginTop="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yesterday, 09:15 AM"
+                        android:textColor="#1B254B"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

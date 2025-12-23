@@ -17,12 +17,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="10dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
-            android:background="@drawable/rounded_corner_white_bg"
             tools:ignore="ContentDescription"/>
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingBottom="40dp">
+            android:paddingBottom="100dp">
 
             <!-- Category Grid -->
             <TextView
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RECENT RESOURCES"
-                android:textColor="#A3AED0"
+                android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:letterSpacing="0.1"
@@ -140,4 +140,26 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- FAB: Add E-Resource -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fab_add_resource"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="#111C44"
+        app:cardElevation="6dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="#FFFFFF"
+            android:padding="16dp"
+            tools:ignore="ContentDescription"/>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

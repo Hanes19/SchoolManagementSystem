@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book Catalog"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <!-- Search Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginHorizontal="24dp"
+        app:cardCornerRadius="27dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center_vertical" android:paddingHorizontal="20dp">
+            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_menu_search" app:tint="#A3AED0"/>
+            <EditText android:layout_width="match_parent" android:layout_height="match_parent" android:hint="Search Title, Author, or ISBN" android:background="@null" android:layout_marginStart="12dp" android:textSize="14sp" android:textColor="#1B254B" android:inputType="text"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Catalog List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/search_bar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="24dp" android:paddingBottom="40dp">
+
+            <!-- Item 1: Organic Chemistry -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp"
+                        android:background="#F4F7FE"
+                        android:layout_height="64dp" android:src="@drawable/chemistry"  android:padding="12dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="Organic Chemistry" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Jonathan Smith • ISBN: 9021" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AVAILABLE" android:textColor="#05CD99" android:textStyle="bold" android:textSize="10sp" android:background="#E6FFF5" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 2: The Great Gatsby -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp" android:layout_height="64dp" android:src="@drawable/gatsby" android:background="#F4F7FE" android:padding="12dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="The Great Gatsby" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="F. Scott Fitzgerald • ISBN: 3341" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="ISSUED" android:textColor="#FF9800" android:textStyle="bold" android:textSize="10sp" android:background="#FFF3E0" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 3: Advanced Quantum Theory -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp" android:layout_height="64dp" android:src="@drawable/advance" android:background="#F4F7FE" android:padding="12dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="Advanced Quantum Theory" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Richard Feynman • ISBN: 7782" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AVAILABLE" android:textColor="#05CD99" android:textStyle="bold" android:textSize="10sp" android:background="#E6FFF5" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 4: World War II: A History -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp" android:layout_height="64dp" android:src="@drawable/war" android:background="#F4F7FE" android:padding="12dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="World War II: A History" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Winston Churchill • ISBN: 1102" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AVAILABLE" android:textColor="#05CD99" android:textStyle="bold" android:textSize="10sp" android:background="#E6FFF5" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 5: Data Structures in Java -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp" android:layout_height="64dp" android:src="@drawable/java" android:background="#F4F7FE" android:padding="12dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="Data Structures in Java" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Robert Lafore • ISBN: 5542" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="ISSUED" android:textColor="#FF9800" android:textStyle="bold" android:textSize="10sp" android:background="#FFF3E0" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Item 6: The Art of Deception -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                    <ImageView android:layout_width="48dp" android:layout_height="64dp" android:src="@drawable/art" android:background="#F4F7FE" android:padding="12dp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:text="The Art of Deception" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Kevin Mitnick • ISBN: 8891" android:textColor="#A3AED0" android:textSize="12sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AVAILABLE" android:textColor="#05CD99" android:textStyle="bold" android:textSize="10sp" android:background="#E6FFF5" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:layout_marginTop="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FAB Add Book -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fab_add_book"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="#111C44"
+        app:cardElevation="6dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@android:drawable/ic_input_add" app:tint="#FFFFFF" android:padding="16dp" tools:ignore="ContentDescription"/>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

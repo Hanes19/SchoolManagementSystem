@@ -42,9 +42,27 @@ teacher_schedule_calendar.xml
 teacher_student_attendance_detail.xml
 teacher_message.xml
 
+
 parent_attendance_view.xml
 parent_child_selector.xml
 parent_dashboard.xml
 parent_fees_view.xml
 parent_grades.xml
 parent_message_dashboard.xml
+
+
+
+library_active_issues.xml
+library_active_issues_details.xml
+library_add_e_resources.xml
+library_add_new_book.xml
+library_book_catalog.xml
+library_dashboard.xml
+library_e_resources.xml
+library_issue_return.xml
+library_late_fees.xml
+library_overdue_item.xml
+library_overdue_item_details.xml
+library_quick_action.xml
+library_recent_circulation_details.xml
+

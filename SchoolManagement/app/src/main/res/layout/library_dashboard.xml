@@ -140,7 +140,7 @@
                         <ImageView
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/menu"
+                            android:src="@drawable/book"
                             app:tint="#4318FF"
                             android:background="#F4F7FE"
                             android:padding="10dp"/>
@@ -182,9 +182,27 @@
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/peso" app:tint="#FF9800" android:background="#FFF3E0" android:padding="10dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Late Fees" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/peso"
+                            app:tint="#FF9800"
+                            android:background="#FFF3E0"
+                            android:padding="10dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Late Fees"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:layout_marginTop="12dp"
+                            android:textSize="14sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -198,9 +216,31 @@
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="20dp" android:orientation="vertical" android:gravity="center">
-                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@android:drawable/ic_menu_slideshow" app:tint="#9C27B0" android:background="#F3E5F5" android:padding="10dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-Resources" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@android:drawable/ic_menu_slideshow"
+                            app:tint="#9C27B0"
+                            android:background="#F3E5F5"
+                            android:padding="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="E-Resources"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"
+                            android:layout_marginTop="12dp"
+                            android:textSize="14sp"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </GridLayout>

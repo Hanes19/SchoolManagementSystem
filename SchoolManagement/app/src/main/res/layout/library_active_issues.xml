@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_admin_bg">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/bck_btn"
+            app:tint="#1B254B"
+            tools:ignore="ContentDescription"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Circulation"
+                android:textColor="#1B254B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active Issues"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#1B254B"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Search/Filter Bar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_card"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="24dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/header">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="20dp">
+            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_menu_search" app:tint="#A3AED0"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Search Student or Book"
+                android:background="@null"
+                android:layout_marginStart="12dp"
+                android:textSize="14sp"
+                android:textColor="#1B254B"
+                android:inputType="text"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Active List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/search_card"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
+
+            <!-- Active Item 1: Jason Smith -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:background="#F4F7FE" android:padding="8dp" app:tint="#1B254B"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:text="Jason Smith" android:textStyle="bold" android:textColor="#1B254B" android:textSize="15sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Grade 10-A • STU-2025091" android:textColor="#A3AED0" android:textSize="11sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView android:text="DUE IN 3D" android:textColor="#4318FF" android:textStyle="bold" android:textSize="10sp" android:background="#F4F7FE" android:paddingHorizontal="10dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+
+                    <TextView android:text="Physics Vol. 1: Fundamentals" android:textColor="#1B254B" android:textStyle="bold" android:textSize="14sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Active Item 2: Sarah Connor -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:background="#F4F7FE" android:padding="8dp" app:tint="#1B254B"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:text="Sarah Connor" android:textStyle="bold" android:textColor="#1B254B" android:textSize="15sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Grade 10-B • STU-2025042" android:textColor="#A3AED0" android:textSize="11sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView android:text="DUE IN 8D" android:textColor="#4CAF50" android:textStyle="bold" android:textSize="10sp" android:background="#E8F5E9" android:paddingHorizontal="10dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+
+                    <TextView android:text="Advanced Literature Review" android:textColor="#1B254B" android:textStyle="bold" android:textSize="14sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Active Item 3: Peter Parker -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:background="#F4F7FE" android:padding="8dp" app:tint="#1B254B"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:text="Peter Parker" android:textStyle="bold" android:textColor="#1B254B" android:textSize="15sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Grade 9-C • STU-2025102" android:textColor="#A3AED0" android:textSize="11sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView android:text="DUE IN 1D" android:textColor="#F44336" android:textStyle="bold" android:textSize="10sp" android:background="#FFEBEE" android:paddingHorizontal="10dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+
+                    <TextView android:text="Quantum Mechanics for Beginners" android:textColor="#1B254B" android:textStyle="bold" android:textSize="14sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Active Item 4: Natasha Romanoff -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:background="#F4F7FE" android:padding="8dp" app:tint="#1B254B"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:text="Natasha Romanoff" android:textStyle="bold" android:textColor="#1B254B" android:textSize="15sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Grade 12-A • STU-2025007" android:textColor="#A3AED0" android:textSize="11sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView android:text="DUE IN 5D" android:textColor="#4CAF50" android:textStyle="bold" android:textSize="10sp" android:background="#E8F5E9" android:paddingHorizontal="10dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+
+                    <TextView android:text="Modern History of Espionage" android:textColor="#1B254B" android:textStyle="bold" android:textSize="14sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Active Item 5: Steve Rogers -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:background="#F4F7FE" android:padding="8dp" app:tint="#1B254B"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:text="Steve Rogers" android:textStyle="bold" android:textColor="#1B254B" android:textSize="15sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="Grade 11-A • STU-2025001" android:textColor="#A3AED0" android:textSize="11sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView android:text="DUE IN 10D" android:textColor="#4CAF50" android:textStyle="bold" android:textSize="10sp" android:background="#E8F5E9" android:paddingHorizontal="10dp" android:paddingVertical="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+
+                    <TextView android:text="Leadership and Ethics in History" android:textColor="#1B254B" android:textStyle="bold" android:textSize="14sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

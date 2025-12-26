@@ -131,7 +131,7 @@
 
                     <!-- Book Identity -->
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/ic_menu_book" app:tint="#4318FF" android:background="#F4F7FE" android:padding="10dp"/>
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/book" app:tint="#4318FF" android:background="#F4F7FE" android:padding="10dp"/>
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
                             <TextView android:text="Organic Chemistry Deep Dive" android:textStyle="bold" android:textColor="#1B254B" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                             <TextView android:text="ISBN: 9021-X • Rack A-12" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>

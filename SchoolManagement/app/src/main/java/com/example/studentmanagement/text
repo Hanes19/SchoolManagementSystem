@@ -66,3 +66,21 @@ library_overdue_item_details.xml
 library_quick_action.xml
 library_recent_circulation_details.xml
 
+
+admin_settings.xml
+admin_roles_permission.xml
+admin_role_perm_teacher_edit.xml
+admin_role_perm_accountant_edit.xml
+admin_privacy_policy.xml
+admin_parents_profile_details.xml
+admin_parent_directory.xml
+admin_help_center.xml
+admin_edit_parent_profile.xml
+admin_change_password.xml
+admin_add_roles_permission.xml
+admin_add_new_parent.xml
+admin_add_academic_session.xml
+admin_academic_session.xml
+
+
+

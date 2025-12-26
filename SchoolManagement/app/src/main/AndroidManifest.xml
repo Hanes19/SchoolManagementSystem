@@ -29,6 +29,7 @@
         <activity android:name=".StudentDashboardActivity" />
         <activity android:name=".ParentDashboardActivity" />
         <activity android:name=".StaffDashboardActivity" />
+        <activity android:name=".ForgotPasswordActivity" />
 
         <activity android:name=".AdminClassListActivity" />
         <activity android:name=".AdminAddClassActivity" />

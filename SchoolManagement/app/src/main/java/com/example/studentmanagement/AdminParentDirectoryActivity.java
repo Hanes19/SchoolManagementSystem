@@ -12,7 +12,6 @@ import androidx.cardview.widget.CardView;
 
 public class AdminParentDirectoryActivity extends AppCompatActivity {
 
-    // Variables for the specific parent cards we want to filter
     private CardView cardParent1;
     private CardView cardParent2;
 
@@ -26,56 +25,57 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
         EditText etSearch = findViewById(R.id.et_search_input);
         CardView fabAddParent = findViewById(R.id.fab_add_parent);
 
-        // Initialize the static parent cards (Make sure you added IDs in XML!)
         cardParent1 = findViewById(R.id.card_parent_1);
         cardParent2 = findViewById(R.id.card_parent_2);
 
-        // 2. Back Button Function
+        // 2. Setup Interactions
+
+        // Back Button
         btnBack.setOnClickListener(v -> finish());
 
-        // 3. Floating Action Button - Go to Add/Edit Profile
+        // FAB: Add New Parent
         fabAddParent.setOnClickListener(v -> {
+            // Opens the "Edit/Add" screen directly, but in "Add Mode" (logic to be handled inside that activity)
             Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminEditParentProfileActivity.class);
             startActivity(intent);
         });
 
-        // 4. Search Filter Logic
+        // --- NEW: Click Card 1 -> Open Profile Details ---
+        cardParent1.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminParentProfileDetailsActivity.class);
+            intent.putExtra("PARENT_NAME", "Mrs. Sarah Smith"); // Pass data if needed
+            startActivity(intent);
+        });
+
+        // --- NEW: Click Card 2 -> Open Profile Details ---
+        cardParent2.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminParentProfileDetailsActivity.class);
+            intent.putExtra("PARENT_NAME", "Mr. Thomas Wayne");
+            startActivity(intent);
+        });
+
+        // Search Logic (Existing)
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filterParentList(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {}
         });
     }
 
-    // Function to hide/show cards based on the name typed
     private void filterParentList(String query) {
         String lowerQuery = query.toLowerCase();
-
-        // Filter Parent 1: Sarah Smith / Jason Smith
         if (cardParent1 != null) {
             boolean match = "sarah smith".contains(lowerQuery) || "jason smith".contains(lowerQuery);
-            if (match) {
-                cardParent1.setVisibility(View.VISIBLE);
-            } else {
-                cardParent1.setVisibility(View.GONE);
-            }
+            cardParent1.setVisibility(match ? View.VISIBLE : View.GONE);
         }
-
-        // Filter Parent 2: Thomas Wayne / Bruce Wayne
         if (cardParent2 != null) {
             boolean match = "thomas wayne".contains(lowerQuery) || "bruce wayne".contains(lowerQuery);
-            if (match) {
-                cardParent2.setVisibility(View.VISIBLE);
-            } else {
-                cardParent2.setVisibility(View.GONE);
-            }
+            cardParent2.setVisibility(match ? View.VISIBLE : View.GONE);
         }
     }
 }

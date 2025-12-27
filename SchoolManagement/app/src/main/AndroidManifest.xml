@@ -32,6 +32,7 @@
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".AdminPrivacyPolicyActivity" />
         <activity android:name=".AdminAppGuideActivity"/>
+        <activity android:name=".AdminParentProfileDetailsActivity"/>
         <activity android:name=".AdminFaqActivity" android:parentActivityName=".AdminDashboardActivity"/>
         <activity android:name=".AdminReportsGuideActivity" android:parentActivityName=".AdminDashboardActivity"/>
 

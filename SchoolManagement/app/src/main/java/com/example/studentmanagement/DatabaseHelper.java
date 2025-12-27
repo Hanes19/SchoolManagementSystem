@@ -12,8 +12,8 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    // CHANGED: Incremented version to 8 to trigger onUpgrade and apply schema changes
-    private static final int DATABASE_VERSION = 8;
+    // Version 10 triggers the onUpgrade to create the new ROLES table and re-seed data
+    private static final int DATABASE_VERSION = 10;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_GRADES = "grades";
     private static final String TABLE_FEES = "fees";
     private static final String TABLE_EXPENSES = "expenses";
+    private static final String TABLE_ROLES = "roles"; // New Table
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,36 +33,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 1. Users Table
-        // CHANGED: Added class_id column to link students to classes
-        String createUsers = "CREATE TABLE " + TABLE_USERS + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT UNIQUE, " +
                 "full_name TEXT, " +
                 "password_hash TEXT, " +
                 "role TEXT, " +
                 "class_id INTEGER, " +
-                "status TEXT)";
-        db.execSQL(createUsers);
+                "status TEXT)");
 
         // 2. Logs Table
-        String createLogs = "CREATE TABLE " + TABLE_LOGS + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_LOGS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT, " +
                 "action TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
-        db.execSQL(createLogs);
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
         // 3. Classes Table
-        String createClasses = "CREATE TABLE " + TABLE_CLASSES + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_CLASSES + " (" +
                 "class_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "grade_level TEXT, " +
                 "section_name TEXT, " +
                 "room_number TEXT, " +
-                "teacher_id TEXT)";
-        db.execSQL(createClasses);
+                "teacher_id TEXT)");
 
         // 4. Timetable Table
-        String createTimetable = "CREATE TABLE " + TABLE_TIMETABLE + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_TIMETABLE + " (" +
                 "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "class_id INTEGER, " +
                 "day_of_week TEXT, " +
@@ -69,38 +66,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "end_time TEXT, " +
                 "subject TEXT, " +
                 "room TEXT, " +
-                "teacher_name TEXT)";
-        db.execSQL(createTimetable);
+                "teacher_name TEXT)");
 
         // 5. Attendance Table
-        String createAttendance = "CREATE TABLE " + TABLE_ATTENDANCE + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_ATTENDANCE + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "date TEXT, " +
-                "status TEXT)";
-        db.execSQL(createAttendance);
+                "status TEXT)");
 
         // 6. Grades Table
-        String createGrades = "CREATE TABLE " + TABLE_GRADES + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "subject TEXT, " +
                 "grade TEXT, " +
-                "semester TEXT)";
-        db.execSQL(createGrades);
+                "semester TEXT)");
 
         // 7. Fees Table
-        String createFees = "CREATE TABLE " + TABLE_FEES + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_FEES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "description TEXT, " +
                 "amount REAL, " +
                 "type TEXT, " +
-                "date TEXT)";
-        db.execSQL(createFees);
+                "date TEXT)");
 
         // 8. Expenses Table
-        String createExpenses = "CREATE TABLE " + TABLE_EXPENSES + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_EXPENSES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "requested_by TEXT, " +
@@ -108,73 +101,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "amount REAL, " +
                 "description TEXT, " +
                 "date TEXT, " +
-                "status TEXT DEFAULT 'Pending')";
-        db.execSQL(createExpenses);
+                "status TEXT DEFAULT 'Pending')");
+
+        // 9. Roles Table (New)
+        db.execSQL("CREATE TABLE " + TABLE_ROLES + " (" +
+                "role_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "role_name TEXT UNIQUE, " +
+                "description TEXT)");
 
         seedData(db);
     }
 
     private void seedData(SQLiteDatabase db) {
         String testPassHash = SecurityUtil.hashPassword("123456");
-
-        // Helpers for Realistic Dates
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String yesterdayDate = "2025-12-26";
-        String recentDate = "2025-12-20";
 
-        // --- 1. SEED USERS (Teachers & Admin) ---
-        // Teachers/Admin have NULL class_id
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Mr. Robert Langdon', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach02', 'Ms. Sarah Connor', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach03', 'Mr. Walter White', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach04', 'Mrs. Minerva McGonagall', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach05', 'Mr. John Keating', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach06', 'Mr. Elliot Alderson', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach07', 'Coach Ted Lasso', '" + testPassHash + "', 'Teacher', 'Active')");
+        // --- SEED USERS ---
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Mr. Robert Langdon', '" + testPassHash + "', 'Teacher', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach02', 'Ms. Sarah Connor', '" + testPassHash + "', 'Teacher', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach03', 'Mr. Walter White', '" + testPassHash + "', 'Teacher', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active')");
 
-        // CHANGED: Assign student to Class ID 1
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active')");
-
-        // --- 2. SEED CLASSES (Grades) ---
+        // --- SEED CLASSES ---
         db.execSQL("INSERT INTO " + TABLE_CLASSES + " (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 10', 'Emerald', 'Rm 101', 'teach01')");
         db.execSQL("INSERT INTO " + TABLE_CLASSES + " (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 11', 'Ruby', 'Rm 104', 'teach02')");
-        db.execSQL("INSERT INTO " + TABLE_CLASSES + " (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 12', 'Diamond', 'Rm 202', 'teach04')");
+        db.execSQL("INSERT INTO " + TABLE_CLASSES + " (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 12', 'Diamond', 'Rm 202', 'teach03')");
 
-        // --- 3. SEED MASTER TIMETABLE ---
-        // == MONDAY ==
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '07:30', '08:30', 'Mathematics', 'Rm 101', 'Mr. Robert Langdon')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (2, 'Monday', '07:30', '08:30', 'Physics', 'Rm 104', 'Ms. Sarah Connor')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (3, 'Monday', '07:30', '08:30', 'World History', 'Rm 202', 'Mrs. Minerva McGonagall')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '08:30', '09:30', 'English Lit', 'Rm 101', 'Mr. John Keating')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (2, 'Monday', '08:30', '09:30', 'Chemistry', 'Lab A', 'Mr. Walter White')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (3, 'Monday', '08:30', '09:30', 'Economics', 'Rm 205', 'Ms. Sarah Connor')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '10:00', '11:00', 'Physical Ed.', 'Gym', 'Coach Ted Lasso')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (3, 'Monday', '10:00', '11:00', 'Computer Sci', 'Comp Lab', 'Mr. Elliot Alderson')");
+        // --- SEED TIMETABLE (Sample for Grade 10 / Class ID 1) ---
+        // Monday
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '08:00', '09:00', 'Mathematics', 'Rm 101', 'Mr. Langdon')");
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '09:00', '10:00', 'History', 'Rm 102', 'Ms. Connor')");
+        // Tuesday
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Tuesday', '08:00', '09:00', 'Science', 'Lab 1', 'Mr. White')");
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Tuesday', '10:00', '11:00', 'English', 'Rm 101', 'Mr. Keating')");
 
-        // == TUESDAY ==
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Tuesday', '07:30', '08:30', 'Science', 'Lab 1', 'Mr. Walter White')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (3, 'Tuesday', '09:00', '10:00', 'Adv Math', 'Rm 202', 'Mr. Robert Langdon')");
+        // --- SEED ROLES ---
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Admin', 'Full System Access & Configuration')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Teacher', 'Class Management, Grading, Attendance')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Accountant', 'Fee Collection & Expense Management')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Student', 'View Schedule, Grades, and Fees')");
 
-        // --- 4. SEED OTHER DATA (Realistic Dates) ---
-        // Attendance
-        db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '" + yesterdayDate + "', 'Present')");
-        db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '" + todayDate + "', 'Present')");
-
-        // Grades
-        db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Mathematics', '95', '1st Sem')");
-        db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Science', '88', '1st Sem')");
-
-        // Fees
-        db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES ('stud01', 'Tuition Fee (Final)', 5000.00, 'Bill', '" + recentDate + "')");
-
-        // Expenses
-        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, requested_by, category, amount, description, date, status) VALUES ('Lab Equipment', 'teach03', 'Science Dept', 1200.00, 'New beakers for Chemistry', '" + todayDate + "', 'Pending')");
+        // --- SEED EXPENSES ---
+        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, requested_by, category, amount, description, date, status) VALUES ('Lab Equipment', 'teach03', 'Science Dept', 1200.00, 'New beakers', '" + todayDate + "', 'Pending')");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop all tables on upgrade to ensure clean state
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
@@ -183,7 +156,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GRADES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLES);
         onCreate(db);
+    }
+
+    // ==========================================
+    //            ROLES METHODS (NEW)
+    // ==========================================
+
+    public Cursor getAllRoles() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_ROLES, null);
+    }
+
+    public boolean addRole(String name, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("role_name", name);
+        values.put("description", description);
+        long result = db.insert(TABLE_ROLES, null, values);
+        return result != -1;
+    }
+
+    public boolean updateRole(String originalName, String newName, String newDesc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("role_name", newName);
+        values.put("description", newDesc);
+        int result = db.update(TABLE_ROLES, values, "role_name = ?", new String[]{originalName});
+        return result > 0;
+    }
+
+    public boolean deleteRole(String roleName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_ROLES, "role_name = ?", new String[]{roleName}) > 0;
     }
 
     // ==========================================
@@ -294,16 +300,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    // CHANGED: Added the missing method to fetch students by class ID
     public Cursor getStudentsByClass(String classId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        // Queries the users table for Students assigned to the specific classId
         return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE role = 'Student' AND class_id = ?", new String[]{classId});
     }
-
-    // ==========================================
-    //       NEW STUDENT PROFILE METHODS
-    // ==========================================
 
     public Cursor getScheduleForDay(String dayOfWeek) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -314,6 +314,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ORDER BY t.start_time ASC";
         return db.rawQuery(query, new String[]{dayOfWeek});
     }
+
+    public Cursor getClassSchedule(String classId, String dayOfWeek) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_TIMETABLE +
+                " WHERE class_id = ? AND day_of_week = ? " +
+                " ORDER BY start_time ASC";
+        return db.rawQuery(query, new String[]{classId, dayOfWeek});
+    }
+
+    // ==========================================
+    //       STUDENT PROFILE & FINANCE METHODS
+    // ==========================================
 
     public Cursor getStudentAttendance(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -340,19 +352,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("description", description);
         values.put("amount", amount);
         values.put("type", type);
-
-        // Get current date
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String date = sdf.format(new Date());
         values.put("date", date);
-
         long result = db.insert("fees", null, values);
         return result != -1;
     }
-
-    // ==========================================
-    //           EXPENSE METHODS
-    // ==========================================
 
     public boolean addExpense(String title, String requestedBy, String category, double amount, String description, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -364,7 +369,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("description", description);
         values.put("date", date);
         values.put("status", "Pending");
-
         long result = db.insert(TABLE_EXPENSES, null, values);
         return result != -1;
     }

@@ -1,8 +1,10 @@
 package com.example.studentmanagement;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
     // Views
     CardView btnFilterDay, btnFilterGrade, btnFilterTeacher;
     TextView tvFilterDay, tvFilterGrade, tvFilterTeacher;
+    LinearLayout containerTimetable;
 
     // Data
     DatabaseHelper db;
@@ -33,34 +36,29 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        // Bind Views
         btnFilterDay = findViewById(R.id.filter_day);
         btnFilterGrade = findViewById(R.id.filter_grade);
         btnFilterTeacher = findViewById(R.id.filter_teacher);
-
         tvFilterDay = findViewById(R.id.tv_filter_day);
         tvFilterGrade = findViewById(R.id.tv_filter_grade);
         tvFilterTeacher = findViewById(R.id.tv_filter_teacher);
 
-        // Back Button
+        // Ensure you added this ID to your XML ScrollView -> LinearLayout
+        containerTimetable = findViewById(R.id.container_timetable);
+
         findViewById(R.id.header).setOnClickListener(v -> finish());
 
-        // Set Listeners
         btnFilterDay.setOnClickListener(this::showDayPopup);
         btnFilterGrade.setOnClickListener(this::showGradePopup);
         btnFilterTeacher.setOnClickListener(this::showTeacherPopup);
 
-        // Initial Load
         loadTimetableData();
     }
 
     private void showDayPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-
-        for (String day : days) {
-            popup.getMenu().add(day);
-        }
+        for (String day : days) popup.getMenu().add(day);
 
         popup.setOnMenuItemClickListener(item -> {
             selectedDay = item.getTitle().toString();
@@ -75,25 +73,19 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, v);
         popup.getMenu().add("All Grades");
 
-        // Fetch distinct grades from Classes table
         Cursor cursor = db.getAllClasses();
         Set<String> uniqueGrades = new HashSet<>();
-
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Assuming index 1 is 'grade_level' based on query: SELECT class_id, grade_level...
-                String grade = cursor.getString(1);
-                if (grade != null) uniqueGrades.add(grade);
+                int colIndex = cursor.getColumnIndex("grade_level");
+                if(colIndex != -1) uniqueGrades.add(cursor.getString(colIndex));
             } while (cursor.moveToNext());
             cursor.close();
         }
 
         List<String> sortedGrades = new ArrayList<>(uniqueGrades);
         Collections.sort(sortedGrades);
-
-        for (String grade : sortedGrades) {
-            popup.getMenu().add(grade);
-        }
+        for (String grade : sortedGrades) popup.getMenu().add(grade);
 
         popup.setOnMenuItemClickListener(item -> {
             selectedGrade = item.getTitle().toString();
@@ -108,13 +100,11 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, v);
         popup.getMenu().add("All Teachers");
 
-        // Fetch teachers from Users table
         Cursor cursor = db.getTeachers();
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Column 1 is 'full_name' in getTeachers query
-                String teacherName = cursor.getString(1);
-                popup.getMenu().add(teacherName);
+                int colIndex = cursor.getColumnIndex("full_name");
+                if(colIndex != -1) popup.getMenu().add(cursor.getString(colIndex));
             } while (cursor.moveToNext());
             cursor.close();
         }
@@ -129,11 +119,79 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
     }
 
     private void loadTimetableData() {
-        // TODO: Implement the logic to refresh the layout (R.id.container_timetable)
-        // based on selectedDay, selectedGrade, and selectedTeacher.
-        // Currently, it just logs a toast for verification.
+        if(containerTimetable == null) return;
+        containerTimetable.removeAllViews();
 
-        String message = "Loading: " + selectedDay + " | " + selectedGrade + " | " + selectedTeacher;
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Cursor cursor = db.getScheduleForDay(selectedDay);
+        int count = 0;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Safe Column Fetching
+                int idxGrade = cursor.getColumnIndex("grade_level");
+                int idxTeacher = cursor.getColumnIndex("teacher_name");
+                int idxSection = cursor.getColumnIndex("section_name");
+                int idxSubject = cursor.getColumnIndex("subject");
+                int idxRoom = cursor.getColumnIndex("room");
+                int idxStart = cursor.getColumnIndex("start_time");
+
+                // Skip if columns missing (DB mismatch)
+                if (idxGrade == -1 || idxTeacher == -1) continue;
+
+                String grade = cursor.getString(idxGrade);
+                String teacher = cursor.getString(idxTeacher);
+
+                // Filters
+                if (!selectedGrade.equals("All Grades") && !grade.equals(selectedGrade)) continue;
+                if (!selectedTeacher.equals("All Teachers") && !teacher.equals(selectedTeacher)) continue;
+
+                count++;
+
+                String section = cursor.getString(idxSection);
+                String subject = cursor.getString(idxSubject);
+                String room = cursor.getString(idxRoom);
+                String startTime = cursor.getString(idxStart);
+
+                // Inflate Layout
+                View row = getLayoutInflater().inflate(R.layout.item_schedule_class_row, containerTimetable, false);
+
+                TextView tvTime = row.findViewById(R.id.tv_schedule_time);
+                TextView tvMeridiem = row.findViewById(R.id.tv_schedule_meridiem);
+                TextView tvSubject = row.findViewById(R.id.tv_schedule_subject);
+                TextView tvLocation = row.findViewById(R.id.tv_schedule_location);
+                View indicator = row.findViewById(R.id.view_status_indicator);
+
+                // Format Time
+                String[] timeParts = startTime.split(":");
+                int hour = Integer.parseInt(timeParts[0]);
+                String meridiem = (hour >= 12) ? "PM" : "AM";
+                if(hour > 12) hour -= 12;
+                tvTime.setText(String.format("%02d:%s", hour, timeParts[1]));
+                tvMeridiem.setText(meridiem);
+
+                tvSubject.setText(subject + " (" + grade + "-" + section + ")");
+                tvLocation.setText(room + " • " + teacher);
+
+                // Color Coding
+                if(grade.contains("10")) indicator.setBackgroundColor(Color.parseColor("#4318FF"));
+                else if(grade.contains("11")) indicator.setBackgroundColor(Color.parseColor("#FFB547"));
+                else indicator.setBackgroundColor(Color.parseColor("#05CD99"));
+
+                containerTimetable.addView(row);
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        // DEBUG: Show user if data is missing
+        if (count == 0) {
+            TextView emptyView = new TextView(this);
+            emptyView.setText("No classes found for " + selectedDay);
+            emptyView.setTextColor(Color.GRAY);
+            emptyView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            emptyView.setPadding(0, 50, 0, 0);
+            containerTimetable.addView(emptyView);
+            Toast.makeText(this, "No data found in DB for " + selectedDay, Toast.LENGTH_SHORT).show();
+        }
     }
 }

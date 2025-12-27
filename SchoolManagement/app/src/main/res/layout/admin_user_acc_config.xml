@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -20,8 +19,7 @@
             android:layout_height="40dp"
             android:padding="8dp"
             android:src="@drawable/bck_btn"
-            app:tint="#1B254B"
-            />
+            app:tint="#1B254B" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +45,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Password Policy -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,48 +72,74 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-                        <TextView
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Minimum Length"
-                            android:textColor="#1B254B"
-                            android:textStyle="bold"/>
-                        <EditText
-                            android:layout_width="60dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/rounded_corner_white_bg"
-                            android:backgroundTint="#F4F7FE"
-                            android:gravity="center"
-                            android:text="8"
-                            android:inputType="number"
-                            android:textColor="#1B254B"/>
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Require Strong Passwords"
+                                android:textColor="#1B254B"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Min 8 chars, symbols &amp; numbers"
+                                android:textColor="#A3AED0"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+                        <Switch
+                            android:id="@+id/switch_password_policy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            app:trackTint="#4318FF"/>
                     </LinearLayout>
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginBottom="16dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:gravity="center_vertical">
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Require Special Characters"
-                            android:textColor="#1B254B"
-                            android:textStyle="bold"/>
-                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Two-Factor Authentication"
+                                android:textColor="#1B254B"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Require OTP for Admin logins"
+                                android:textColor="#A3AED0"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+                        <Switch
+                            android:id="@+id/switch_2fa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="#4318FF"/>
                     </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Login Security -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOGIN RESTRICTIONS"
+                android:text="SESSION MANAGEMENT"
                 android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
@@ -136,48 +159,120 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Force 2FA for Staff" android:textColor="#1B254B" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Require OTP for Admins &amp; Teachers" android:textColor="#A3AED0" android:textSize="12sp"/>
-                        </LinearLayout>
-                        <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
-                    </LinearLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginVertical="12dp"/>
+                        android:text="Auto-logout inactive users"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical">
+
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:id="@+id/btn_timeout_15"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Session Timeout" android:textColor="#1B254B" android:textStyle="bold"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Auto-logout inactive users" android:textColor="#A3AED0" android:textSize="12sp"/>
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Strict Security"
+                                    android:textColor="#1B254B"
+                                    android:textSize="14sp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15 Minutes Inactivity"
+                                    android:textColor="#A3AED0"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_timeout_15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="15 Mins >"
+                                android:textColor="#A3AED0"
+                                android:textStyle="bold"/>
                         </LinearLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE"/>
+
+                        <LinearLayout
+                            android:id="@+id/btn_timeout_30"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="30 Mins >"
-                            android:textColor="#4318FF"
-                            android:textStyle="bold"/>
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Standard"
+                                    android:textColor="#1B254B"
+                                    android:textSize="14sp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="30 Minutes Inactivity"
+                                    android:textColor="#A3AED0"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_timeout_30"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30 Mins >"
+                                android:textColor="#4318FF"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE"/>
+
+                        <LinearLayout
+                            android:id="@+id/btn_timeout_60"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="12dp"
+                            android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Extended"
+                                    android:textColor="#1B254B"
+                                    android:textSize="14sp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1 Hour Inactivity"
+                                    android:textColor="#A3AED0"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_timeout_60"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="60 Mins >"
+                                android:textColor="#A3AED0"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Save Button -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_security"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"

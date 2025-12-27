@@ -20,27 +20,27 @@ public class AdminSystemConfigActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        // School Profile
+        // 1. School Profile
         findViewById(R.id.btn_config_school_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminSchoolProfileActivity.class)));
 
-        // Academic Years
+        // 2. Academic Years
         findViewById(R.id.btn_config_academic_years).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminAcademicSessionActivity.class)));
 
-        // Roles & Permissions
+        // 3. Roles & Permissions
         findViewById(R.id.btn_config_roles).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminRolesPermissionActivity.class)));
 
-        // Login Settings (Placeholder as no XML was provided for this specific one)
+        // 4. User Accounts / Login Settings (CONNECTED)
         findViewById(R.id.btn_config_login).setOnClickListener(v ->
-                Toast.makeText(this, "User Account Settings", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, AdminUserAccConfigActivity.class)));
 
-        // Integrations
+        // 5. Integrations
         findViewById(R.id.btn_config_integrations).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminIntegrationConfigActivity.class)));
 
-        // Backup
+        // 6. Backup & Restore
         findViewById(R.id.btn_config_backup).setOnClickListener(v ->
                 startActivity(new Intent(this, AdminBackupRestoreActivity.class)));
     }

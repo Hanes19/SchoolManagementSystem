@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CURRENT SESSION"
-                android:textColor="#A3AED0"
+                android:textColor="#111C44"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:letterSpacing="0.1"
@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="#111C44"
                     android:padding="20dp">
 
                     <LinearLayout

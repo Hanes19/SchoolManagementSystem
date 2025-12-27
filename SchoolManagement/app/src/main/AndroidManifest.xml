@@ -25,11 +25,16 @@
         <activity android:name=".MainActivity" />
 
         <activity android:name=".AdminDashboardActivity" />
-        <activity android:name=".TeacherDashboardActivity" />
-        <activity android:name=".StudentDashboardActivity" />
+        <activity android:name=".AdminHelpCenterActivity" />
+        <activity android:name=".AdminEditParentProfileActivity" />
         <activity android:name=".ParentDashboardActivity" />
-        <activity android:name=".StaffDashboardActivity" />
+        <activity android:name=".AdminParentDirectoryActivity" />
         <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".AdminPrivacyPolicyActivity" />
+        <activity android:name=".AdminAppGuideActivity"/>
+        <activity android:name=".AdminFaqActivity" android:parentActivityName=".AdminDashboardActivity"/>
+        <activity android:name=".AdminReportsGuideActivity" android:parentActivityName=".AdminDashboardActivity"/>
+
 
         <activity android:name=".AdminClassListActivity" />
         <activity android:name=".AdminAddClassActivity" />

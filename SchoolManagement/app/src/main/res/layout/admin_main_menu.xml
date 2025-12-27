@@ -168,50 +168,22 @@
                 android:alignmentMode="alignMargins"
                 android:padding="16dp">
 
-                <LinearLayout
-                    android:id="@+id/btn_module_classes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                <LinearLayout android:id="@+id/btn_module_classes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="8dp">
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/classess" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Classes" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/btn_module_timetable"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                <LinearLayout android:id="@+id/btn_module_timetable" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="8dp">
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/timetable" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Timetable" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/btn_module_attendance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                <LinearLayout android:id="@+id/btn_module_attendance" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="8dp">
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/attendance" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attendance" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/btn_module_exams"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                <LinearLayout android:id="@+id/btn_module_exams" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="8dp">
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_edit" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#4318FF"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Exams" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
@@ -270,6 +242,7 @@
                     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@android:drawable/ic_menu_send" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Expenses" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
+
             </GridLayout>
 
             <TextView
@@ -319,7 +292,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

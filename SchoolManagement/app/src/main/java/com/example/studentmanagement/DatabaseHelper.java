@@ -400,4 +400,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return 0.0;
     }
-}\
+}

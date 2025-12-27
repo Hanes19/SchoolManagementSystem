@@ -12,7 +12,8 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 7; // Incremented version to apply date updates
+    // CHANGED: Incremented version to 8 to trigger onUpgrade and apply schema changes
+    private static final int DATABASE_VERSION = 8;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -31,12 +32,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 1. Users Table
+        // CHANGED: Added class_id column to link students to classes
         String createUsers = "CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT UNIQUE, " +
                 "full_name TEXT, " +
                 "password_hash TEXT, " +
                 "role TEXT, " +
+                "class_id INTEGER, " +
                 "status TEXT)";
         db.execSQL(createUsers);
 
@@ -120,6 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String recentDate = "2025-12-20";
 
         // --- 1. SEED USERS (Teachers & Admin) ---
+        // Teachers/Admin have NULL class_id
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Mr. Robert Langdon', '" + testPassHash + "', 'Teacher', 'Active')");
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach02', 'Ms. Sarah Connor', '" + testPassHash + "', 'Teacher', 'Active')");
@@ -128,7 +132,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach05', 'Mr. John Keating', '" + testPassHash + "', 'Teacher', 'Active')");
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach06', 'Mr. Elliot Alderson', '" + testPassHash + "', 'Teacher', 'Active')");
         db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('teach07', 'Coach Ted Lasso', '" + testPassHash + "', 'Teacher', 'Active')");
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 'Active')");
+
+        // CHANGED: Assign student to Class ID 1
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active')");
 
         // --- 2. SEED CLASSES (Grades) ---
         db.execSQL("INSERT INTO " + TABLE_CLASSES + " (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 10', 'Emerald', 'Rm 101', 'teach01')");
@@ -151,8 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (3, 'Tuesday', '09:00', '10:00', 'Adv Math', 'Rm 202', 'Mr. Robert Langdon')");
 
         // --- 4. SEED OTHER DATA (Realistic Dates) ---
-
-        // Attendance: Uses Today and Yesterday (Dec 2025)
+        // Attendance
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '" + yesterdayDate + "', 'Present')");
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status) VALUES ('stud01', '" + todayDate + "', 'Present')");
 
@@ -160,10 +165,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Mathematics', '95', '1st Sem')");
         db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, grade, semester) VALUES ('stud01', 'Science', '88', '1st Sem')");
 
-        // Fees: Uses a recent date in Dec 2025
+        // Fees
         db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES ('stud01', 'Tuition Fee (Final)', 5000.00, 'Bill', '" + recentDate + "')");
 
-        // Expenses: Uses Today's date for a pending request
+        // Expenses
         db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, requested_by, category, amount, description, date, status) VALUES ('Lab Equipment', 'teach03', 'Science Dept', 1200.00, 'New beakers for Chemistry', '" + todayDate + "', 'Pending')");
     }
 
@@ -287,6 +292,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FROM " + TABLE_CLASSES + " c " +
                 "LEFT JOIN " + TABLE_USERS + " u ON c.teacher_id = u.user_id";
         return db.rawQuery(query, null);
+    }
+
+    // CHANGED: Added the missing method to fetch students by class ID
+    public Cursor getStudentsByClass(String classId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Queries the users table for Students assigned to the specific classId
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE role = 'Student' AND class_id = ?", new String[]{classId});
     }
 
     // ==========================================

@@ -19,7 +19,8 @@
             android:layout_width="48dp"
             android:layout_height="64dp"
             android:src="@drawable/book"
-            android:background="#F4F7FE"
+            android:background="@drawable/rounded_corner_white_bg"
+            android:backgroundTint="#F4F7FE"
             android:padding="12dp"
             app:tint="#4318FF"/>
 
@@ -40,8 +41,8 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tv_book_author_isbn"
-                android:text="Author • ISBN: 0000"
+                android:id="@+id/tv_book_author"
+                android:text="Author Name"
                 android:textColor="#A3AED0"
                 android:textSize="12sp"
                 android:layout_marginTop="2dp"
@@ -49,12 +50,13 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tv_book_status"
-                android:text="AVAILABLE"
+                android:id="@+id/tv_book_qty"
+                android:text="Avail: 5"
                 android:textColor="#05CD99"
                 android:textStyle="bold"
                 android:textSize="10sp"
-                android:background="#E6FFF5"
+                android:background="@drawable/rounded_corner_white_bg"
+                android:backgroundTint="#E6FFF5"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
                 android:layout_marginTop="6dp"

@@ -90,6 +90,7 @@
 
                     <TextView android:text="Department / Category" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_marginTop="16dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     <LinearLayout
+                        android:id="@+id/et_category"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="8dp"
@@ -146,9 +147,9 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="20dp">
-                        <RadioButton android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="PDF" android:checked="true" android:buttonTint="#4318FF"/>
-                        <RadioButton android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Video" android:buttonTint="#4318FF"/>
-                        <RadioButton android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Link" android:buttonTint="#4318FF"/>
+                        <RadioButton  android:id="@+id/rb_pdf" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="PDF" android:checked="true" android:buttonTint="#4318FF"/>
+                        <RadioButton  android:id="@+id/rb_video" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Video" android:buttonTint="#4318FF"/>
+                        <RadioButton  android:id="@+id/rb_link" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Link" android:buttonTint="#4318FF"/>
                     </RadioGroup>
 
                     <!-- Upload Trigger -->

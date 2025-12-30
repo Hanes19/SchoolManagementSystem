@@ -37,33 +37,38 @@ public class ParentFeesActivity extends AppCompatActivity {
     }
 
     private void loadFeeDetails() {
+        if (llHistory == null) return;
         llHistory.removeAllViews();
         Cursor cursor = db.getStudentFees(studentId);
         LayoutInflater inflater = LayoutInflater.from(this);
 
         double totalDue = 1500.00; // Mock initial due, or calculate from DB
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String desc = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
                 View view = inflater.inflate(R.layout.item_expense_row, llHistory, false);
+
+                // Correct IDs matching item_expense_row.xml
                 TextView tvTitle = view.findViewById(R.id.tv_expense_title);
-                TextView tvAmount = view.findViewById(R.id.tv_expense_amount);
-                TextView tvDate = view.findViewById(R.id.tv_expense_category);
+                TextView tvAmount = view.findViewById(R.id.tv_amount);       // Matches item_expense_row
+                TextView tvDate = view.findViewById(R.id.tv_date);           // Matches item_expense_row
 
                 tvTitle.setText(desc);
-                tvAmount.setText("-$" + amount); // Paid
+                tvAmount.setText("-$" + amount);
                 tvDate.setText(date);
 
-                totalDue -= amount; // Deduct payments
-                llList.addView(view);
+                totalDue -= amount;
+                llHistory.addView(view); // Fixed variable name from llList to llHistory
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
 
-        tvTotalDue.setText(String.format("$%.2f", Math.max(0, totalDue)));
+        if (tvTotalDue != null) {
+            tvTotalDue.setText(String.format("$%.2f", Math.max(0, totalDue)));
+        }
     }
 }

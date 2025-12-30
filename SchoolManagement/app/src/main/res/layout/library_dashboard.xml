@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -65,7 +64,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="100dp">
 
-            <!-- Stat Cards Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +81,7 @@
                     app:cardBackgroundColor="#FFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical">
                         <TextView android:text="Active Issues" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="142" android:textColor="#4318FF" android:textStyle="bold" android:textSize="24sp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_active_issues_count" android:text="142" android:textColor="#4318FF" android:textStyle="bold" android:textSize="24sp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -97,12 +95,11 @@
                     app:cardBackgroundColor="#FFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical">
                         <TextView android:text="Overdue Items" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="18" android:textColor="#F44336" android:textStyle="bold" android:textSize="24sp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_overdue_items_count" android:text="18" android:textColor="#F44336" android:textStyle="bold" android:textSize="24sp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Module Grid -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,7 +117,6 @@
                 android:alignmentMode="alignMargins"
                 android:layout_marginBottom="28dp">
 
-                <!-- 1. Catalog Management -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_catalog"
                     android:layout_width="0dp"
@@ -155,7 +151,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- 2. Circulation (Issue/Return) -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_circulation"
                     android:layout_width="0dp"
@@ -172,7 +167,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- 3. Fines & Calculation -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_fines"
                     android:layout_width="0dp"
@@ -206,7 +200,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- 4. Digital Resources -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_digital"
                     android:layout_width="0dp"
@@ -245,7 +238,6 @@
                 </androidx.cardview.widget.CardView>
             </GridLayout>
 
-            <!-- Recent Activity List -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,7 +256,6 @@
                 android:background="@drawable/rounded_corner_white_bg"
                 android:padding="8dp">
 
-                <!-- Activity 1: Book Returned -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical">
                     <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@android:drawable/checkbox_on_background" app:tint="#05CD99" android:background="#E6FFF5" android:padding="6dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
@@ -276,7 +267,6 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="12dp"/>
 
-                <!-- Activity 2: Overdue Alert -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical">
                     <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@android:drawable/ic_dialog_alert" app:tint="#F44336" android:background="#FFEBEE" android:padding="6dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
@@ -290,7 +280,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- FAB: Quick Action -->
     <androidx.cardview.widget.CardView
         android:id="@+id/fab_library_action"
         android:layout_width="60dp"

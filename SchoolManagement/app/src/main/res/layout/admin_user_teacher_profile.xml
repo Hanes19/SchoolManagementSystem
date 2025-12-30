@@ -84,6 +84,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <TextView
+                        android:id="@+id/tv_profile_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mr. Walter White"
@@ -101,6 +102,7 @@
                         android:layout_marginTop="4dp"/>
 
                     <TextView
+                        android:id="@+id/tv_profile_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ID: TCH-2025-088"
@@ -284,6 +286,7 @@
                             android:textColor="#A3AED0"
                             android:textSize="12sp"/>
                         <TextView
+                            android:id="@+id/tv_profile_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="walter.white@school.edu"
@@ -338,6 +341,7 @@
 
             <!-- Danger Zone -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_delete_user"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 app:cardCornerRadius="30dp"

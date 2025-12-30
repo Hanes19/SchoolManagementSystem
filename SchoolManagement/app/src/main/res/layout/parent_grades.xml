@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="10dp"
@@ -33,17 +33,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Progress Report"
-                android:textColor="#1B254B"
-                android:textSize="12sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Academic Grades"
+                android:text="Student Grades"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#1B254B"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Academic Year 2024-2025"
+                android:textSize="12sp"
+                android:textColor="#A3AED0"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -55,96 +54,84 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/ll_grades_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingBottom="40dp">
+            android:paddingBottom="100dp">
 
-            <!-- Term Selector -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:layout_marginBottom="24dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:gravity="center">
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Mid-Term Examination 2025"
-                        android:textColor="#1B254B"
-                        android:textStyle="bold"/>
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@android:drawable/arrow_down_float"
-                        app:tint="#A3AED0"/>
+                        android:text="Current GPA"
+                        android:textColor="#A3AED0"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3.8"
+                        android:textColor="#4318FF"
+                        android:textStyle="bold"
+                        android:textSize="48sp"
+                        android:layout_marginTop="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Excellent Performance"
+                        android:textColor="#05CD99"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:background="#E6FFF5"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:layout_marginTop="12dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- GPA/Overall Summary -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#1B254B"
-                android:layout_marginBottom="32dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_corner_white_bg"
+                android:padding="4dp"
+                android:layout_marginBottom="20dp">
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="24dp"
-                    android:gravity="center_vertical">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="AVERAGE SCORE"
-                            android:textColor="#E0E5F2"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="88.5%"
-                            android:textColor="#FFFFFF"
-                            android:textSize="32sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Rank: 4th in Class"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:layout_marginTop="8dp"
-                            android:alpha="0.8"/>
-                    </LinearLayout>
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@android:drawable/star_on"
-                        app:tint="#FFFFFF"
-                        android:background="@drawable/rounded_corner_white_bg"
-                        android:backgroundTint="#40FFFFFF"
-                        android:padding="12dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    android:layout_weight="1"
+                    android:text="Term 1"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/rounded_blue_bg_placeholder"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Term 2"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textColor="#A3AED0"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
-            <!-- Subject List -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,100 +142,6 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Subject 1 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Mathematics"
-                        android:textColor="#1B254B"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="92/100"
-                        android:textColor="#4CAF50"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Subject 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Chemistry"
-                        android:textColor="#1B254B"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="88/100"
-                        android:textColor="#4318FF"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Subject 3 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Physics"
-                        android:textColor="#1B254B"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="75/100"
-                        android:textColor="#FF9800"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Download PDF Button -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

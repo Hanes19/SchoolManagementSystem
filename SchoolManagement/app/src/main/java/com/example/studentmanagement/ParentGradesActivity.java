@@ -21,6 +21,8 @@ public class ParentGradesActivity extends AppCompatActivity {
 
         studentId = getIntent().getStringExtra("STUDENT_ID");
         db = new DatabaseHelper(this);
+
+        // This ID now exists in your XML
         llList = findViewById(R.id.ll_grades_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -29,32 +31,32 @@ public class ParentGradesActivity extends AppCompatActivity {
     }
 
     private void loadGrades() {
+        if (llList == null) return;
         llList.removeAllViews();
-        // Fetch all grades (pass "All" as semester/term)
+
         Cursor cursor = db.getStudentGrades(studentId, "All");
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
-                String grade = cursor.getString(cursor.getColumnIndexOrThrow("grade")); // or score
-                // If you stored score as Integer in Exam module, cast it:
-                // String score = String.valueOf(cursor.getInt(...));
+                String grade = cursor.getString(cursor.getColumnIndexOrThrow("grade"));
 
-                // Reusing item_student_row.xml or creating a simple view programmatically
-                // Here is a simple dynamic view for demonstration:
+                // Reuse the row layout
                 View view = inflater.inflate(R.layout.item_expense_row, llList, false);
+
+                // FIX: Map the variables to the IDs that actually exist in item_expense_row.xml
                 TextView tvSubject = view.findViewById(R.id.tv_expense_title);
-                TextView tvGrade = view.findViewById(R.id.tv_expense_amount);
-                TextView tvDesc = view.findViewById(R.id.tv_expense_category);
+                TextView tvGrade = view.findViewById(R.id.tv_amount);        // Correct ID for right-side text
+                TextView tvDesc = view.findViewById(R.id.tv_requested_by);   // Correct ID for subtitle
 
                 tvSubject.setText(subject);
-                tvGrade.setText(grade); // e.g. "95" or "A"
-                tvDesc.setText("Midterm 2025"); // Placeholder or fetch from DB
+                tvGrade.setText(grade);
+                tvDesc.setText("Midterm 2025");
 
                 llList.addView(view);
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
     }
 }

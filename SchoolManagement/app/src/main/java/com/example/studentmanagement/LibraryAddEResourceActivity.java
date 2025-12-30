@@ -42,6 +42,7 @@ public class LibraryAddEResourceActivity extends AppCompatActivity {
         if (selectedId == R.id.rb_video) type = "Video";
         else if (selectedId == R.id.rb_link) type = "Link";
 
+
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(url)) {
             Toast.makeText(this, "Title and URL/Link are required", Toast.LENGTH_SHORT).show();
             return;

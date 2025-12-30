@@ -1,64 +1,88 @@
 package com.example.studentmanagement;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminStudentListActivity extends AppCompatActivity {
 
+    private DatabaseHelper db;
+    private LinearLayout llList;
+    private EditText etSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_user_directory_students);
+        setContentView(R.layout.admin_student_list);
 
-        setupTabs();
+        db = new DatabaseHelper(this);
+        llList = findViewById(R.id.ll_user_list);
+        etSearch = findViewById(R.id.et_search);
 
-// Existing Profile Click
-        findViewById(R.id.card_student_1).setOnClickListener(v -> {
-            Intent intent = new Intent(this, AdminStudentProfileActivity.class);
-            startActivity(intent);
-        });
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-// --- NEW: Floating Action Button (Add Student) ---
-        findViewById(R.id.btn_add_student).setOnClickListener(v -> {
-            Intent intent = new Intent(AdminStudentListActivity.this, AddStudentActivity.class);
-            startActivity(intent);
+        findViewById(R.id.fab_add_user).setOnClickListener(v ->
+                startActivity(new Intent(this, AddStudentActivity.class))
+        );
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loadUsers(s.toString());
+            }
+            public void afterTextChanged(Editable s) {}
         });
     }
 
-    private void setupTabs() {
-        // 1. Get the Tab Container
-        LinearLayout tabContainer = findViewById(R.id.tab_container);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUsers("");
+    }
 
-        // 2. Get the specific Tab buttons by their index (0=Student, 1=Teacher, 2=Staff)
-        TextView tabStudent = (TextView) tabContainer.getChildAt(0);
-        TextView tabTeacher = (TextView) tabContainer.getChildAt(1);
-        TextView tabStaff   = (TextView) tabContainer.getChildAt(2);
+    private void loadUsers(String query) {
+        llList.removeAllViews();
+        Cursor cursor = db.getUsersByRole("Student");
+        LayoutInflater inflater = LayoutInflater.from(this);
 
-        // 3. Setup Back Button (Inside the header)
-        LinearLayout header = findViewById(R.id.header);
-        header.getChildAt(0).setOnClickListener(v -> finish()); // The ImageView is the first child
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("full_name"));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 
-        // 4. Tab Click Logic
+                if (!query.isEmpty() && !name.toLowerCase().contains(query.toLowerCase())) {
+                    continue;
+                }
 
-        // Student Tab (Already here, do nothing)
-        tabStudent.setOnClickListener(v -> {});
+                // Reuse item_student_row.xml
+                View view = inflater.inflate(R.layout.item_student_row, llList, false);
 
-        // Teacher Tab -> Go to Teacher Activity
-        tabTeacher.setOnClickListener(v -> {
-            startActivity(new Intent(this, AdminTeacherListActivity.class));
-            overridePendingTransition(0, 0); // No animation (looks like a tab switch)
-            finish();
-        });
+                TextView tvName = view.findViewById(R.id.tv_student_name); // Check IDs in item xml
+                TextView tvId = view.findViewById(R.id.tv_student_id);
+                // TextView tvEmail = view.findViewById(R.id.tv_email); // If exists
 
-        // Staff Tab -> Go to Staff Activity
-        tabStaff.setOnClickListener(v -> {
-            startActivity(new Intent(this, AdminStaffListActivity.class));
-            overridePendingTransition(0, 0);
-            finish();
-        });
+                tvName.setText(name);
+                tvId.setText("ID: " + id);
+
+                view.setOnClickListener(v -> {
+                    // Open Profile Details (Optional)
+                    // Intent intent = new Intent(this, AdminStudentProfileActivity.class);
+                    // intent.putExtra("USER_ID", id);
+                    // startActivity(intent);
+                });
+
+                llList.addView(view);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 }

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StudentGradesActivity extends AppCompatActivity {
+public class ParentGradesActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
     private LinearLayout llList;
@@ -17,10 +17,10 @@ public class StudentGradesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_grades);
+        setContentView(R.layout.parent_grades);
 
-        db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
+        db = new DatabaseHelper(this);
         llList = findViewById(R.id.ll_grades_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -30,25 +30,27 @@ public class StudentGradesActivity extends AppCompatActivity {
 
     private void loadGrades() {
         llList.removeAllViews();
-        Cursor cursor = db.getStudentGrades(studentId); // Reuse parent method
+        // Fetch all grades (pass "All" as semester/term)
+        Cursor cursor = db.getStudentGrades(studentId, "All");
         LayoutInflater inflater = LayoutInflater.from(this);
 
         if (cursor.moveToFirst()) {
             do {
                 String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
-                String exam = cursor.getString(cursor.getColumnIndexOrThrow("exam_name"));
-                int score = cursor.getInt(cursor.getColumnIndexOrThrow("score"));
-                int max = cursor.getInt(cursor.getColumnIndexOrThrow("total_marks"));
+                String grade = cursor.getString(cursor.getColumnIndexOrThrow("grade")); // or score
+                // If you stored score as Integer in Exam module, cast it:
+                // String score = String.valueOf(cursor.getInt(...));
 
-                // Reuse item_expense_row or similar generic card
+                // Reusing item_student_row.xml or creating a simple view programmatically
+                // Here is a simple dynamic view for demonstration:
                 View view = inflater.inflate(R.layout.item_expense_row, llList, false);
                 TextView tvSubject = view.findViewById(R.id.tv_expense_title);
-                TextView tvExam = view.findViewById(R.id.tv_expense_category);
-                TextView tvScore = view.findViewById(R.id.tv_expense_amount);
+                TextView tvGrade = view.findViewById(R.id.tv_expense_amount);
+                TextView tvDesc = view.findViewById(R.id.tv_expense_category);
 
                 tvSubject.setText(subject);
-                tvExam.setText(exam);
-                tvScore.setText(score + "/" + max);
+                tvGrade.setText(grade); // e.g. "95" or "A"
+                tvDesc.setText("Midterm 2025"); // Placeholder or fetch from DB
 
                 llList.addView(view);
             } while (cursor.moveToNext());

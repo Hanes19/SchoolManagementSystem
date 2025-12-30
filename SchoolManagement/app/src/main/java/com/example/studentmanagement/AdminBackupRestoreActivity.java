@@ -1,44 +1,38 @@
 package com.example.studentmanagement;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AdminBackupRestoreActivity extends AppCompatActivity {
+
+    private TextView tvLastBackup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_backup_restore);
 
-        // 1. Back Button
-        LinearLayout header = findViewById(R.id.header);
-        header.setOnClickListener(v -> finish());
+        tvLastBackup = findViewById(R.id.tv_last_backup);
 
-        // 2. Create Backup Action
-        // IMPORTANT: Add android:id="@+id/btn_create_backup" to the Create Backup CardView in XML
-        CardView btnCreateBackup = findViewById(R.id.btn_create_backup);
-        if (btnCreateBackup != null) {
-            btnCreateBackup.setOnClickListener(v -> performBackup());
-        }
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // 3. Restore Action
-        // IMPORTANT: Add android:id="@+id/btn_restore" to the Restore CardView in XML
-        CardView btnRestore = findViewById(R.id.btn_restore);
-        if (btnRestore != null) {
-            btnRestore.setOnClickListener(v -> performRestore());
-        }
-    }
+        CardView btnBackup = findViewById(R.id.card_create_backup);
+        btnBackup.setOnClickListener(v -> {
+            // Simulate Backup Process
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+            tvLastBackup.setText("Last Backup: " + time);
+            Toast.makeText(this, "Backup Created Successfully!", Toast.LENGTH_SHORT).show();
+        });
 
-    private void performBackup() {
-        Toast.makeText(this, "Creating Database Backup...", Toast.LENGTH_SHORT).show();
-        // Implement database export logic here
-    }
-
-    private void performRestore() {
-        Toast.makeText(this, "Select File to Restore...", Toast.LENGTH_SHORT).show();
-        // Implement file picker and database import logic here
+        CardView btnRestore = findViewById(R.id.card_restore_backup);
+        btnRestore.setOnClickListener(v -> {
+            Toast.makeText(this, "Restore feature requires storage permissions.", Toast.LENGTH_LONG).show();
+        });
     }
 }

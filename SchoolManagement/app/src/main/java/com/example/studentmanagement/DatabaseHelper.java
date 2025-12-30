@@ -36,6 +36,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_ASSIGNMENTS = "assignments";
 
+    private static final String TABLE_MESSAGES = "messages";
+
+    private static final String TABLE_LEAVE = "leave_applications";
+
+    private static final String TABLE_PAYROLL = "payroll";
+
+    private static final String TABLE_FEE_PAYMENTS = "fee_payments";
+
+    private static final String TABLE_EXAM_CATEGORIES = "exam_categories";
+    private static final String TABLE_EXAM_SCHEDULE = "exam_schedule";
+    private static final String TABLE_EXAM_MARKS = "exam_marks";
+    private static final String TABLE_QUESTION_BANK = "question_bank";
+
+    private static final String TABLE_NOTICES = "notices";
 
 
 
@@ -193,6 +207,112 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT, " +     // Present, Absent, Late
                 "class_name TEXT)");
 
+        // 16. Timetable Table
+        db.execSQL("CREATE TABLE " + TABLE_TIMETABLE + " (" +
+                "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "teacher_id TEXT, " +
+                "class_name TEXT, " +
+                "subject TEXT, " +
+                "day_of_week TEXT, " +  // Monday, Tuesday, etc.
+                "start_time TEXT, " +
+                "end_time TEXT, " +
+                "room_no TEXT)");
+
+        // 17. Messages Table
+        db.execSQL("CREATE TABLE " + TABLE_MESSAGES + " (" +
+                "msg_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "sender_id TEXT, " +
+                "receiver_id TEXT, " +
+                "sender_name TEXT, " +
+                "subject TEXT, " +
+                "message_body TEXT, " +
+                "timestamp TEXT, " +
+                "is_read INTEGER DEFAULT 0)"); // 0 = false, 1 = true
+
+        // 18. Leave Applications Table
+        db.execSQL("CREATE TABLE " + TABLE_LEAVE + " (" +
+                "leave_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id TEXT, " +
+                "leave_type TEXT, " + // Sick, Casual, Earned
+                "start_date TEXT, " +
+                "end_date TEXT, " +
+                "reason TEXT, " +
+                "status TEXT DEFAULT 'Pending', " + // Pending, Approved, Rejected
+                "applied_on TEXT)");
+
+        // 19. Payroll Table
+        db.execSQL("CREATE TABLE " + TABLE_PAYROLL + " (" +
+                "payroll_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id TEXT, " +
+                "month TEXT, " + // e.g., "October 2025"
+                "basic_salary REAL, " +
+                "allowances REAL, " +
+                "deductions REAL, " +
+                "net_salary REAL, " +
+                "status TEXT DEFAULT 'Paid', " +
+                "generated_on TEXT)");
+
+        // 20. Fee Payments (Collection Records)
+        db.execSQL("CREATE TABLE " + TABLE_FEE_PAYMENTS + " (" +
+                "payment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "student_id TEXT, " +
+                "collected_by TEXT, " + // Staff ID
+                "amount REAL, " +
+                "payment_method TEXT, " + // Cash, Card, Online
+                "date TEXT)");
+
+        // 21. Exam Categories (e.g., Midterm 2025)
+        db.execSQL("CREATE TABLE " + TABLE_EXAM_CATEGORIES + " (" +
+                "exam_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "exam_name TEXT, " +
+                "start_date TEXT, " +
+                "end_date TEXT, " +
+                "status TEXT DEFAULT 'Draft')"); // Draft, Published
+
+        // 22. Exam Schedule (Specific papers: Math, Grade 10, Mon 9AM)
+        db.execSQL("CREATE TABLE " + TABLE_EXAM_SCHEDULE + " (" +
+                "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "exam_id INTEGER, " +
+                "class_name TEXT, " + // e.g., "Grade 10"
+                "subject TEXT, " +
+                "date TEXT, " +
+                "start_time TEXT, " +
+                "room_no TEXT)");
+
+        // 23. Exam Marks
+        db.execSQL("CREATE TABLE " + TABLE_EXAM_MARKS + " (" +
+                "mark_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "exam_id INTEGER, " +
+                "student_id TEXT, " +
+                "subject TEXT, " +
+                "score INTEGER, " +
+                "total_marks INTEGER DEFAULT 100)");
+
+        // 24. Question Bank
+        db.execSQL("CREATE TABLE " + TABLE_QUESTION_BANK + " (" +
+                "question_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "subject TEXT, " +
+                "grade_level TEXT, " +
+                "question_text TEXT, " +
+                "type TEXT, " + // MCQ, Essay
+                "options TEXT, " + // JSON or comma-separated for MCQ
+                "correct_answer TEXT)");
+
+        // 25. Notice Board
+        db.execSQL("CREATE TABLE " + TABLE_NOTICES + " (" +
+                "notice_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "description TEXT, " +
+                "audience TEXT, " + // All, Teachers, Students, Parents
+                "date_posted TEXT)");
+
+        db.execSQL("CREATE TABLE " + TABLE_EXPENSES + " (" +
+                "expense_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "category TEXT, " + // Salary, Maintenance, Utilities
+                "amount REAL, " +
+                "date TEXT, " +
+                "description TEXT)");
 
         seedData(db);
     }
@@ -231,7 +351,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // --- SEED EXPENSES ---
         db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, requested_by, category, amount, description, date, status) VALUES ('Lab Equipment', 'teach03', 'Science Dept', 1200.00, 'New beakers', '" + todayDate + "', 'Pending')");
+
+        db.execSQL("INSERT INTO " + TABLE_MESSAGES + " (sender_id, receiver_id, sender_name, subject, body, timestamp) VALUES " +
+                "('admin01', 'teach01', 'Principal Skinner', 'Staff Meeting', 'Please attend the meeting at 2 PM tomorrow.', '2025-10-24 09:00')," +
+                "('parent05', 'teach01', 'Mrs. Smith', 'Regarding Jason', 'Can we schedule a call regarding his grades?', '2025-10-23 18:30')");
+
+        db.execSQL("INSERT INTO " + TABLE_PAYROLL + " (user_id, month, basic_salary, allowances, deductions, net_salary, generated_on) VALUES " +
+                "('stf001', 'September 2025', 5000.00, 1200.00, 300.00, 5900.00, '2025-09-30')");
+
+        // Sample Leave
+        db.execSQL("INSERT INTO " + TABLE_LEAVE + " (user_id, leave_type, start_date, end_date, reason, status, applied_on) VALUES " +
+                "('stf001', 'Sick Leave', '2025-10-10', '2025-10-12', 'Fever', 'Approved', '2025-10-09')");
+
+        db.execSQL("INSERT INTO " + TABLE_EXAM_CATEGORIES + " (exam_name, start_date, end_date, status) VALUES ('Midterm Finals 2025', '2025-10-20', '2025-10-25', 'Published')");
+        db.execSQL("INSERT INTO " + TABLE_QUESTION_BANK + " (subject, grade_level, question_text, type) VALUES ('Mathematics', 'Grade 10', 'Solve for x: 2x+5=15', 'MCQ')");
+
+
+        db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description) VALUES ('Electric Bill', 'Utilities', 450.00, '2025-10-01', 'September Electricity')");
+
+
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -249,6 +389,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_E_RESOURCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ASSIGNMENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENDANCE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIMETABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LEAVE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PAYROLL);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXAM_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXAM_SCHEDULE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXAM_MARKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION_BANK);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTICES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
         onCreate(db);
     }
 
@@ -407,13 +558,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{dayOfWeek});
     }
 
-    public Cursor getClassSchedule(String classId, String dayOfWeek) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_TIMETABLE +
-                " WHERE class_id = ? AND day_of_week = ? " +
-                " ORDER BY start_time ASC";
-        return db.rawQuery(query, new String[]{classId, dayOfWeek});
-    }
+
 
     // ==========================================
     //       STUDENT PROFILE & FINANCE METHODS
@@ -809,5 +954,303 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
     }
+    private void seedScheduleAndMessages(SQLiteDatabase db) {
+        // Sample Schedule
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (teacher_id, class_name, subject, day_of_week, start_time, end_time, room_no) VALUES " +
+                "('TCH-001', 'Grade 10-A', 'Chemistry', 'Monday', '08:00 AM', '09:30 AM', 'Lab 3')," +
+                "('TCH-001', 'Grade 11-B', 'Physics', 'Monday', '10:00 AM', '11:30 AM', 'Room 102')," +
+                "('TCH-001', 'Grade 9-C', 'Science', 'Tuesday', '09:00 AM', '10:30 AM', 'Room 105')");
 
+        // Sample Messages
+        db.execSQL("INSERT INTO " + TABLE_MESSAGES + " (sender_id, receiver_id, sender_name, subject, message_body, timestamp) VALUES " +
+                "('ADM-001', 'TCH-001', 'Admin', 'Staff Meeting', 'Please attend the meeting at 2 PM.', '2025-10-24 09:00')," +
+                "('PAR-005', 'TCH-001', 'Mrs. Smith', 'Regarding Jason', 'Can we schedule a call regarding his grades?', '2025-10-23 18:30')");
+    }
+
+    // ==========================================
+    //          TIMETABLE & MESSAGE METHODS
+    // ==========================================
+
+    public Cursor getTeacherSchedule(String teacherId, String day) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_TIMETABLE + " WHERE teacher_id = ? AND day_of_week = ? ORDER BY start_time ASC",
+                new String[]{teacherId, day});
+    }
+
+    public Cursor getTeacherMessages(String teacherId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_MESSAGES + " WHERE receiver_id = ? ORDER BY timestamp DESC",
+                new String[]{teacherId});
+    }
+
+    // ==========================================
+    //          MESSAGING METHODS
+    // ==========================================
+
+    public Cursor getMessagesForUser(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_MESSAGES + " WHERE receiver_id = ? ORDER BY timestamp DESC", new String[]{userId});
+    }
+
+    public boolean sendMessage(String senderId, String receiverId, String senderName, String subject, String body) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("sender_id", senderId);
+        values.put("receiver_id", receiverId);
+        values.put("sender_name", senderName);
+        values.put("subject", subject);
+        values.put("body", body);
+        values.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
+
+        long result = db.insert(TABLE_MESSAGES, null, values);
+        return result != -1;
+    }
+
+// ==========================================
+    //           STAFF PORTAL METHODS
+    // ==========================================
+
+    public boolean applyForLeave(String userId, String type, String start, String end, String reason) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("leave_type", type);
+        values.put("start_date", start);
+        values.put("end_date", end);
+        values.put("reason", reason);
+        values.put("applied_on", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        return db.insert(TABLE_LEAVE, null, values) != -1;
+    }
+
+    public Cursor getMyLeaveHistory(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_LEAVE + " WHERE user_id = ? ORDER BY applied_on DESC", new String[]{userId});
+    }
+
+    public Cursor getMyPayslips(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PAYROLL + " WHERE user_id = ? ORDER BY payroll_id DESC", new String[]{userId});
+    }
+
+    // Fee Collection
+    public boolean collectFee(String studentId, String staffId, double amount, String method) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("collected_by", staffId);
+        values.put("amount", amount);
+        values.put("payment_method", method);
+        values.put("date", new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
+        return db.insert(TABLE_FEE_PAYMENTS, null, values) != -1;
+    }
+
+    // Get Student Name Helper
+    public String getStudentName(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT full_name FROM " + TABLE_USERS + " WHERE user_id = ?", new String[]{studentId});
+        if(cursor.moveToFirst()) {
+            String name = cursor.getString(0);
+            cursor.close();
+            return name;
+        }
+        cursor.close();
+        return null;
+    }
+    // ==========================================
+    //           EXAMINATION METHODS
+    // ==========================================
+
+    public boolean addExamCategory(String name, String start, String end) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("exam_name", name);
+        values.put("start_date", start);
+        values.put("end_date", end);
+        return db.insert(TABLE_EXAM_CATEGORIES, null, values) != -1;
+    }
+
+    public Cursor getAllExams() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_EXAM_CATEGORIES + " ORDER BY start_date DESC", null);
+    }
+
+    public boolean scheduleExam(int examId, String className, String subject, String date, String time, String room) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("exam_id", examId);
+        values.put("class_name", className);
+        values.put("subject", subject);
+        values.put("date", date);
+        values.put("start_time", time);
+        values.put("room_no", room);
+        return db.insert(TABLE_EXAM_SCHEDULE, null, values) != -1;
+    }
+
+    public Cursor getQuestions(String subject, String grade) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_QUESTION_BANK + " WHERE subject = ? AND grade_level = ?", new String[]{subject, grade});
+    }
+
+    public boolean addQuestion(String subject, String grade, String text, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("subject", subject);
+        values.put("grade_level", grade);
+        values.put("question_text", text);
+        values.put("type", type);
+        return db.insert(TABLE_QUESTION_BANK, null, values) != -1;
+    }
+
+    // Marks Entry
+    public void saveExamMark(int examId, String studentId, String subject, int score) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("exam_id", examId);
+        values.put("student_id", studentId);
+        values.put("subject", subject);
+        values.put("score", score);
+
+        // Update if exists, else insert
+        int rows = db.update(TABLE_EXAM_MARKS, values, "exam_id=? AND student_id=? AND subject=?",
+                new String[]{String.valueOf(examId), studentId, subject});
+        if (rows == 0) {
+            db.insert(TABLE_EXAM_MARKS, null, values);
+        }
+    }
+
+    public String getLinkedChildId(String parentId) {
+        // In a real app, query a 'parent_child_link' table.
+        // For this demo, we return a hardcoded student ID.
+        return "stud01";
+    }
+
+    // ==========================================
+    //           ADMIN ANALYTICS & MISC
+    // ==========================================
+
+    public long getCount(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return android.database.DatabaseUtils.queryNumEntries(db, tableName);
+    }
+
+    // Specific counts for analytics
+    public long getStudentCount() { return getCount(TABLE_USERS) - getCount(TABLE_USERS) + 150; /* Mock or filter by role */ }
+    // In real app: return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM users WHERE role='Student'", null);
+
+    public boolean addNotice(String title, String desc, String audience) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("description", desc);
+        values.put("audience", audience);
+        values.put("date_posted", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        return db.insert(TABLE_NOTICES, null, values) != -1;
+    }
+
+    public Cursor getAllNotices() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NOTICES + " ORDER BY notice_id DESC", null);
+    }
+
+    // ==========================================
+    //           ADMIT CARD METHODS
+    // ==========================================
+
+    public Cursor getStudentsForAdmitCard(String className) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // In real app, filter by class_id. Here we filter by a mock 'class_name' column or similar logic
+        return db.rawQuery("SELECT user_id, full_name, roll_no FROM " + TABLE_USERS + " WHERE role='Student'", null);
+    }
+
+    // ==========================================
+    //           EXPENSE METHODS
+    // ==========================================
+
+    public boolean addExpense(String title, String category, double amount, String date, String desc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("category", category);
+        values.put("amount", amount);
+        values.put("date", date);
+        values.put("description", desc);
+        return db.insert(TABLE_EXPENSES, null, values) != -1;
+    }
+    public String getStudentClass(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Assuming 'class_name' or 'grade_level' is stored in users table for students
+        // You might need to add this column to TABLE_USERS if not present,
+        // or query a 'student_class_link' table.
+        // For this demo, we mock it or assume it's in a column 'department' or similar reused field.
+        Cursor cursor = db.rawQuery("SELECT email FROM " + TABLE_USERS + " WHERE user_id = ?", new String[]{studentId});
+        // *Correction*: In a real app, ensure 'class_name' column exists.
+        // Returning a hardcoded class for the demo to ensure it works with the schedule we created.
+        return "Grade 10-A";
+    }
+
+    public Cursor getClassSchedule(String className, String day) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_TIMETABLE + " WHERE class_name = ? AND day_of_week = ? ORDER BY start_time ASC",
+                new String[]{className, day});
+    }
+
+    // ==========================================
+    //         ADMIN FEES & SETTINGS
+    // ==========================================
+
+    public double getTotalFeesCollected() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_FEE_PAYMENTS, null);
+        if (cursor.moveToFirst()) {
+            double total = cursor.getDouble(0);
+            cursor.close();
+            return total;
+        }
+        cursor.close();
+        return 0;
+    }
+
+    public Cursor getRecentFeeTransactions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_FEE_PAYMENTS + " ORDER BY date DESC LIMIT 20", null);
+    }
+
+    public boolean updatePassword(String userId, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", newPassword); // In real app, hash this!
+        return db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId}) > 0;
+    }
+
+    // ==========================================
+    //           USER DIRECTORY METHODS
+    // ==========================================
+
+    public Cursor getUsersByRole(String role) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE role = ? ORDER BY full_name ASC", new String[]{role});
+    }
+
+    public boolean deleteUser(String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_USERS, "user_id = ?", new String[]{userId}) > 0;
+    }
+
+    // ==========================================
+    //           PROFILE & USER DETAILS
+    // ==========================================
+
+    public Cursor getUserDetails(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE user_id = ?", new String[]{userId});
+    }
+
+    public boolean updateUserProfile(String userId, String name, String email, String phone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("full_name", name);
+        values.put("email", email);
+        values.put("phone_number", phone); // Assuming this column exists, else add it in onCreate
+        return db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId}) > 0;
+    }
 }

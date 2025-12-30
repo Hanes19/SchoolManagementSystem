@@ -6,63 +6,64 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StudentFeesActivity extends AppCompatActivity {
+public class ParentFeesActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
     private LinearLayout llHistory;
-    private TextView tvOutstanding;
+    private TextView tvTotalDue;
     private String studentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_fees);
+        setContentView(R.layout.parent_fees_view);
 
-        db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
+        db = new DatabaseHelper(this);
 
-        llHistory = findViewById(R.id.ll_payment_history);
-        tvOutstanding = findViewById(R.id.tv_outstanding_amount);
+        llHistory = findViewById(R.id.ll_transaction_history);
+        tvTotalDue = findViewById(R.id.tv_total_outstanding);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        loadFeeData();
+        findViewById(R.id.btn_pay_now).setOnClickListener(v ->
+                Toast.makeText(this, "Payment Gateway Integration Required", Toast.LENGTH_SHORT).show()
+        );
+
+        loadFeeDetails();
     }
 
-    private void loadFeeData() {
+    private void loadFeeDetails() {
         llHistory.removeAllViews();
         Cursor cursor = db.getStudentFees(studentId);
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        double totalPaid = 0;
-        double annualFee = 2500.00; // Mock total fee
+        double totalDue = 1500.00; // Mock initial due, or calculate from DB
 
         if (cursor.moveToFirst()) {
             do {
+                String desc = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String method = cursor.getString(cursor.getColumnIndexOrThrow("payment_method"));
-
-                totalPaid += amount;
 
                 View view = inflater.inflate(R.layout.item_expense_row, llHistory, false);
                 TextView tvTitle = view.findViewById(R.id.tv_expense_title);
-                TextView tvDesc = view.findViewById(R.id.tv_expense_category);
                 TextView tvAmount = view.findViewById(R.id.tv_expense_amount);
+                TextView tvDate = view.findViewById(R.id.tv_expense_category);
 
-                tvTitle.setText("Fee Paid");
-                tvDesc.setText(date + " via " + method);
-                tvAmount.setText("-$" + amount);
-                tvAmount.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                tvTitle.setText(desc);
+                tvAmount.setText("-$" + amount); // Paid
+                tvDate.setText(date);
 
-                llHistory.addView(view);
+                totalDue -= amount; // Deduct payments
+                llList.addView(view);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        double due = Math.max(0, annualFee - totalPaid);
-        tvOutstanding.setText("Outstanding: $" + String.format("%.2f", due));
+        tvTotalDue.setText(String.format("$%.2f", Math.max(0, totalDue)));
     }
 }

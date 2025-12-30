@@ -2,58 +2,40 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class AdminSettingsActivity extends AppCompatActivity {
-
-    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_settings);
 
-        session = new SessionManager(this);
+        setupOption(R.id.card_school_profile, AdminSchoolProfileActivity.class);
+        setupOption(R.id.card_change_password, ChangePasswordActivity.class);
+        setupOption(R.id.card_backup, AdminBackupRestoreActivity.class);
 
-        // 1. HEADER / BACK BUTTON
-        LinearLayout header = findViewById(R.id.header);
-        header.setOnClickListener(v -> finish());
+        // System Config / Privacy Policy could be static pages or placeholders
+        // setupOption(R.id.card_system_config, AdminSystemConfigActivity.class);
 
-        // 2. LOG OUT BUTTON
-        TextView btnLogout = findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(v -> {
-            Toast.makeText(AdminSettingsActivity.this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-            session.logoutUser();
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        // Logout Logic
+        findViewById(R.id.btn_logout).setOnClickListener(v -> {
+            // Clear sessions here
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
         });
+    }
 
-        // 3. CHANGE PASSWORD
-        findViewById(R.id.btn_change_password).setOnClickListener(v -> {
-            // Placeholder: You can create a ChangePasswordActivity later if needed
-            Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
-        });
-
-        // 4. HELP CENTER (New)
-        // Ensure you have created AdminHelpCenterActivity.java
-        findViewById(R.id.btn_help).setOnClickListener(v -> {
-            Intent intent = new Intent(AdminSettingsActivity.this, AdminHelpCenterActivity.class);
-            startActivity(intent);
-        });
-
-        // 5. PRIVACY POLICY (New)
-        // Ensure you have created AdminPrivacyPolicyActivity.java
-        findViewById(R.id.btn_privacy).setOnClickListener(v -> {
-            Intent intent = new Intent(AdminSettingsActivity.this, AdminPrivacyPolicyActivity.class);
-            startActivity(intent);
-        });
-
-        // Optional: 2FA Toggle (Visual only for now)
-        findViewById(R.id.btn_2fa).setOnClickListener(v -> {
-            Toast.makeText(this, "2FA settings clicked", Toast.LENGTH_SHORT).show();
-        });
+    private void setupOption(int id, Class<?> cls) {
+        CardView card = findViewById(id);
+        if (card != null) {
+            card.setOnClickListener(v -> startActivity(new Intent(this, cls)));
+        }
     }
 }

@@ -1,57 +1,56 @@
 package com.example.studentmanagement;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminTeacherListActivity extends AppCompatActivity {
 
+    private DatabaseHelper db;
+    private LinearLayout llList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_user_directory_teacher); // Note: singular 'teacher' as per your file
+        setContentView(R.layout.admin_teacher_list); // Ensure XML exists
 
-        // ... inside onCreate
-        setupTabs();
+        db = new DatabaseHelper(this);
+        llList = findViewById(R.id.ll_user_list);
 
-// Link the Sample Data Click
-        findViewById(R.id.card_teacher_1).setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(this, AdminTeacherProfileActivity.class);
-            startActivity(intent);
-        });
-        // --- NEW: Floating Action Button (Add Teacher) ---
-        findViewById(R.id.btn_add_teacher).setOnClickListener(v -> {
-            Intent intent = new Intent(AdminTeacherListActivity.this, AddTeacherActivity.class);
-            startActivity(intent);
-        });
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        findViewById(R.id.fab_add_user).setOnClickListener(v ->
+                startActivity(new Intent(this, AddTeacherActivity.class))
+        );
+
+        loadTeachers();
     }
 
-    private void setupTabs() {
-        LinearLayout tabContainer = findViewById(R.id.tab_container);
-        TextView tabStudent = (TextView) tabContainer.getChildAt(0);
-        TextView tabTeacher = (TextView) tabContainer.getChildAt(1);
-        TextView tabStaff   = (TextView) tabContainer.getChildAt(2);
+    private void loadTeachers() {
+        llList.removeAllViews();
+        Cursor cursor = db.getUsersByRole("Teacher");
+        LayoutInflater inflater = LayoutInflater.from(this);
 
-        LinearLayout header = findViewById(R.id.header);
-        header.getChildAt(0).setOnClickListener(v -> finish());
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("full_name"));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 
-        // Student Tab -> Go to Student Activity
-        tabStudent.setOnClickListener(v -> {
-            startActivity(new Intent(this, AdminStudentListActivity.class));
-            overridePendingTransition(0, 0);
-            finish();
-        });
+                View view = inflater.inflate(R.layout.item_student_row, llList, false);
+                TextView tvName = view.findViewById(R.id.tv_student_name);
+                TextView tvId = view.findViewById(R.id.tv_student_id);
 
-        // Teacher Tab (Already here)
-        tabTeacher.setOnClickListener(v -> {});
+                tvName.setText(name);
+                tvId.setText("ID: " + id);
 
-        // Staff Tab -> Go to Staff Activity
-        tabStaff.setOnClickListener(v -> {
-            startActivity(new Intent(this, AdminStaffListActivity.class));
-            overridePendingTransition(0, 0);
-            finish();
-        });
+                llList.addView(view);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 }

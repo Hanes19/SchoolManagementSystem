@@ -1,59 +1,71 @@
 package com.example.studentmanagement;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studentmanagement.R;
-import com.google.android.material.bottomsheet.BottomSheetDialog; // Import this
+public class AdminFeesActivity extends AppCompatActivity {
 
-public class AdminFeesActivity extends AppCompatActivity { // Or your specific activity name
+    private DatabaseHelper db;
+    private TextView tvCollected, tvPending;
+    private LinearLayout llTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_fees_billings); // Ensure this is the correct layout
+        setContentView(R.layout.admin_fees); // Ensure XML name matches
 
-        // 1. Initialize the Filter Button
-        ImageView btnFilter = findViewById(R.id.btn_filter);
+        db = new DatabaseHelper(this);
 
-        // 2. Set Click Listener to open the Bottom Sheet
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFilterBottomSheet();
-            }
-        });
+        tvCollected = findViewById(R.id.tv_total_collected);
+        tvPending = findViewById(R.id.tv_pending_fees);
+        llTransactions = findViewById(R.id.ll_transaction_list);
+
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
+        loadStats();
+        loadTransactions();
     }
 
-    private void showFilterBottomSheet() {
-        // Create the BottomSheetDialog
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+    private void loadStats() {
+        double collected = db.getTotalFeesCollected();
+        tvCollected.setText(String.format("$%.2f", collected));
 
-        // Inflate the admin_fees_filter.xml layout
-        View sheetView = getLayoutInflater().inflate(R.layout.admin_fees_filter, null);
-        bottomSheetDialog.setContentView(sheetView);
+        // Mock pending calculation
+        double estimatedTotal = 50000.00;
+        double pending = Math.max(0, estimatedTotal - collected);
+        tvPending.setText(String.format("$%.2f", pending));
+    }
 
-        // --- Handle Interactions Inside the Filter Sheet ---
+    private void loadTransactions() {
+        llTransactions.removeAllViews();
+        Cursor cursor = db.getRecentFeeTransactions();
+        LayoutInflater inflater = LayoutInflater.from(this);
 
-        // Example: Handle "Apply Filters" button click
-        View btnApply = sheetView.findViewById(R.id.btn_apply);
-        btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Add your filtering logic here
-                Toast.makeText(getApplicationContext(), "Filters Applied", Toast.LENGTH_SHORT).show();
-                bottomSheetDialog.dismiss(); // Close the sheet
-            }
-        });
+        if (cursor.moveToFirst()) {
+            do {
+                String studentId = cursor.getString(cursor.getColumnIndexOrThrow("student_id"));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                String method = cursor.getString(cursor.getColumnIndexOrThrow("payment_method"));
 
-        // Example: Handle "Reset" text click
-        View btnReset = sheetView.findViewById(R.id.tv_filter_title); // Assuming 'Reset' text is near title or find specific ID if you add one
-        // Note: In your XML, "Reset" does not have an ID. You might want to add android:id="@+id/btn_reset" to the TextView containing "Reset".
+                View view = inflater.inflate(R.layout.item_expense_row, llTransactions, false);
+                TextView tvTitle = view.findViewById(R.id.tv_expense_title);
+                TextView tvDesc = view.findViewById(R.id.tv_expense_category);
+                TextView tvAmount = view.findViewById(R.id.tv_expense_amount);
 
-        // Show the dialog
-        bottomSheetDialog.show();
+                tvTitle.setText("Received from " + studentId);
+                tvDesc.setText(date + " • " + method);
+                tvAmount.setText("+$" + amount);
+                tvAmount.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+
+                llTransactions.addView(view);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 }

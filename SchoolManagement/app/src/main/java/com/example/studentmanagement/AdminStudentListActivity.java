@@ -21,68 +21,64 @@ public class AdminStudentListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_student_list);
+        // FIX 1: Changed layout to match your XML filename
+        setContentView(R.layout.admin_user_directory_students);
 
         db = new DatabaseHelper(this);
-        llList = findViewById(R.id.ll_user_list);
-        etSearch = findViewById(R.id.et_search);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        // These IDs must exist in admin_user_directory_students.xml
+        llList = findViewById(R.id.ll_user_list);
+        etSearch = findViewById(R.id.et_search); // Ensure this ID exists if you have a search bar, otherwise remove/comment
+
+        // FIX: The XML has an ImageView in the header, likely acting as back button.
+        // Ensure the ID in XML is 'btn_back' or change it here.
+        View backBtn = findViewById(R.id.btn_back);
+        if (backBtn != null) backBtn.setOnClickListener(v -> finish());
 
         findViewById(R.id.fab_add_user).setOnClickListener(v ->
                 startActivity(new Intent(this, AddStudentActivity.class))
         );
 
-        etSearch.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loadUsers(s.toString());
-            }
-            public void afterTextChanged(Editable s) {}
-        });
-    }
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    loadUsers(s.toString());
+                }
+                public void afterTextChanged(Editable s) {}
+            });
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         loadUsers("");
     }
 
     private void loadUsers(String query) {
+        if (llList == null) return;
         llList.removeAllViews();
         Cursor cursor = db.getUsersByRole("Student");
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("full_name"));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 String id = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 
                 if (!query.isEmpty() && !name.toLowerCase().contains(query.toLowerCase())) {
                     continue;
                 }
 
-                // Reuse item_student_row.xml
+                // Ensure 'item_student_row.xml' exists and has these IDs
                 View view = inflater.inflate(R.layout.item_student_row, llList, false);
 
-                TextView tvName = view.findViewById(R.id.tv_student_name); // Check IDs in item xml
+                TextView tvName = view.findViewById(R.id.tv_student_name);
                 TextView tvId = view.findViewById(R.id.tv_student_id);
-                // TextView tvEmail = view.findViewById(R.id.tv_email); // If exists
 
                 tvName.setText(name);
                 tvId.setText("ID: " + id);
 
-                view.setOnClickListener(v -> {
-                    // Open Profile Details (Optional)
-                    // Intent intent = new Intent(this, AdminStudentProfileActivity.class);
-                    // intent.putExtra("USER_ID", id);
-                    // startActivity(intent);
-                });
-
                 llList.addView(view);
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
     }
 }

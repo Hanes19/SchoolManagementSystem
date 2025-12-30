@@ -24,10 +24,8 @@ public class AdminPayrollActivity extends AppCompatActivity {
         setContentView(R.layout.admin_payroll);
 
         db = new DatabaseHelper(this);
-        llPayrollList = findViewById(R.id.ll_payroll_list); // You need to add this ID to a LinearLayout inside a ScrollView in your XML
-
-        // If your XML doesn't have a container for the list yet,
-        // you must replace the hardcoded <CardView> items with a <LinearLayout id="@+id/ll_payroll_list" ... />
+        // This ID must exist in admin_payroll.xml (as added in the previous step)
+        llPayrollList = findViewById(R.id.ll_payroll_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
@@ -35,6 +33,7 @@ public class AdminPayrollActivity extends AppCompatActivity {
     }
 
     private void loadPayrollData() {
+        if (llPayrollList == null) return;
         llPayrollList.removeAllViews();
         SQLiteDatabase database = db.getReadableDatabase();
 
@@ -42,19 +41,21 @@ public class AdminPayrollActivity extends AppCompatActivity {
         // This query fetches all Teachers/Staff
         Cursor cursor = database.rawQuery("SELECT * FROM users WHERE role IN ('Teacher', 'Staff')", null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
-                String userId = cursor.getString(cursor.getColumnIndex("user_id"));
-                String name = cursor.getString(cursor.getColumnIndex("full_name"));
-                String role = cursor.getString(cursor.getColumnIndex("role"));
+                String userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("full_name"));
+                String role = cursor.getString(cursor.getColumnIndexOrThrow("role"));
 
                 // Check if paid for current month (Mocking 'October 2025')
                 Cursor payCursor = database.rawQuery("SELECT * FROM payroll WHERE user_id=? AND month=?", new String[]{userId, "October 2025"});
                 boolean isPaid = payCursor.moveToFirst();
+                payCursor.close();
 
-                // Inflate Item Layout (reuse item_staff_payslip.xml or similar)
-                View itemView = LayoutInflater.from(this).inflate(R.layout.item_staff_payslip, llPayrollList, false);
+                // FIX: Use the new layout 'item_admin_payroll_row' which has the correct IDs
+                View itemView = LayoutInflater.from(this).inflate(R.layout.item_admin_payroll_row, llPayrollList, false);
 
+                // These IDs (tv_staff_name, etc.) must exist in item_admin_payroll_row.xml
                 TextView tvName = itemView.findViewById(R.id.tv_staff_name);
                 TextView tvRole = itemView.findViewById(R.id.tv_staff_role);
                 TextView tvStatus = itemView.findViewById(R.id.tv_payment_status);
@@ -65,20 +66,19 @@ public class AdminPayrollActivity extends AppCompatActivity {
 
                 if (isPaid) {
                     tvStatus.setText("PAID");
-                    tvStatus.setTextColor(getResources().getColor(R.color.green)); // Ensure color exists
+                    tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                     card.setOnClickListener(v -> showPayrollDetailsBottomSheet(userId));
                 } else {
                     tvStatus.setText("PENDING");
-                    tvStatus.setTextColor(getResources().getColor(R.color.red));
+                    tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                     card.setOnClickListener(v -> showProcessPaymentBottomSheet(userId, name));
                 }
 
                 llPayrollList.addView(itemView);
-                payCursor.close();
 
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
     }
 
     private void showProcessPaymentBottomSheet(String userId, String name) {

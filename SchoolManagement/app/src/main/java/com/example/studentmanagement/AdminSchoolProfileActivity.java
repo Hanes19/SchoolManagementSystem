@@ -19,13 +19,17 @@ public class AdminSchoolProfileActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("SchoolPrefs", Context.MODE_PRIVATE);
 
-        etName = findViewById(R.id.et_school_name);
-        etAddress = findViewById(R.id.et_school_address);
-        etPhone = findViewById(R.id.et_school_phone);
-        etEmail = findViewById(R.id.et_school_email);
+        // FIX: Updated IDs to match admin_school_profile.xml
+        etName = findViewById(R.id.et_school_name); // This one usually has the prefix in your XML
+        etAddress = findViewById(R.id.et_address);  // CHANGED: Removed 'school_'
+        etPhone = findViewById(R.id.et_phone);      // CHANGED: Removed 'school_'
+        etEmail = findViewById(R.id.et_email);      // CHANGED: Removed 'school_'
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_save_profile).setOnClickListener(v -> saveProfile());
+        findViewById(R.id.btn_save).setOnClickListener(v -> finish());
+
+        // FIX: Check your XML for the save button ID. It is likely 'btn_save' or 'btn_save_changes'
+        // If your XML has android:id="@+id/btn_save", use this:
+        findViewById(R.id.btn_save).setOnClickListener(v -> saveProfile());
 
         loadProfile();
     }
@@ -44,8 +48,7 @@ public class AdminSchoolProfileActivity extends AppCompatActivity {
         editor.putString("PHONE", etPhone.getText().toString());
         editor.putString("EMAIL", etEmail.getText().toString());
         editor.apply();
-
-        Toast.makeText(this, "Profile Updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Profile Saved", Toast.LENGTH_SHORT).show();
         finish();
     }
 }

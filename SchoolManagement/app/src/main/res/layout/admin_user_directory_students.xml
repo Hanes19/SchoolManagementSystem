@@ -117,7 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:id="@+id/listContainer"
+            android:id="@+id/ll_user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -368,49 +368,51 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/profile_pic"
                         android:background="#F4F7FE"
                         android:padding="10dp"
-                        tools:ignore="ContentDescription"/>
+                        android:src="@drawable/profile_pic"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tony Stark"
-                            android:textStyle="bold"
                             android:textColor="#1B254B"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Class 12-A | Roll: 10"
                             android:textColor="#A3AED0"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Active"
-                        android:textColor="#4CAF50"
                         android:background="#E8F5E9"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="6dp"
+                        android:text="Active"
+                        android:textColor="#4CAF50"
                         android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -533,7 +535,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn_add_student"
+        android:id="@+id/fab_add_user"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:cardCornerRadius="30dp"

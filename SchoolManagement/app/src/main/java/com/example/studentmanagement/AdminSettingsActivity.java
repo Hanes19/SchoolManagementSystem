@@ -15,7 +15,7 @@ public class AdminSettingsActivity extends AppCompatActivity {
 
         setupOption(R.id.card_school_profile, AdminSchoolProfileActivity.class);
         setupOption(R.id.card_change_password, ChangePasswordActivity.class);
-        setupOption(R.id.card_backup, AdminBackupRestoreActivity.class);
+
 
         // System Config / Privacy Policy could be static pages or placeholders
         // setupOption(R.id.card_system_config, AdminSystemConfigActivity.class);

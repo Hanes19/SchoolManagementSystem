@@ -41,6 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/ll_exam_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -196,6 +197,7 @@
 
     <!-- FAB -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/fab_add_exam"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:cardCornerRadius="30dp"

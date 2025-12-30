@@ -17,6 +17,7 @@ public class AdminFeesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // FIX 1: Point to the correct XML file (admin_fees_billings.xml)
         setContentView(R.layout.admin_fees_billings);
 
         db = new DatabaseHelper(this);
@@ -25,7 +26,11 @@ public class AdminFeesActivity extends AppCompatActivity {
         tvPending = findViewById(R.id.tv_pending_fees);
         llTransactions = findViewById(R.id.ll_transaction_list);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        // FIX 2: Ensure this ID exists in admin_fees_billings.xml or remove this line
+        View backBtn = findViewById(R.id.btn_back);
+        if (backBtn != null) {
+            backBtn.setOnClickListener(v -> finish());
+        }
 
         loadStats();
         loadTransactions();
@@ -33,20 +38,25 @@ public class AdminFeesActivity extends AppCompatActivity {
 
     private void loadStats() {
         double collected = db.getTotalFeesCollected();
-        tvCollected.setText(String.format("$%.2f", collected));
+        if (tvCollected != null) {
+            tvCollected.setText(String.format("$%.2f", collected));
+        }
 
-        // Mock pending calculation
         double estimatedTotal = 50000.00;
         double pending = Math.max(0, estimatedTotal - collected);
-        tvPending.setText(String.format("$%.2f", pending));
+        if (tvPending != null) {
+            tvPending.setText(String.format("$%.2f", pending));
+        }
     }
 
     private void loadTransactions() {
+        if (llTransactions == null) return;
+
         llTransactions.removeAllViews();
         Cursor cursor = db.getRecentFeeTransactions();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String studentId = cursor.getString(cursor.getColumnIndexOrThrow("student_id"));
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
@@ -54,9 +64,11 @@ public class AdminFeesActivity extends AppCompatActivity {
                 String method = cursor.getString(cursor.getColumnIndexOrThrow("payment_method"));
 
                 View view = inflater.inflate(R.layout.item_expense_row, llTransactions, false);
+
+                // FIX 3: Update IDs to match the corrected item_expense_row.xml
                 TextView tvTitle = view.findViewById(R.id.tv_expense_title);
-                TextView tvDesc = view.findViewById(R.id.tv_expense_category);
-                TextView tvAmount = view.findViewById(R.id.tv_expense_amount);
+                TextView tvDesc = view.findViewById(R.id.tv_requested_by); // Was tv_expense_category
+                TextView tvAmount = view.findViewById(R.id.tv_amount);       // Was tv_expense_amount
 
                 tvTitle.setText("Received from " + studentId);
                 tvDesc.setText(date + " • " + method);
@@ -65,7 +77,7 @@ public class AdminFeesActivity extends AppCompatActivity {
 
                 llTransactions.addView(view);
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
     }
 }

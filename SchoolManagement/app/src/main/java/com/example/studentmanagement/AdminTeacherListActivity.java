@@ -17,7 +17,7 @@ public class AdminTeacherListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_teacher_list); // Ensure XML exists
+        setContentView(R.layout.admin_user_directory_teacher); // Ensure XML exists
 
         db = new DatabaseHelper(this);
         llList = findViewById(R.id.ll_user_list);

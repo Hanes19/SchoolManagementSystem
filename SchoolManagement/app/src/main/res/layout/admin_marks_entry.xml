@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -18,8 +17,6 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Enter Marks" android:textSize="22sp" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <!-- Class Selection Filters (NEW) -->
-    <!-- Replaced static Info Card with interactive dropdowns -->
     <androidx.cardview.widget.CardView
         android:id="@+id/filter_card"
         android:layout_width="match_parent"
@@ -44,7 +41,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Row 1: Grade & Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +72,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Row 2: Subject & Exam -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,7 +105,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Student List -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -119,6 +113,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/ll_student_marks_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -133,62 +128,14 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Student Item 1 -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/btn_save_marks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical" android:orientation="horizontal">
-                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:padding="8dp" android:background="#F4F7FE" app:tint="#1B254B"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Clark Kent" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="12dp"/>
-
-                    <androidx.cardview.widget.CardView android:layout_width="80dp" android:layout_height="40dp" app:cardCornerRadius="8dp" app:cardBackgroundColor="#F4F7FE" app:cardElevation="0dp">
-                        <EditText android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="95" android:inputType="number" android:background="@null" android:textColor="#1B254B" android:textStyle="bold"/>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Student Item 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical" android:orientation="horizontal">
-                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:padding="8dp" android:background="#F4F7FE" app:tint="#1B254B"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Peter Parker" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="12dp"/>
-
-                    <androidx.cardview.widget.CardView android:layout_width="80dp" android:layout_height="40dp" app:cardCornerRadius="8dp" app:cardBackgroundColor="#F4F7FE" app:cardElevation="0dp">
-                        <EditText android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="88" android:inputType="number" android:background="@null" android:textColor="#1B254B" android:textStyle="bold"/>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Student Item 3 (New) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical" android:orientation="horizontal">
-                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/profile" android:padding="8dp" android:background="#F4F7FE" app:tint="#1B254B"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Bruce Wayne" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="12dp"/>
-
-                    <androidx.cardview.widget.CardView android:layout_width="80dp" android:layout_height="40dp" app:cardCornerRadius="8dp" app:cardBackgroundColor="#F4F7FE" app:cardElevation="0dp">
-                        <EditText android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:hint="-" android:inputType="number" android:background="@null" android:textColor="#1B254B" android:textStyle="bold"/>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Save Button at bottom -->
-            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="50dp" app:cardCornerRadius="16dp" app:cardBackgroundColor="#4318FF" android:clickable="true" android:layout_marginTop="16dp">
+                android:layout_height="50dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#4318FF"
+                android:clickable="true"
+                android:layout_marginTop="16dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Save Grades" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="16sp" android:layout_gravity="center"/>
             </androidx.cardview.widget.CardView>
 

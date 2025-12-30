@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -117,7 +118,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:id="@+id/listContainer"
+            android:id="@+id/ll_user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -534,7 +535,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn_add_teacher"
+        android:id="@+id/fab_add_user"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:cardCornerRadius="30dp"

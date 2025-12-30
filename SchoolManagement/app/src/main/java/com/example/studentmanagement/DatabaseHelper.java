@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -24,7 +26,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_GRADES = "grades";
     private static final String TABLE_FEES = "fees";
     private static final String TABLE_EXPENSES = "expenses";
-    private static final String TABLE_ROLES = "roles"; // New Table
+    private static final String TABLE_ROLES = "roles";
+
+    private static final String TABLE_BOOKS = "library_books";
+
+    private static final String TABLE_LIBRARY_ISSUES = "library_issues";
+
+    private static final String TABLE_E_RESOURCES = "e_resources";
+
+    private static final String TABLE_ASSIGNMENTS = "assignments";
+
+
+
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,6 +46,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
+
         // 1. Users Table
         db.execSQL("CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -109,8 +126,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "role_name TEXT UNIQUE, " +
                 "description TEXT)");
 
+        // 10. Library Books Table
+        db.execSQL("CREATE TABLE " + TABLE_BOOKS + " (" +
+                "book_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "author TEXT, " +
+                "isbn TEXT UNIQUE, " +
+                "category TEXT, " +
+                "quantity INTEGER, " +
+                "location TEXT, " +
+                "date_added TEXT)");
+
+        // 11. Library Issues (Circulation) Table
+        db.execSQL("CREATE TABLE " + TABLE_LIBRARY_ISSUES + " (" +
+                "issue_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "book_id INTEGER, " +
+                "student_id TEXT, " +
+                "issue_date TEXT, " +
+                "due_date TEXT, " +
+                "return_date TEXT, " +
+                "status TEXT DEFAULT 'Issued', " + // Issued, Returned, Overdue
+                "fine_amount REAL DEFAULT 0)");
+
+        // 12. E-Resources Table
+        db.execSQL("CREATE TABLE " + TABLE_E_RESOURCES + " (" +
+                "resource_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "category TEXT, " +
+                "type TEXT, " + // PDF, Video, Link
+                "url_or_path TEXT, " +
+                "date_added TEXT)");
+
+        // 13. Assignments Table
+        db.execSQL("CREATE TABLE " + TABLE_ASSIGNMENTS + " (" +
+                "assignment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "class_name TEXT, " + // e.g., "Grade 10-A"
+                "subject TEXT, " + // e.g., "Chemistry"
+                "max_score INTEGER)");
+
+        // 14. Grades Table
+        db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
+                "grade_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "assignment_id INTEGER, " +
+                "student_id TEXT, " + // Links to User ID or Student ID
+                "score INTEGER, " +
+                "feedback TEXT)");
+
+
         seedData(db);
     }
+
+
 
     private void seedData(SQLiteDatabase db) {
         String testPassHash = SecurityUtil.hashPassword("123456");
@@ -157,6 +224,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROLES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LIBRARY_ISSUES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_E_RESOURCES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ASSIGNMENTS);
         onCreate(db);
     }
 
@@ -416,4 +487,246 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return 0.0;
     }
+
+    public boolean addBook(String title, String author, String isbn, String category, int quantity, String location) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("author", author);
+        values.put("isbn", isbn);
+        values.put("category", category);
+        values.put("quantity", quantity);
+        values.put("location", location);
+
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        values.put("date_added", today);
+
+        long result = db.insert(TABLE_BOOKS, null, values);
+        return result != -1;
+    }
+
+    // 2. Get Dashboard Stats (Active Issues & Overdue)
+    public Map<String, Integer> getLibraryStats() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Map<String, Integer> stats = new HashMap<>();
+
+        // Count Active Issues (Status = 'Issued')
+        Cursor activeCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_LIBRARY_ISSUES + " WHERE status = 'Issued'", null);
+        if (activeCursor.moveToFirst()) {
+            stats.put("active_issues", activeCursor.getInt(0));
+        }
+        activeCursor.close();
+
+        // Count Overdue Items (Status = 'Issued' AND due_date < today)
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        Cursor overdueCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_LIBRARY_ISSUES + " WHERE status = 'Issued' AND due_date < ?", new String[]{today});
+        if (overdueCursor.moveToFirst()) {
+            stats.put("overdue_items", overdueCursor.getInt(0));
+        }
+        overdueCursor.close();
+
+        return stats;
+    }
+
+    // 3. Get All Books (For Catalog)
+    public Cursor getAllBooks() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_BOOKS + " ORDER BY title ASC", null);
+    }
+
+    // ==========================================
+    //       LIBRARY CIRCULATION METHODS
+    // ==========================================
+
+    public boolean issueBook(String isbn, String studentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 1. Get Book ID and check quantity
+        Cursor cursor = db.rawQuery("SELECT book_id, quantity FROM " + TABLE_BOOKS + " WHERE isbn = ?", new String[]{isbn});
+        if (cursor.moveToFirst()) {
+            int bookId = cursor.getInt(0);
+            int quantity = cursor.getInt(1);
+            cursor.close();
+
+            if (quantity > 0) {
+                // 2. Create Issue Record
+                ContentValues issueValues = new ContentValues();
+                issueValues.put("book_id", bookId);
+                issueValues.put("student_id", studentId);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                String today = sdf.format(new Date());
+                // Calculate due date (e.g., +14 days)
+                String dueDate = sdf.format(new Date(System.currentTimeMillis() + (14L * 24 * 60 * 60 * 1000)));
+
+                issueValues.put("issue_date", today);
+                issueValues.put("due_date", dueDate);
+                issueValues.put("status", "Issued");
+
+                long result = db.insert(TABLE_LIBRARY_ISSUES, null, issueValues);
+
+                if (result != -1) {
+                    // 3. Decrease Book Quantity
+                    db.execSQL("UPDATE " + TABLE_BOOKS + " SET quantity = quantity - 1 WHERE book_id = ?", new Object[]{bookId});
+                    return true;
+                }
+            }
+        } else {
+            cursor.close();
+        }
+        return false; // Book not found or out of stock
+    }
+
+    public boolean returnBook(String isbn, String studentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // 1. Find Book ID
+        Cursor bCursor = db.rawQuery("SELECT book_id FROM " + TABLE_BOOKS + " WHERE isbn = ?", new String[]{isbn});
+        if (bCursor.moveToFirst()) {
+            int bookId = bCursor.getInt(0);
+            bCursor.close();
+
+            // 2. Find Active Issue
+            Cursor iCursor = db.rawQuery("SELECT issue_id FROM " + TABLE_LIBRARY_ISSUES + " WHERE book_id = ? AND student_id = ? AND status = 'Issued'",
+                    new String[]{String.valueOf(bookId), studentId});
+
+            if (iCursor.moveToFirst()) {
+                int issueId = iCursor.getInt(0);
+                iCursor.close();
+
+                // 3. Update Issue Record
+                String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                ContentValues values = new ContentValues();
+                values.put("return_date", today);
+                values.put("status", "Returned");
+
+                db.update(TABLE_LIBRARY_ISSUES, values, "issue_id = ?", new String[]{String.valueOf(issueId)});
+
+                // 4. Increase Book Quantity
+                db.execSQL("UPDATE " + TABLE_BOOKS + " SET quantity = quantity + 1 WHERE book_id = ?", new Object[]{bookId});
+                return true;
+            } else {
+                iCursor.close();
+            }
+        } else {
+            bCursor.close();
+        }
+        return false; // No active issue found
+    }
+
+    // ==========================================
+    //         E-RESOURCES METHODS
+    // ==========================================
+
+    public boolean addEResource(String title, String category, String type, String url) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("category", category);
+        values.put("type", type);
+        values.put("url_or_path", url);
+        values.put("date_added", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+
+        long result = db.insert(TABLE_E_RESOURCES, null, values);
+        return result != -1;
+    }
+
+    public Cursor getAllEResources() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_E_RESOURCES + " ORDER BY resource_id DESC", null);
+    }
+
+    // ==========================================
+    //         FINE CALCULATION METHODS
+    // ==========================================
+
+    // Returns list of students with overdue books and calculated fines
+    public Cursor getOverdueStudents() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        // Query joins Issues, Books, and Users to get details
+        String query = "SELECT i.issue_id, b.title, u.full_name, i.due_date, " +
+                "(julianday('" + today + "') - julianday(i.due_date)) as days_overdue " +
+                "FROM " + TABLE_LIBRARY_ISSUES + " i " +
+                "JOIN " + TABLE_BOOKS + " b ON i.book_id = b.book_id " +
+                "JOIN " + TABLE_USERS + " u ON i.student_id = u.user_id " +
+                "WHERE i.status = 'Issued' AND i.due_date < '" + today + "'";
+
+        return db.rawQuery(query, null);
+    }
+
+    // ==========================================
+    //      ACTIVE ISSUES (CIRCULATION)
+    // ==========================================
+
+    public Cursor getActiveLibraryIssues() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Joins Books table to get the Title.
+        // We use the student_id string stored directly in the issues table.
+        String query = "SELECT i.issue_id, b.title, i.student_id, i.due_date, i.issue_date " +
+                "FROM " + TABLE_LIBRARY_ISSUES + " i " +
+                "JOIN " + TABLE_BOOKS + " b ON i.book_id = b.book_id " +
+                "WHERE i.status = 'Issued' " +
+                "ORDER BY i.due_date ASC";
+
+        return db.rawQuery(query, null);
+    }
+
+    private void seedTeacherData(SQLiteDatabase db) {
+        // Add a sample assignment
+        ContentValues cv = new ContentValues();
+        cv.put("title", "Midterm Exam: Chemistry");
+        cv.put("class_name", "Grade 10-A");
+        cv.put("subject", "Chemistry");
+        cv.put("max_score", 100);
+        db.insert(TABLE_ASSIGNMENTS, null, cv);
+    }
+
+    // ==========================================
+    //          TEACHER GRADEBOOK METHODS
+    // ==========================================
+
+    public Cursor getTeacherAssignments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_ASSIGNMENTS, null);
+    }
+
+    // Get all students (simplified: fetching all users with role 'Student')
+    // In a real app, you'd filter by Class ID
+    public Cursor getStudentsForGradebook() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE role = 'Student'", null);
+    }
+
+    public int getStudentGrade(int assignmentId, String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT score FROM " + TABLE_GRADES + " WHERE assignment_id = ? AND student_id = ?",
+                new String[]{String.valueOf(assignmentId), studentId});
+
+        int score = -1; // Not graded yet
+        if (cursor.moveToFirst()) {
+            score = cursor.getInt(0);
+        }
+        cursor.close();
+        return score;
+    }
+
+    public void saveStudentGrade(int assignmentId, String studentId, int score) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("assignment_id", assignmentId);
+        values.put("student_id", studentId);
+        values.put("score", score);
+
+        // Check if exists
+        int current = getStudentGrade(assignmentId, studentId);
+        if (current == -1) {
+            db.insert(TABLE_GRADES, null, values);
+        } else {
+            db.update(TABLE_GRADES, values, "assignment_id = ? AND student_id = ?",
+                    new String[]{String.valueOf(assignmentId), studentId});
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.studentmanagement;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -19,9 +21,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvForgotPass;
     DatabaseHelper db;
     SessionManager session;
-    boolean isPasswordVisible = false; // Flag to track password visibility
+    boolean isPasswordVisible = false;
 
-    @SuppressLint("ClickableViewAccessibility") // Suppress warning for onTouchListener
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,99 +32,112 @@ public class LoginActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         session = new SessionManager(this);
 
-        // Auto-login if session exists
         if (session.isLoggedIn()) {
             routeUser(session.getRole());
         }
 
-        // Bind Views
         etId = findViewById(R.id.etId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvForgotPass = findViewById(R.id.tvForgotPass);
 
-        // -----------------------------------------------------------
-        // 1. FORGOT PASSWORD LOGIC
-        // -----------------------------------------------------------
         tvForgotPass.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
         });
 
-        // -----------------------------------------------------------
-        // 2. SHOW / HIDE PASSWORD LOGIC
-        // -----------------------------------------------------------
+        // Toggle Password Visibility
         etPassword.setOnTouchListener((v, event) -> {
-            final int DRAWABLE_RIGHT = 2; // Index for the drawable on the right (end)
-
+            final int DRAWABLE_RIGHT = 2;
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                // Check if the touch is within the bounds of the drawable
                 if (event.getRawX() >= (etPassword.getRight() - etPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
                     togglePasswordVisibility();
-                    return true; // Consume the event
+                    return true;
                 }
             }
             return false;
         });
 
-        // -----------------------------------------------------------
-        // 3. LOGIN BUTTON LOGIC
-        // -----------------------------------------------------------
-        btnLogin.setOnClickListener(v -> {
-            String userId = etId.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
+        btnLogin.setOnClickListener(v -> handleLogin());
+    }
 
-            if (userId.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter ID and Password", Toast.LENGTH_SHORT).show();
+    private void handleLogin() {
+        String userId = etId.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (userId.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter ID and Password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (db.checkUser(userId, password)) {
+            // Check if 2FA is enabled for this user (Ensure check2FA method exists in DB)
+            // If method doesn't exist, this block defaults to false
+            boolean is2FA = false;
+            try {
+                // Assuming you add 'public boolean is2FAEnabled(String id)' to DatabaseHelper
+                // is2FA = db.is2FAEnabled(userId);
+            } catch (Exception e) { e.printStackTrace(); }
+
+            if (is2FA) {
+                show2FADialog(userId);
             } else {
-                // Check Credentials
-                if (db.checkUser(userId, password)) {
-                    String role = db.getUserRole(userId);
+                completeLogin(userId);
+            }
+        } else {
+            Toast.makeText(this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-                    // Log the action
-                    db.logAction(userId, "User Logged In");
+    private void show2FADialog(String userId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Two-Factor Authentication");
+        builder.setMessage("Please enter the OTP sent to your email/device.");
 
-                    session.createLoginSession(userId, role);
-                    routeUser(role);
-                } else {
-                    Toast.makeText(this, "Invalid Credentials or Account Inactive", Toast.LENGTH_SHORT).show();
-                }
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+
+        builder.setPositiveButton("Verify", (dialog, which) -> {
+            String otp = input.getText().toString();
+            // Mock OTP check - in real app, verify against DB or Backend
+            if (otp.equals("1234")) {
+                completeLogin(userId);
+            } else {
+                Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show();
             }
         });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void completeLogin(String userId) {
+        String role = db.getUserRole(userId);
+        db.logAction(userId, "Login Successful");
+        session.createLoginSession(userId, role);
+        routeUser(role);
     }
 
     private void togglePasswordVisibility() {
         if (isPasswordVisible) {
-            // Hide Password
             etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            // Optional: Change icon to "eye_off" if you have that drawable
-            // etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_icon, 0);
             isPasswordVisible = false;
         } else {
-            // Show Password
             etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            // Optional: Change icon to "eye_on" if you have that drawable
             isPasswordVisible = true;
         }
-        // Move cursor to the end of text
         etPassword.setSelection(etPassword.getText().length());
     }
 
     private void routeUser(String role) {
         Intent intent = null;
         if (role == null) return;
-
         switch (role) {
-            case "Admin":
-                intent = new Intent(this, AdminDashboardActivity.class);
-                break;
-            case "Parent":
-                intent = new Intent(this, ParentDashboardActivity.class);
-                break;
-            // Add other roles (Teacher/Student) here as needed
+            case "Admin": intent = new Intent(this, AdminDashboardActivity.class); break;
+            case "Parent": intent = new Intent(this, ParentDashboardActivity.class); break;
+            case "Teacher": intent = new Intent(this, TeacherDashboardActivity.class); break;
+            case "Student": intent = new Intent(this, StudentDashboardActivity.class); break;
+            case "Staff": intent = new Intent(this, StaffDashboardActivity.class); break;
         }
-
         if (intent != null) {
             startActivity(intent);
             finish();

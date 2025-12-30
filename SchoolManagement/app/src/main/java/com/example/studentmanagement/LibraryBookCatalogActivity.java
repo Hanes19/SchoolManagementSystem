@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -28,21 +29,21 @@ public class LibraryBookCatalogActivity extends AppCompatActivity {
         llBookList = findViewById(R.id.ll_book_list);
         etSearch = findViewById(R.id.et_search);
 
-        // Back Button
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish()); // Ensure header ImageView has this ID
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Add Book FAB
         CardView fabAdd = findViewById(R.id.fab_add_book);
         fabAdd.setOnClickListener(v -> {
             startActivity(new Intent(this, LibraryAddBookActivity.class));
         });
 
-        // Search Listener
         etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loadBooks(s.toString());
             }
+            @Override
             public void afterTextChanged(Editable s) {}
         });
     }
@@ -50,49 +51,36 @@ public class LibraryBookCatalogActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBooks("");
+        loadBooks(""); // Refresh list when returning from "Add Book"
     }
 
     private void loadBooks(String query) {
         llBookList.removeAllViews();
-        Cursor cursor = db.getAllBooks(); // You might want to add a search specific query to DB Helper later
-
-        LayoutInflater inflater = LayoutInflater.from(this);
+        // Uses the getAllBooks method you likely have or need to add to DatabaseHelper
+        // If DatabaseHelper doesn't have a search method, use rawQuery:
+        Cursor cursor = db.getReadableDatabase().rawQuery(
+                "SELECT * FROM library_books WHERE title LIKE ? OR author LIKE ?",
+                new String[]{"%" + query + "%", "%" + query + "%"}
+        );
 
         if (cursor.moveToFirst()) {
             do {
-                String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-                String author = cursor.getString(cursor.getColumnIndexOrThrow("author"));
-                String isbn = cursor.getString(cursor.getColumnIndexOrThrow("isbn"));
-                int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
+                // Inflate your item_library_book.xml
+                View itemView = LayoutInflater.from(this).inflate(R.layout.item_library_book, llBookList, false);
 
-                // Filter logic (simple java filter)
-                if (!query.isEmpty() && !title.toLowerCase().contains(query.toLowerCase())
-                        && !isbn.contains(query)) {
-                    continue;
-                }
+                TextView tvTitle = itemView.findViewById(R.id.tv_book_title); // Ensure IDs match XML
+                TextView tvAuthor = itemView.findViewById(R.id.tv_book_author);
+                TextView tvQty = itemView.findViewById(R.id.tv_book_qty);
 
-                View itemView = inflater.inflate(R.layout.item_library_book, llBookList, false);
-
-                TextView tvTitle = itemView.findViewById(R.id.tv_book_title);
-                TextView tvDetails = itemView.findViewById(R.id.tv_book_author_isbn);
-                TextView tvStatus = itemView.findViewById(R.id.tv_book_status);
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String author = cursor.getString(cursor.getColumnIndex("author"));
+                int qty = cursor.getInt(cursor.getColumnIndex("quantity"));
 
                 tvTitle.setText(title);
-                tvDetails.setText(author + " • ISBN: " + isbn);
-
-                if (quantity > 0) {
-                    tvStatus.setText("AVAILABLE (" + quantity + ")");
-                    tvStatus.setTextColor(android.graphics.Color.parseColor("#05CD99")); // Green
-                    tvStatus.setBackgroundColor(android.graphics.Color.parseColor("#E6FFF5"));
-                } else {
-                    tvStatus.setText("OUT OF STOCK");
-                    tvStatus.setTextColor(android.graphics.Color.parseColor("#FF9800")); // Orange
-                    tvStatus.setBackgroundColor(android.graphics.Color.parseColor("#FFF3E0"));
-                }
+                tvAuthor.setText(author);
+                tvQty.setText("Avail: " + qty);
 
                 llBookList.addView(itemView);
-
             } while (cursor.moveToNext());
         }
         cursor.close();

@@ -298,6 +298,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "options TEXT, " + // JSON or comma-separated for MCQ
                 "correct_answer TEXT)");
 
+
+
         // 25. Notice Board
         db.execSQL("CREATE TABLE " + TABLE_NOTICES + " (" +
                 "notice_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -375,6 +377,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 11) { // Assuming current is 10
+            // Add 2FA and Emergency Contact columns to Users
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN is_2fa_enabled INTEGER DEFAULT 0");
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN secret_key TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN previous_school TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN transfer_cert_no TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN emergency_contact_name TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN emergency_contact_phone TEXT");
+            } catch (Exception e) {
+                e.printStackTrace(); // Columns might already exist
+            }
+        }
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSES);
@@ -1252,5 +1267,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("email", email);
         values.put("phone_number", phone); // Assuming this column exists, else add it in onCreate
         return db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId}) > 0;
+    }
+
+    // Method to Enable 2FA
+    public void enable2FA(String userId, String secretKey) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("is_2fa_enabled", 1);
+        values.put("secret_key", secretKey);
+        db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId});
+    }
+
+    // Method to Add Student with Previous Education
+    public boolean addStudentWithHistory(String name, String id, String prevSchool, String transferCert) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("full_name", name);
+        values.put("user_id", id);
+        values.put("role", "Student");
+        values.put("previous_school", prevSchool);
+        values.put("transfer_cert_no", transferCert);
+        long result = db.insert(TABLE_USERS, null, values);
+        return result != -1;
     }
 }

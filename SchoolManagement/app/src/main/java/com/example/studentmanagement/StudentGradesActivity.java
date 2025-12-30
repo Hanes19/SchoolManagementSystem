@@ -30,7 +30,7 @@ public class StudentGradesActivity extends AppCompatActivity {
 
     private void loadGrades() {
         llList.removeAllViews();
-        Cursor cursor = db.getStudentGrades(studentId); // Reuse parent method
+        Cursor cursor = db.getStudentGrades(studentId, "Midterm");
         LayoutInflater inflater = LayoutInflater.from(this);
 
         if (cursor.moveToFirst()) {

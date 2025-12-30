@@ -130,7 +130,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/btn_restore"
+                    android:id="@+id/card_restore_backup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -200,6 +200,7 @@
                         android:orientation="vertical"
                         android:layout_marginStart="16dp">
                         <TextView
+                            android:id="@+id/card_create_backup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="backup_2025_10_24.sql"

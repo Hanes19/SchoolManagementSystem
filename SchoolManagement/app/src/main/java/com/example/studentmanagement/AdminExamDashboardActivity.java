@@ -15,7 +15,6 @@ public class AdminExamDashboardActivity extends AppCompatActivity {
         setupNav(R.id.btn_admit_card, AdminAdmitCardActivity.class);
         setupNav(R.id.btn_question_bank, AdminQuestionBankActivity.class);
         setupNav(R.id.btn_marks_entry, AdminMarksEntryActivity.class);
-        setupNav(R.id.btn_categories, AdminExamCategoriesActivity.class);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }

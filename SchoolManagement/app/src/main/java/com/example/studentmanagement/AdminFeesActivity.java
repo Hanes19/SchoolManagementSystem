@@ -17,7 +17,7 @@ public class AdminFeesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_fees); // Ensure XML name matches
+        setContentView(R.layout.admin_fees_billings);
 
         db = new DatabaseHelper(this);
 

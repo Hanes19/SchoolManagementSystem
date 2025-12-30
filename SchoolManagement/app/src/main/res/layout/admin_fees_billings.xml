@@ -88,6 +88,7 @@
                     android:layout_marginTop="12dp"/>
 
                 <TextView
+                    android:id="@+id/tv_total_collected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₱45,200"
@@ -130,6 +131,7 @@
                     android:layout_marginTop="12dp"/>
 
                 <TextView
+                    android:id="@+id/tv_pending_fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₱12,500"
@@ -197,6 +199,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_invoice">
 
         <LinearLayout
+            android:id="@+id/ll_transaction_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

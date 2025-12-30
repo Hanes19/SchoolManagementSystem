@@ -15,7 +15,7 @@ public class AdminEditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_edit_parent_profile); // Reusing this generic edit layout
+        setContentView(R.layout.admin_edit_profile); // Reusing this generic edit layout
 
         db = new DatabaseHelper(this);
         userId = getIntent().getStringExtra("USER_ID");

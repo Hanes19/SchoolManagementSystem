@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/btn_back_exams"
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -131,7 +131,7 @@
 
                     <!-- Exam Categories -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_exam_categories"
+                        android:id="@+id/btn_categories"
                         android:layout_width="0dp"
                         android:layout_height="140dp"
                         android:layout_weight="1"
@@ -172,7 +172,7 @@
 
                     <!-- Schedule Exams -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_schedule_exams"
+                        android:id="@+id/btn_schedule"
                         android:layout_width="0dp"
                         android:layout_height="140dp"
                         android:layout_weight="1"
@@ -185,6 +185,7 @@
                         android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
+
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -311,7 +312,7 @@
 
                     <!-- Admit Cards / Hall Tickets -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_admit_cards"
+                        android:id="@+id/btn_admit_card"
                         android:layout_width="0dp"
                         android:layout_height="140dp"
                         android:layout_weight="1"

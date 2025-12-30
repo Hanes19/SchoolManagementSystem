@@ -100,6 +100,7 @@
                             android:textStyle="bold"
                             android:textSize="14sp"/>
                         <EditText
+                            android:id="@+id/et_title"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:layout_marginTop="8dp"
@@ -128,6 +129,7 @@
                             android:paddingHorizontal="16dp"
                             android:gravity="center_vertical">
                             <TextView
+                                android:id="@+id/tv_class_selector"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -162,6 +164,7 @@
                                     android:textStyle="bold"
                                     android:textSize="14sp"/>
                                 <LinearLayout
+                                    android:id="@+id/btn_due_date"
                                     android:layout_width="match_parent"
                                     android:layout_height="48dp"
                                     android:layout_marginTop="8dp"
@@ -170,6 +173,7 @@
                                     android:paddingHorizontal="16dp"
                                     android:gravity="center_vertical">
                                     <TextView
+                                        android:id="@+id/tv_due_date"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
@@ -198,6 +202,7 @@
                                     android:textStyle="bold"
                                     android:textSize="14sp"/>
                                 <EditText
+                                    android:id="@+id/et_points"
                                     android:layout_width="match_parent"
                                     android:layout_height="48dp"
                                     android:layout_marginTop="8dp"
@@ -222,6 +227,7 @@
                             android:textSize="14sp"
                             android:layout_marginTop="20dp"/>
                         <EditText
+                            android:id="@+id/et_instructions"
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:layout_marginTop="8dp"

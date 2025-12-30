@@ -40,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -173,6 +174,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "score INTEGER, " +
                 "feedback TEXT)");
 
+        // 13. Assignments Table (Updated)
+        db.execSQL("CREATE TABLE " + TABLE_ASSIGNMENTS + " (" +
+                "assignment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT, " +
+                "class_name TEXT, " +
+                "subject TEXT, " +
+                "due_date TEXT, " +      // New
+                "description TEXT, " +   // New
+                "max_score INTEGER, " +
+                "date_created TEXT)");
+
+        // 15. Attendance Table
+        db.execSQL("CREATE TABLE " + TABLE_ATTENDANCE + " (" +
+                "att_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "student_id TEXT, " +
+                "date TEXT, " +       // Format: yyyy-MM-dd
+                "status TEXT, " +     // Present, Absent, Late
+                "class_name TEXT)");
+
 
         seedData(db);
     }
@@ -228,6 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LIBRARY_ISSUES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_E_RESOURCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ASSIGNMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ATTENDANCE);
         onCreate(db);
     }
 
@@ -727,6 +748,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(TABLE_GRADES, values, "assignment_id = ? AND student_id = ?",
                     new String[]{String.valueOf(assignmentId), studentId});
         }
+    }
+
+    // ==========================================
+    //          HOMEWORK METHODS
+    // ==========================================
+
+    public boolean addAssignment(String title, String className, String subject, String dueDate, int maxScore, String desc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("class_name", className);
+        values.put("subject", subject);
+        values.put("due_date", dueDate);
+        values.put("max_score", maxScore);
+        values.put("description", desc);
+        values.put("date_created", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+
+        long result = db.insert(TABLE_ASSIGNMENTS, null, values);
+        return result != -1;
+    }
+
+    public Cursor getAllAssignments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_ASSIGNMENTS + " ORDER BY assignment_id DESC", null);
+    }
+
+    // ==========================================
+    //          ATTENDANCE METHODS
+    // ==========================================
+
+    // Get all students for the list, with their attendance status for a specific date if it exists
+    public Cursor getStudentsWithAttendance(String date, String className) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Left Join Users with Attendance to get everyone even if not marked yet
+        String query = "SELECT u.user_id, u.full_name, a.status " +
+                "FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_ATTENDANCE + " a ON u.user_id = a.student_id AND a.date = ? " +
+                "WHERE u.role = 'Student'"; // Add 'AND u.class = className' in real app
+
+        return db.rawQuery(query, new String[]{date});
+    }
+
+    public void saveAttendance(String studentId, String date, String status, String className) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("date", date);
+        values.put("status", status);
+        values.put("class_name", className);
+
+        // Check if record exists
+        Cursor cursor = db.rawQuery("SELECT att_id FROM " + TABLE_ATTENDANCE + " WHERE student_id = ? AND date = ?", new String[]{studentId, date});
+        if (cursor.moveToFirst()) {
+            // Update
+            db.update(TABLE_ATTENDANCE, values, "student_id = ? AND date = ?", new String[]{studentId, date});
+        } else {
+            // Insert
+            db.insert(TABLE_ATTENDANCE, null, values);
+        }
+        cursor.close();
     }
 
 }

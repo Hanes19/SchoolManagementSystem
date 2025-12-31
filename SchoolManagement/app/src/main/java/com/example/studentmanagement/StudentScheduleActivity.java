@@ -5,18 +5,26 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentScheduleActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private LinearLayout llList;
-    private TextView tvCurrentDay;
+    private RecyclerView recyclerView;
+    // private TextView tvCurrentDay; // ID not found in XML
     private String studentId;
     private String currentDay = "Monday";
     private final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    private ScheduleAdapter adapter;
+    private List<ScheduleItem> scheduleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +34,22 @@ public class StudentScheduleActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
 
-        llList = findViewById(R.id.ll_schedule_list);
-        tvCurrentDay = findViewById(R.id.tv_current_day);
+        // 1. Match XML ID: recycler_schedule instead of ll_schedule_list
+        recyclerView = findViewById(R.id.recycler_schedule);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        scheduleList = new ArrayList<>();
+        adapter = new ScheduleAdapter(scheduleList);
+        recyclerView.setAdapter(adapter);
 
-        // Filter Click
-        findViewById(R.id.btn_day_filter).setOnClickListener(v -> showDayPicker()); // Ensure this ID exists in layout
+        // 2. Match XML ID: btn_back_schedule instead of btn_back
+        findViewById(R.id.btn_back_schedule).setOnClickListener(v -> finish());
+
+        // 3. Logic for tvCurrentDay and btn_day_filter is commented out
+        // because these IDs (tv_current_day, btn_day_filter) do not exist in your provided XML.
+
+        // tvCurrentDay = findViewById(R.id.tv_current_day);
+        // findViewById(R.id.btn_day_filter).setOnClickListener(v -> showDayPicker());
 
         loadSchedule(currentDay);
     }
@@ -42,47 +59,84 @@ public class StudentScheduleActivity extends AppCompatActivity {
                 .setTitle("Select Day")
                 .setItems(days, (dialog, which) -> {
                     currentDay = days[which];
-                    tvCurrentDay.setText(currentDay);
+                    // tvCurrentDay.setText(currentDay); // Text view missing in XML
                     loadSchedule(currentDay);
                 })
                 .show();
     }
 
     private void loadSchedule(String day) {
-        llList.removeAllViews();
-        // 1. Get Student's Class
+        scheduleList.clear();
         String className = db.getStudentClass(studentId);
-
-        // 2. Get Schedule for that Class
         Cursor cursor = db.getClassSchedule(className, day);
-        LayoutInflater inflater = LayoutInflater.from(this);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
                 String start = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
-                String end = cursor.getString(cursor.getColumnIndexOrThrow("end_time")); // Optional
+                String end = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
                 String room = cursor.getString(cursor.getColumnIndexOrThrow("room_no"));
 
-                // Reuse item_teacher_schedule_card.xml or create similar
-                View view = inflater.inflate(R.layout.item_teacher_schedule_card, llList, false);
-                TextView tvTime = view.findViewById(R.id.tv_start_time);
-                TextView tvSubject = view.findViewById(R.id.tv_subject);
-                TextView tvDetails = view.findViewById(R.id.tv_details);
-
-                tvTime.setText(start);
-                tvSubject.setText(subject);
-                tvDetails.setText("Room: " + room);
-
-                llList.addView(view);
+                scheduleList.add(new ScheduleItem(subject, start, room));
             } while (cursor.moveToNext());
-        } else {
-            // Empty State
-            TextView empty = new TextView(this);
-            empty.setText("No classes for " + day);
-            empty.setPadding(30, 30, 30, 30);
-            llList.addView(empty);
+            cursor.close();
         }
-        cursor.close();
+
+        // Update the adapter to refresh the RecyclerView
+        adapter.notifyDataSetChanged();
+    }
+
+    // Simple Model Class for the data
+    private static class ScheduleItem {
+        String subject, time, room;
+
+        ScheduleItem(String subject, String time, String room) {
+            this.subject = subject;
+            this.time = time;
+            this.room = room;
+        }
+    }
+
+    // RecyclerView Adapter Implementation
+    private class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
+        private final List<ScheduleItem> items;
+
+        ScheduleAdapter(List<ScheduleItem> items) {
+            this.items = items;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Inflate your existing item layout
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_teacher_schedule_card, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ScheduleItem item = items.get(position);
+            holder.tvTime.setText(item.time);
+            holder.tvSubject.setText(item.subject);
+            holder.tvDetails.setText("Room: " + item.room);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvTime, tvSubject, tvDetails;
+
+            ViewHolder(View itemView) {
+                super(itemView);
+                // IDs from your item_teacher_schedule_card.xml
+                tvTime = itemView.findViewById(R.id.tv_start_time);
+                tvSubject = itemView.findViewById(R.id.tv_subject);
+                tvDetails = itemView.findViewById(R.id.tv_details);
+            }
+        }
     }
 }

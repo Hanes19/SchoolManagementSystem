@@ -24,70 +24,100 @@
 
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".AdminDashboardActivity" />
-        <activity android:name=".AdminHelpCenterActivity" />
-        <activity android:name=".AdminEditParentProfileActivity" />
-        <activity android:name=".ParentDashboardActivity" />
-        <activity android:name=".AdminParentDirectoryActivity" />
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".AdminPrivacyPolicyActivity" />
-        <activity android:name=".AdminAppGuideActivity"/>
-        <activity android:name=".AdminParentProfileDetailsActivity"/>
-        <activity android:name=".AdminUserAccConfigActivity"/>
-        <activity android:name=".AdminFaqActivity" android:parentActivityName=".AdminDashboardActivity"/>
-        <activity android:name=".AdminReportsGuideActivity" android:parentActivityName=".AdminDashboardActivity"/>
-
-
-        <activity android:name=".AdminClassListActivity" />
-        <activity android:name=".AdminAddClassActivity" />
-        <activity android:name=".AdminMasterTimetableActivity" />
-        <activity android:name=".AdminClassTimetableActivity" />
-
-        <activity android:name=".AdminStudentListActivity" />
-        <activity android:name=".AdminTeacherListActivity" />
-        <activity android:name=".AdminStaffListActivity" />
-
-        <activity android:name=".AddStudentActivity" />
-        <activity android:name=".AddTeacherActivity" />
-        <activity android:name=".AddStaffActivity" />
-
-        <activity android:name=".AdminStudentProfileActivity" />
-        <activity android:name=".AdminTeacherProfileActivity" />
-        <activity android:name=".AdminStaffProfileActivity" />
-
-        <activity android:name=".AdminRoleActivity" />
-        <activity android:name=".SystemLogActivity" />
-        <activity android:name=".AdminFeesBillingActivity" />
-
-        <activity android:name=".AdminFeesActivity" />
-        <activity android:name=".AdminSettingsActivity" />
-        <activity android:name=".AdminSystemConfigActivity" />
-        <activity android:name=".AdminMainMenuActivity" />
-
-        <activity android:name=".StudentAttendanceActivity" />
+        <activity android:name=".StudentDashboardActivity" /> <activity android:name=".StudentAttendanceActivity" />
         <activity android:name=".StudentFeesActivity" />
         <activity android:name=".StudentGradesActivity" />
         <activity android:name=".StudentScheduleActivity" />
 
-        <activity android:name=".AdminGenerateInvoiceActivity"/>
-        <activity android:name=".AdminInvoiceDetailsActivity"/>
-        <activity android:name=".AdminNotificationActivity"/>
-        <activity android:name=".AdminCalendarActivity"/>
-        <activity android:name=".AdminAddEventActivity"/>
+        <activity android:name=".TeacherDashboardActivity" />
+        <activity android:name=".TeacherScheduleActivity" />
+        <activity android:name=".TeacherAttendanceActivity" />
+        <activity android:name=".TeacherHomeworkActivity" />
+        <activity android:name=".TeacherAddHomeworkActivity" />
+        <activity android:name=".TeacherGradebookActivity" />
+        <activity android:name=".TeacherMessageActivity" />
 
-        <activity android:name=".AdminExpensesActivity"/>
-        <activity android:name=".AdminExpenseDetailsActivity"/>
+        <activity android:name=".StaffDashboardActivity" />
+        <activity android:name=".StaffLeaveActivity" />
+        <activity android:name=".StaffPayslipActivity" />
+        <activity android:name=".StaffFeesCollectionActivity" />
 
+        <activity android:name=".ParentDashboardActivity" />
+        <activity android:name=".ParentMessageActivity" />
+        <activity android:name=".ParentAttendanceActivity" />
+        <activity android:name=".ParentGradesActivity" />
+        <activity android:name=".ParentFeesActivity" />
 
-        <activity android:name=".AdminPayrollActivity"/>
-        <activity android:name=".AdminAcademicSessionActivity" />
+        <activity android:name=".AdminDashboardActivity" />
+        <activity android:name=".AdminMainMenuActivity" />
+        <activity android:name=".AdminAnalyticsActivity" /> <activity android:name=".AdminUserDirectoryActivity" />
+        <activity android:name=".AdminUserAccConfigActivity" />
+        <activity android:name=".AdminSystemConfigActivity" />
+        <activity android:name=".AdminSettingsActivity" />
         <activity android:name=".AdminBackupRestoreActivity" />
         <activity android:name=".AdminIntegrationConfigActivity" />
+        <activity android:name=".AdminRoleActivity" />
         <activity android:name=".AdminRolesPermissionActivity" />
+        <activity android:name=".SystemLogActivity" />
+
+        <activity android:name=".AdminStudentListActivity" />
+        <activity android:name=".AdminTeacherListActivity" />
+        <activity android:name=".AdminStaffListActivity" />
+        <activity android:name=".AdminClassListActivity" />
+        <activity android:name=".AdminParentDirectoryActivity" />
+        <activity android:name=".AdminStudentProfileActivity" />
+        <activity android:name=".AdminTeacherProfileActivity" />
+        <activity android:name=".AdminStaffProfileActivity" />
+        <activity android:name=".AdminUserProfileActivity" />
+        <activity android:name=".AdminParentProfileDetailsActivity" />
         <activity android:name=".AdminSchoolProfileActivity" />
+        <activity android:name=".AdminEditProfileActivity" />
+        <activity android:name=".AdminEditParentProfileActivity" />
 
+        <activity android:name=".AddStudentActivity" />
+        <activity android:name=".AddTeacherActivity" />
+        <activity android:name=".AddStaffActivity" />
+        <activity android:name=".AdminAddClassActivity" />
+        <activity android:name=".AdminAddEventActivity" />
+        <activity android:name=".AdminAddExpensesActivity" /> <activity android:name=".AdminNoticeBoardActivity" /> <activity android:name=".AdminNotificationActivity" />
+        <activity android:name=".AdminCalendarActivity" />
+        <activity android:name=".AdminExpensesActivity" />
+        <activity android:name=".AdminExpenseDetailsActivity" />
+        <activity android:name=".AdminPayrollActivity" />
+        <activity android:name=".AdminFeesActivity" />
+        <activity android:name=".AdminFeesBillingActivity" />
+        <activity android:name=".AdminGenerateInvoiceActivity" />
+        <activity android:name=".AdminInvoiceDetailsActivity" />
+        <activity android:name=".AdminClassDetailsActivity" />
+        <activity android:name=".AdminClassTimetableActivity" />
+        <activity android:name=".AdminMasterTimetableActivity" /> <activity android:name=".AdminAcademicSessionActivity" />
 
+        <activity android:name=".AdminExamDashboardActivity" />
+        <activity android:name=".AdminExamCategoriesActivity" />
+        <activity android:name=".AdminScheduleExamActivity" />
+        <activity android:name=".AdminMarksEntryActivity" />
+        <activity android:name=".AdminAdmitCardActivity" />
 
+        <activity android:name=".AdminHelpCenterActivity" />
+        <activity android:name=".AdminAppGuideActivity" />
+        <activity android:name=".AdminFaqActivity" />
+        <activity android:name=".AdminReportsGuideActivity" />
+        <activity android:name=".AdminQuestionBankActivity" />
+        <activity android:name=".AdminPrivacyPolicyActivity" />
+
+        <activity android:name=".LibraryDashboardActivity" />
+        <activity android:name=".LibraryBookCatalogActivity" />
+        <activity android:name=".LibraryAddBookActivity" />
+        <activity android:name=".LibraryIssueReturnActivity" />
+        <activity android:name=".LibraryOverdueItemsActivity" />
+        <activity android:name=".LibraryLateFeesActivity" />
+        <activity android:name=".LibraryActiveIssuesActivity" />
+        <activity android:name=".LibraryEResourcesActivity" />
+        <activity android:name=".LibraryAddEResourceActivity" />
+
+        <activity android:name=".AssignmentsActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ForgotPasswordActivity" />
 
     </application>
 

@@ -61,10 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-
-
-        // 1. Users Table
+        // 1. Users Table (Merged with 2FA and History columns)
         db.execSQL("CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT UNIQUE, " +
@@ -72,7 +69,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "password_hash TEXT, " +
                 "role TEXT, " +
                 "class_id INTEGER, " +
-                "status TEXT)");
+                "status TEXT, " +
+                "email TEXT, " +
+                "phone_number TEXT, " +
+                "is_2fa_enabled INTEGER DEFAULT 0, " +
+                "secret_key TEXT, " +
+                "previous_school TEXT, " +
+                "transfer_cert_no TEXT, " +
+                "emergency_contact_name TEXT, " +
+                "emergency_contact_phone TEXT, " +
+                "roll_no TEXT)");
 
         // 2. Logs Table
         db.execSQL("CREATE TABLE " + TABLE_LOGS + " (" +
@@ -89,31 +95,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "room_number TEXT, " +
                 "teacher_id TEXT)");
 
-        // 4. Timetable Table
+        // 4. Timetable Table (Merged Teacher ID and Class Name)
         db.execSQL("CREATE TABLE " + TABLE_TIMETABLE + " (" +
                 "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "class_id INTEGER, " +
+                "teacher_id TEXT, " +
+                "class_name TEXT, " +
                 "day_of_week TEXT, " +
                 "start_time TEXT, " +
                 "end_time TEXT, " +
                 "subject TEXT, " +
-                "room TEXT, " +
+                "room_no TEXT, " +
                 "teacher_name TEXT)");
 
-        // 5. Attendance Table
+        // 5. Attendance Table (Merged Class Name)
         db.execSQL("CREATE TABLE " + TABLE_ATTENDANCE + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "att_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "date TEXT, " +
-                "status TEXT)");
+                "status TEXT, " +
+                "class_name TEXT)");
 
-        // 6. Grades Table
+        // 6. Grades Table (Merged Assignment ID and Feedback)
         db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "grade_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "assignment_id INTEGER, " +
                 "student_id TEXT, " +
                 "subject TEXT, " +
+                "score INTEGER, " +
                 "grade TEXT, " +
-                "semester TEXT)");
+                "semester TEXT, " +
+                "feedback TEXT)");
 
         // 7. Fees Table
         db.execSQL("CREATE TABLE " + TABLE_FEES + " (" +
@@ -124,9 +136,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "type TEXT, " +
                 "date TEXT)");
 
-        // 8. Expenses Table
+        // 8. Expenses Table (Consolidated)
         db.execSQL("CREATE TABLE " + TABLE_EXPENSES + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "expense_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "requested_by TEXT, " +
                 "category TEXT, " +
@@ -135,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT, " +
                 "status TEXT DEFAULT 'Pending')");
 
-        // 9. Roles Table (New)
+        // 9. Roles Table
         db.execSQL("CREATE TABLE " + TABLE_ROLES + " (" +
                 "role_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "role_name TEXT UNIQUE, " +
@@ -152,7 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "location TEXT, " +
                 "date_added TEXT)");
 
-        // 11. Library Issues (Circulation) Table
+        // 11. Library Issues Table
         db.execSQL("CREATE TABLE " + TABLE_LIBRARY_ISSUES + " (" +
                 "issue_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "book_id INTEGER, " +
@@ -160,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "issue_date TEXT, " +
                 "due_date TEXT, " +
                 "return_date TEXT, " +
-                "status TEXT DEFAULT 'Issued', " + // Issued, Returned, Overdue
+                "status TEXT DEFAULT 'Issued', " +
                 "fine_amount REAL DEFAULT 0)");
 
         // 12. E-Resources Table
@@ -168,57 +180,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "resource_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "category TEXT, " +
-                "type TEXT, " + // PDF, Video, Link
+                "type TEXT, " +
                 "url_or_path TEXT, " +
                 "date_added TEXT)");
 
-        // 13. Assignments Table
-        db.execSQL("CREATE TABLE " + TABLE_ASSIGNMENTS + " (" +
-                "assignment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, " +
-                "class_name TEXT, " + // e.g., "Grade 10-A"
-                "subject TEXT, " + // e.g., "Chemistry"
-                "max_score INTEGER)");
-
-        // 14. Grades Table
-        db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
-                "grade_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "assignment_id INTEGER, " +
-                "student_id TEXT, " + // Links to User ID or Student ID
-                "score INTEGER, " +
-                "feedback TEXT)");
-
-        // 13. Assignments Table (Updated)
+        // 13. Assignments Table (Consolidated)
         db.execSQL("CREATE TABLE " + TABLE_ASSIGNMENTS + " (" +
                 "assignment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "class_name TEXT, " +
                 "subject TEXT, " +
-                "due_date TEXT, " +      // New
-                "description TEXT, " +   // New
+                "due_date TEXT, " +
+                "description TEXT, " +
                 "max_score INTEGER, " +
                 "date_created TEXT)");
 
-        // 15. Attendance Table
-        db.execSQL("CREATE TABLE " + TABLE_ATTENDANCE + " (" +
-                "att_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "student_id TEXT, " +
-                "date TEXT, " +       // Format: yyyy-MM-dd
-                "status TEXT, " +     // Present, Absent, Late
-                "class_name TEXT)");
-
-        // 16. Timetable Table
-        db.execSQL("CREATE TABLE " + TABLE_TIMETABLE + " (" +
-                "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "teacher_id TEXT, " +
-                "class_name TEXT, " +
-                "subject TEXT, " +
-                "day_of_week TEXT, " +  // Monday, Tuesday, etc.
-                "start_time TEXT, " +
-                "end_time TEXT, " +
-                "room_no TEXT)");
-
-        // 17. Messages Table
+        // 14. Messages Table
         db.execSQL("CREATE TABLE " + TABLE_MESSAGES + " (" +
                 "msg_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "sender_id TEXT, " +
@@ -227,24 +204,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "subject TEXT, " +
                 "message_body TEXT, " +
                 "timestamp TEXT, " +
-                "is_read INTEGER DEFAULT 0)"); // 0 = false, 1 = true
+                "is_read INTEGER DEFAULT 0)");
 
-        // 18. Leave Applications Table
+        // 15. Leave Applications Table
         db.execSQL("CREATE TABLE " + TABLE_LEAVE + " (" +
                 "leave_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT, " +
-                "leave_type TEXT, " + // Sick, Casual, Earned
+                "leave_type TEXT, " +
                 "start_date TEXT, " +
                 "end_date TEXT, " +
                 "reason TEXT, " +
-                "status TEXT DEFAULT 'Pending', " + // Pending, Approved, Rejected
+                "status TEXT DEFAULT 'Pending', " +
                 "applied_on TEXT)");
 
-        // 19. Payroll Table
+        // 16. Payroll Table
         db.execSQL("CREATE TABLE " + TABLE_PAYROLL + " (" +
                 "payroll_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT, " +
-                "month TEXT, " + // e.g., "October 2025"
+                "month TEXT, " +
                 "basic_salary REAL, " +
                 "allowances REAL, " +
                 "deductions REAL, " +
@@ -252,34 +229,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT DEFAULT 'Paid', " +
                 "generated_on TEXT)");
 
-        // 20. Fee Payments (Collection Records)
+        // 17. Fee Payments Table
         db.execSQL("CREATE TABLE " + TABLE_FEE_PAYMENTS + " (" +
                 "payment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
-                "collected_by TEXT, " + // Staff ID
+                "collected_by TEXT, " +
                 "amount REAL, " +
-                "payment_method TEXT, " + // Cash, Card, Online
+                "payment_method TEXT, " +
                 "date TEXT)");
 
-        // 21. Exam Categories (e.g., Midterm 2025)
+        // 18. Exam Categories Table
         db.execSQL("CREATE TABLE " + TABLE_EXAM_CATEGORIES + " (" +
                 "exam_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_name TEXT, " +
                 "start_date TEXT, " +
                 "end_date TEXT, " +
-                "status TEXT DEFAULT 'Draft')"); // Draft, Published
+                "status TEXT DEFAULT 'Draft')");
 
-        // 22. Exam Schedule (Specific papers: Math, Grade 10, Mon 9AM)
+        // 19. Exam Schedule Table
         db.execSQL("CREATE TABLE " + TABLE_EXAM_SCHEDULE + " (" +
                 "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_id INTEGER, " +
-                "class_name TEXT, " + // e.g., "Grade 10"
+                "class_name TEXT, " +
                 "subject TEXT, " +
                 "date TEXT, " +
                 "start_time TEXT, " +
                 "room_no TEXT)");
 
-        // 23. Exam Marks
+        // 20. Exam Marks Table
         db.execSQL("CREATE TABLE " + TABLE_EXAM_MARKS + " (" +
                 "mark_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_id INTEGER, " +
@@ -288,37 +265,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "score INTEGER, " +
                 "total_marks INTEGER DEFAULT 100)");
 
-        // 24. Question Bank
+        // 21. Question Bank Table
         db.execSQL("CREATE TABLE " + TABLE_QUESTION_BANK + " (" +
                 "question_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "subject TEXT, " +
                 "grade_level TEXT, " +
                 "question_text TEXT, " +
-                "type TEXT, " + // MCQ, Essay
-                "options TEXT, " + // JSON or comma-separated for MCQ
+                "type TEXT, " +
+                "options TEXT, " +
                 "correct_answer TEXT)");
 
-
-
-        // 25. Notice Board
+        // 22. Notice Board Table
         db.execSQL("CREATE TABLE " + TABLE_NOTICES + " (" +
                 "notice_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "description TEXT, " +
-                "audience TEXT, " + // All, Teachers, Students, Parents
+                "audience TEXT, " +
                 "date_posted TEXT)");
-
-        db.execSQL("CREATE TABLE " + TABLE_EXPENSES + " (" +
-                "expense_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, " +
-                "category TEXT, " + // Salary, Maintenance, Utilities
-                "amount REAL, " +
-                "date TEXT, " +
-                "description TEXT)");
 
         seedData(db);
     }
-
 
 
     private void seedData(SQLiteDatabase db) {

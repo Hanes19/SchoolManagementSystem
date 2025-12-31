@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TeacherMessageActivity extends AppCompatActivity {
@@ -26,7 +27,6 @@ public class TeacherMessageActivity extends AppCompatActivity {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         findViewById(R.id.fab_new_message).setOnClickListener(v -> {
-            // In a real app, open a ComposeActivity
             // For now, let's simulate sending a message to a parent
             db.sendMessage("teach01", "parent01", "Mr. Langdon", "Homework Update", "Just a reminder about the homework due.");
             Toast.makeText(this, "Test Message Sent!", Toast.LENGTH_SHORT).show();
@@ -38,7 +38,7 @@ public class TeacherMessageActivity extends AppCompatActivity {
 
     private void loadMessages() {
         llMessageContainer.removeAllViews();
-        // Assuming logged in teacher ID is 'teach01'
+        // Assuming "teach01" is the current logged-in teacher
         Cursor cursor = db.getMessagesForUser("teach01");
 
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -52,21 +52,33 @@ public class TeacherMessageActivity extends AppCompatActivity {
 
                 View itemView = inflater.inflate(R.layout.item_message_row, llMessageContainer, false);
 
+                // FIXED: IDs matched to item_message_row.xml
                 TextView tvSender = itemView.findViewById(R.id.tv_sender_name);
-                TextView tvSubject = itemView.findViewById(R.id.tv_message_subject);
                 TextView tvPreview = itemView.findViewById(R.id.tv_message_preview);
-                TextView tvTime = itemView.findViewById(R.id.tv_time);
+                TextView tvTime = itemView.findViewById(R.id.tv_timestamp); // Changed from tv_time
 
+                // FIXED: Removed tv_message_subject logic
                 tvSender.setText(sender);
-                tvSubject.setText(subject);
-                tvPreview.setText(body);
+                tvPreview.setText(subject + ": " + body); // Combine Subject and Body
 
                 // Extract just time or date for brevity
                 try {
-                    tvTime.setText(timestamp.substring(11)); // "HH:mm" part
+                    if (timestamp.length() > 11) {
+                        tvTime.setText(timestamp.substring(11)); // "HH:mm" part
+                    } else {
+                        tvTime.setText(timestamp);
+                    }
                 } catch (Exception e) {
                     tvTime.setText(timestamp);
                 }
+
+                // Optional: Hide action buttons if not needed for this view,
+                // or add listeners like in ParentMessageActivity
+                ImageView btnEmail = itemView.findViewById(R.id.btn_action_email);
+                ImageView btnCall = itemView.findViewById(R.id.btn_action_call);
+
+                btnEmail.setOnClickListener(v -> Toast.makeText(this, "Reply to " + sender, Toast.LENGTH_SHORT).show());
+                btnCall.setOnClickListener(v -> Toast.makeText(this, "Call " + sender, Toast.LENGTH_SHORT).show());
 
                 llMessageContainer.addView(itemView);
 

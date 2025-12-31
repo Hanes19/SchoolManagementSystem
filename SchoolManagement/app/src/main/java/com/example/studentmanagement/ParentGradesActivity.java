@@ -22,7 +22,7 @@ public class ParentGradesActivity extends AppCompatActivity {
         studentId = getIntent().getStringExtra("STUDENT_ID");
         db = new DatabaseHelper(this);
 
-        // This ID now exists in your XML
+        // Find the container (ID added in XML below)
         llList = findViewById(R.id.ll_grades_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -45,13 +45,23 @@ public class ParentGradesActivity extends AppCompatActivity {
                 // Reuse the row layout
                 View view = inflater.inflate(R.layout.item_expense_row, llList, false);
 
-                // FIX: Map the variables to the IDs that actually exist in item_expense_row.xml
+                // FIXED: Use correct IDs from item_expense_row.xml
                 TextView tvSubject = view.findViewById(R.id.tv_expense_title);
-                TextView tvGrade = view.findViewById(R.id.tv_amount);        // Correct ID for right-side text
-                TextView tvDesc = view.findViewById(R.id.tv_requested_by);   // Correct ID for subtitle
+                TextView tvGrade = view.findViewById(R.id.tv_expense_amount);    // Correct ID for right-side text
+                TextView tvDesc = view.findViewById(R.id.tv_expense_category);   // Correct ID for subtitle
 
                 tvSubject.setText(subject);
                 tvGrade.setText(grade);
+
+                // Color code the grade
+                if ("A".equals(grade) || "A+".equals(grade)) {
+                    tvGrade.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                } else if ("F".equals(grade)) {
+                    tvGrade.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                } else {
+                    tvGrade.setTextColor(getResources().getColor(android.R.color.black));
+                }
+
                 tvDesc.setText("Midterm 2025");
 
                 llList.addView(view);

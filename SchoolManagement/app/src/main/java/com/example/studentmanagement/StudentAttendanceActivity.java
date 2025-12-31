@@ -3,7 +3,6 @@ package com.example.studentmanagement;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.CalendarView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,16 +20,17 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
 
+        // These IDs now exist in the XML
         tvPercentage = findViewById(R.id.tv_attendance_percentage);
         tvSummary = findViewById(R.id.tv_attendance_summary);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish()); // Check ID in XML
+        // Fixed: ID changed from btn_back to btn_back_attendance
+        findViewById(R.id.btn_back_attendance).setOnClickListener(v -> finish());
 
         loadAttendanceData();
     }
 
     private void loadAttendanceData() {
-        // Reuse the method we created for Parents
         Cursor cursor = db.getStudentAttendance(studentId);
 
         int total = 0;

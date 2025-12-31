@@ -2,9 +2,8 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View; // Import generic View
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class StaffDashboardActivity extends AppCompatActivity {
 
@@ -20,15 +19,13 @@ public class StaffDashboardActivity extends AppCompatActivity {
 
         // Reuse existing Library Module
         setupNav(R.id.card_library, LibraryDashboardActivity.class);
-
-        // Logout or Profile (Assuming IDs exist)
-        // setupNav(R.id.card_profile, StaffProfileActivity.class);
     }
 
+    // Changed CardView to View to support LinearLayouts too
     private void setupNav(int id, Class<?> cls) {
-        CardView card = findViewById(id);
-        if (card != null) {
-            card.setOnClickListener(v -> startActivity(new Intent(this, cls)));
+        View view = findViewById(id);
+        if (view != null) {
+            view.setOnClickListener(v -> startActivity(new Intent(this, cls)));
         }
     }
 }

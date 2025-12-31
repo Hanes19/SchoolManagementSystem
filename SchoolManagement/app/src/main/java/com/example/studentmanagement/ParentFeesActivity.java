@@ -50,19 +50,20 @@ public class ParentFeesActivity extends AppCompatActivity {
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
+                // Inflate the shared row layout
                 View view = inflater.inflate(R.layout.item_expense_row, llHistory, false);
 
-                // Correct IDs matching item_expense_row.xml
+                // FIXED: Use the correct IDs from item_expense_row.xml
                 TextView tvTitle = view.findViewById(R.id.tv_expense_title);
-                TextView tvAmount = view.findViewById(R.id.tv_amount);       // Matches item_expense_row
-                TextView tvDate = view.findViewById(R.id.tv_date);           // Matches item_expense_row
+                TextView tvAmount = view.findViewById(R.id.tv_expense_amount);   // Changed from tv_amount
+                TextView tvDate = view.findViewById(R.id.tv_expense_category);   // Reusing category field for date
 
                 tvTitle.setText(desc);
                 tvAmount.setText("-$" + amount);
                 tvDate.setText(date);
 
                 totalDue -= amount;
-                llHistory.addView(view); // Fixed variable name from llList to llHistory
+                llHistory.addView(view);
             } while (cursor.moveToNext());
             cursor.close();
         }

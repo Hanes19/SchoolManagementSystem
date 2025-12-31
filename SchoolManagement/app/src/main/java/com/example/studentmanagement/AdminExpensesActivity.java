@@ -1,7 +1,7 @@
 package com.example.studentmanagement;
 
 import android.app.DatePickerDialog;
-import android.content.Intent; // Import added
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,52 +51,46 @@ public class AdminExpensesActivity extends AppCompatActivity {
     private void loadExpenses() {
         llExpensesList.removeAllViews();
         Cursor cursor = db.getAllExpenses();
+        LayoutInflater inflater = LayoutInflater.from(this);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // 1. Retrieve the ID (Assumes your table has a column named "id")
-                // If your column is named "_id", change "id" to "_id" below.
-                int idIndex = cursor.getColumnIndex("id");
-                int id = (idIndex != -1) ? cursor.getInt(idIndex) : -1;
-
+                // Get Data
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-                String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
                 String requestedBy = cursor.getString(cursor.getColumnIndexOrThrow("requested_by"));
                 String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
 
-                View itemView = LayoutInflater.from(this).inflate(R.layout.item_expense_row, llExpensesList, false);
+                // Inflate Row (using item_expense_row.xml)
+                View itemView = inflater.inflate(R.layout.item_expense_row, llExpensesList, false);
 
+                // Find Views (using IDs that actually exist in item_expense_row.xml)
                 TextView tvTitle = itemView.findViewById(R.id.tv_expense_title);
-                TextView tvAmount = itemView.findViewById(R.id.tv_amount);
-                TextView tvRequester = itemView.findViewById(R.id.tv_requested_by);
-                TextView tvStatus = itemView.findViewById(R.id.tv_status);
-                TextView tvDate = itemView.findViewById(R.id.tv_date);
+                TextView tvCategory = itemView.findViewById(R.id.tv_expense_category); // Reuse for details
+                TextView tvAmount = itemView.findViewById(R.id.tv_expense_amount);
 
+                // Populate Data
                 tvTitle.setText(title);
-                tvAmount.setText("$" + String.format("%.2f", Double.parseDouble(amount)));
-                tvRequester.setText("Requested by: " + db.getUserName(requestedBy));
-                tvStatus.setText(status);
-                tvDate.setText(date);
+                // Combine Date and Requester into the subtitle
+                tvCategory.setText(date + " • " + db.getUserName(requestedBy));
+                tvAmount.setText(String.format("$%.2f", amount));
 
-                // Style based on status
+                // Style Amount Color based on Status
                 if ("Approved".equalsIgnoreCase(status)) {
-                    tvStatus.setTextColor(android.graphics.Color.parseColor("#4CAF50"));
-                    tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#E8F5E9")));
+                    tvAmount.setTextColor(android.graphics.Color.parseColor("#4CAF50")); // Green
+                } else if ("Rejected".equalsIgnoreCase(status)) {
+                    tvAmount.setTextColor(android.graphics.Color.parseColor("#F44336")); // Red
                 } else {
-                    tvStatus.setTextColor(android.graphics.Color.parseColor("#FF9800"));
-                    tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFF3E0")));
+                    tvAmount.setTextColor(android.graphics.Color.parseColor("#FF9800")); // Orange (Pending)
                 }
 
-                // 2. Click Listener to Open Details
+                // Click Listener to Open Details
                 itemView.setOnClickListener(v -> {
-                    if (id != -1) {
-                        Intent intent = new Intent(AdminExpensesActivity.this, AdminExpenseDetailsActivity.class);
-                        intent.putExtra("EXPENSE_ID", id); // Pass ID to details
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(AdminExpensesActivity.this, "Error: Item ID missing", Toast.LENGTH_SHORT).show();
-                    }
+                    Intent intent = new Intent(AdminExpensesActivity.this, AdminExpenseDetailsActivity.class);
+                    intent.putExtra("EXPENSE_ID", id);
+                    startActivity(intent);
                 });
 
                 llExpensesList.addView(itemView);
@@ -118,12 +112,15 @@ public class AdminExpensesActivity extends AppCompatActivity {
 
     private void showAddExpenseBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        // Inflate using admin_add_expenses.xml
         View sheetView = LayoutInflater.from(this).inflate(R.layout.admin_add_expenses, null);
 
+        // FIXED: IDs matched to admin_add_expenses.xml
         EditText etTitle = sheetView.findViewById(R.id.et_expense_title);
         EditText etAmount = sheetView.findViewById(R.id.et_expense_amount);
-        TextView tvDate = sheetView.findViewById(R.id.tv_selected_date);
-        Spinner spCategory = sheetView.findViewById(R.id.spinner_category);
+        TextView tvDate = sheetView.findViewById(R.id.tv_selected_date); // Fixed ID
+        Spinner spCategory = sheetView.findViewById(R.id.spinner_category); // Fixed ID
+
         CardView btnPickDate = sheetView.findViewById(R.id.btn_pick_date);
         CardView btnSubmit = sheetView.findViewById(R.id.btn_submit_expense);
         ImageView btnClose = sheetView.findViewById(R.id.btn_close_sheet);
@@ -159,9 +156,9 @@ public class AdminExpensesActivity extends AppCompatActivity {
             }
 
             double amount = Double.parseDouble(amountStr);
-            String currentUser = session.getUserId(); // Get ID from session
+            String currentUser = session.getUserId();
 
-            boolean success = db.addExpense(title, currentUser, category, amount, "Expense Claim", date);
+            boolean success = db.addExpense(title, currentUser, category, amount, "Pending", date);
             if (success) {
                 Toast.makeText(this, "Expense Claim Submitted!", Toast.LENGTH_SHORT).show();
                 loadExpenses(); // Refresh List

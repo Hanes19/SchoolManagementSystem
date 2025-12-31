@@ -1,7 +1,9 @@
 package com.example.studentmanagement;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ParentMessageActivity extends AppCompatActivity {
@@ -23,18 +26,20 @@ public class ParentMessageActivity extends AppCompatActivity {
         setContentView(R.layout.parent_message_dashboard);
 
         db = new DatabaseHelper(this);
+
+        // Find the container we added ID to
         llList = findViewById(R.id.ll_message_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        findViewById(R.id.fab_compose_message).setOnClickListener(v -> showComposeDialog());
+        // Removed FAB listener because the design uses buttons on the rows instead
 
         loadMessages();
     }
 
-    private void showComposeDialog() {
+    private void showComposeDialog(String recipientName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Contact Teacher/Admin");
+        builder.setTitle("Message " + (recipientName != null ? recipientName : "Teacher"));
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -77,19 +82,45 @@ public class ParentMessageActivity extends AppCompatActivity {
                 String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
                 String time = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
 
-                // Reuse a message row layout
+                // Inflate the new row design
                 View view = inflater.inflate(R.layout.item_message_row, llList, false);
+
                 TextView tvSender = view.findViewById(R.id.tv_sender_name);
-                TextView tvSubject = view.findViewById(R.id.tv_message_subject);
                 TextView tvPreview = view.findViewById(R.id.tv_message_preview);
-                TextView tvTime = view.findViewById(R.id.tv_time);
+                TextView tvTime = view.findViewById(R.id.tv_timestamp);
+
+                // Action Buttons
+                ImageView btnEmail = view.findViewById(R.id.btn_action_email);
+                ImageView btnCall = view.findViewById(R.id.btn_action_call);
 
                 tvSender.setText(sender);
-                tvSubject.setText(subject);
-                tvPreview.setText(body);
+                tvPreview.setText(subject + ": " + body); // Show subject + preview
                 tvTime.setText(time);
 
+                // Add Divider
+                View divider = new View(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, 3); // 1dp height
+                params.setMargins(0, 10, 0, 10);
+                divider.setLayoutParams(params);
+                divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+
+                // FUNCTIONALITY: Email Button opens Compose Dialog
+                btnEmail.setOnClickListener(v -> showComposeDialog(sender));
+
+                // FUNCTIONALITY: Call Button (Mock Dialer)
+                btnCall.setOnClickListener(v -> {
+                    Toast.makeText(this, "Calling " + sender + "...", Toast.LENGTH_SHORT).show();
+                    // Intent intent = new Intent(Intent.ACTION_DIAL);
+                    // intent.setData(Uri.parse("tel:1234567890"));
+                    // startActivity(intent);
+                });
+
                 llList.addView(view);
+
+                // Optional: Add a light divider between rows to match design style
+                // llList.addView(divider);
+
             } while (cursor.moveToNext());
         }
         cursor.close();

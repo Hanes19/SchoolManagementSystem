@@ -22,7 +22,7 @@ public class AdminUserDirectoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Use the new master layout we created
-        setContentView(R.layout.activity_admin_user_directory);
+        setContentView(R.layout.activity_item_assignment_card);
 
         // Initialize UI Views
         contentContainer = findViewById(R.id.content_container);

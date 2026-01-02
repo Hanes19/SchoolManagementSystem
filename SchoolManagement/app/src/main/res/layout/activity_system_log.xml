@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Today, 24 Oct"
-                android:textColor="#A3AED0"
+                android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:layout_marginBottom="12dp"/>
@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yesterday, 23 Oct"
-                android:textColor="#A3AED0"
+                android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:layout_marginTop="8dp"

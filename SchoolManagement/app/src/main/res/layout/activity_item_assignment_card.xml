@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Subject Icon Badge -->
+        <ImageView
+            android:id="@+id/iv_subject_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_edit"
+            app:tint="#4318FF"
+            android:background="@drawable/rounded_corner_white_bg"
+            android:backgroundTint="#F4F7FE"
+            android:padding="12dp"
+            tools:ignore="ContentDescription"/>
+
+        <!-- Task Metadata -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tv_assignment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chemical Bonds Lab Report"
+                android:textStyle="bold"
+                android:textColor="#1B254B"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tv_subject_due"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chemistry • Due: Oct 28"
+                android:textColor="#A3AED0"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Status Pill -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tv_status_pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DUE SOON"
+                android:textColor="#FF9800"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:background="@drawable/rounded_corner_white_bg"
+                android:backgroundTint="#FFF3E0"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:letterSpacing="0.05"/>
+
+            <TextView
+                android:id="@+id/tv_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100 pts"
+                android:textColor="#A3AED0"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

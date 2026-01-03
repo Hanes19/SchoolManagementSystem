@@ -36,7 +36,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // --- 3. Fees & Billing Group ---
         findViewById(R.id.btn_fees_billing).setOnClickListener(v -> {
-            startActivity(new Intent(this, AdminFeesActivity.class));
+            startActivity(new Intent(this, AdminFeesBillingActivity.class));
         });
 
         // Note: Listeners for Exams, Communications, and Library were removed

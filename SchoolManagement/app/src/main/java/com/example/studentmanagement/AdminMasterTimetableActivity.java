@@ -43,7 +43,6 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
         tvFilterGrade = findViewById(R.id.tv_filter_grade);
         tvFilterTeacher = findViewById(R.id.tv_filter_teacher);
 
-        // Ensure you added this ID to your XML ScrollView -> LinearLayout
         containerTimetable = findViewById(R.id.container_timetable);
 
         findViewById(R.id.header).setOnClickListener(v -> finish());
@@ -127,16 +126,18 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Safe Column Fetching
+                // Safe Column Fetching - Fixed "room" to "room_no"
                 int idxGrade = cursor.getColumnIndex("grade_level");
                 int idxTeacher = cursor.getColumnIndex("teacher_name");
                 int idxSection = cursor.getColumnIndex("section_name");
                 int idxSubject = cursor.getColumnIndex("subject");
-                int idxRoom = cursor.getColumnIndex("room");
+                int idxRoom = cursor.getColumnIndex("room_no"); // CORRECTED COLUMN NAME
                 int idxStart = cursor.getColumnIndex("start_time");
 
-                // Skip if columns missing (DB mismatch)
-                if (idxGrade == -1 || idxTeacher == -1) continue;
+                // Check if any critical column is missing to prevent crash
+                if (idxGrade == -1 || idxTeacher == -1 || idxSection == -1 || idxSubject == -1 || idxRoom == -1 || idxStart == -1) {
+                    continue;
+                }
 
                 String grade = cursor.getString(idxGrade);
                 String teacher = cursor.getString(idxTeacher);
@@ -161,13 +162,27 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
                 TextView tvLocation = row.findViewById(R.id.tv_schedule_location);
                 View indicator = row.findViewById(R.id.view_status_indicator);
 
-                // Format Time
-                String[] timeParts = startTime.split(":");
-                int hour = Integer.parseInt(timeParts[0]);
-                String meridiem = (hour >= 12) ? "PM" : "AM";
-                if(hour > 12) hour -= 12;
-                tvTime.setText(String.format("%02d:%s", hour, timeParts[1]));
-                tvMeridiem.setText(meridiem);
+                // Format Time safely
+                if (startTime != null && startTime.contains(":")) {
+                    String[] timeParts = startTime.split(":");
+                    if (timeParts.length >= 2) {
+                        try {
+                            int hour = Integer.parseInt(timeParts[0].trim());
+                            String meridiem = (hour >= 12) ? "PM" : "AM";
+                            if (hour > 12) hour -= 12;
+                            if (hour == 0) hour = 12; // Handle 00:00 as 12 AM
+                            tvTime.setText(String.format("%02d:%s", hour, timeParts[1]));
+                            tvMeridiem.setText(meridiem);
+                        } catch (NumberFormatException e) {
+                            tvTime.setText(startTime);
+                            tvMeridiem.setText("");
+                        }
+                    } else {
+                        tvTime.setText(startTime);
+                    }
+                } else {
+                    tvTime.setText(startTime != null ? startTime : "--:--");
+                }
 
                 tvSubject.setText(subject + " (" + grade + "-" + section + ")");
                 tvLocation.setText(room + " • " + teacher);
@@ -183,7 +198,6 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
             cursor.close();
         }
 
-        // DEBUG: Show user if data is missing
         if (count == 0) {
             TextView emptyView = new TextView(this);
             emptyView.setText("No classes found for " + selectedDay);
@@ -191,7 +205,6 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
             emptyView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             emptyView.setPadding(0, 50, 0, 0);
             containerTimetable.addView(emptyView);
-            Toast.makeText(this, "No data found in DB for " + selectedDay, Toast.LENGTH_SHORT).show();
         }
     }
 }

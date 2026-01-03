@@ -1,17 +1,19 @@
 package com.example.studentmanagement;
 
-import android.app.AlertDialog;
-import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.Cursor; // Ensure Cursor is imported
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +21,17 @@ public class StudentScheduleActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
     private RecyclerView recyclerView;
-    // private TextView tvCurrentDay; // ID not found in XML
     private String studentId;
     private String currentDay = "Monday";
-    private final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+
     private ScheduleAdapter adapter;
     private List<ScheduleItem> scheduleList;
+
+    // Arrays to hold view IDs for easier iteration
+    private final int[] cardIds = {R.id.card_mon, R.id.card_tue, R.id.card_wed, R.id.card_thu, R.id.card_fri};
+    private final int[] txtDayIds = {R.id.txt_day_mon, R.id.txt_day_tue, R.id.txt_day_wed, R.id.txt_day_thu, R.id.txt_day_fri};
+    private final int[] txtDateIds = {R.id.txt_date_mon, R.id.txt_date_tue, R.id.txt_date_wed, R.id.txt_date_thu, R.id.txt_date_fri};
+    private final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +41,6 @@ public class StudentScheduleActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
 
-        // 1. Match XML ID: recycler_schedule instead of ll_schedule_list
         recyclerView = findViewById(R.id.recycler_schedule);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -42,39 +48,61 @@ public class StudentScheduleActivity extends AppCompatActivity {
         adapter = new ScheduleAdapter(scheduleList);
         recyclerView.setAdapter(adapter);
 
-        // 2. Match XML ID: btn_back_schedule instead of btn_back
         findViewById(R.id.btn_back_schedule).setOnClickListener(v -> finish());
 
-        // 3. Logic for tvCurrentDay and btn_day_filter is commented out
-        // because these IDs (tv_current_day, btn_day_filter) do not exist in your provided XML.
+        // Initialize day click listeners
+        setupDayClickListeners();
 
-        // tvCurrentDay = findViewById(R.id.tv_current_day);
-        // findViewById(R.id.btn_day_filter).setOnClickListener(v -> showDayPicker());
-
+        // Load default day (Monday)
         loadSchedule(currentDay);
+        updateDayUI(0); // 0 index for Monday
     }
 
-    private void showDayPicker() {
-        new AlertDialog.Builder(this)
-                .setTitle("Select Day")
-                .setItems(days, (dialog, which) -> {
-                    currentDay = days[which];
-                    // tvCurrentDay.setText(currentDay); // Text view missing in XML
-                    loadSchedule(currentDay);
-                })
-                .show();
+    private void setupDayClickListeners() {
+        for (int i = 0; i < cardIds.length; i++) {
+            final int index = i;
+            CardView card = findViewById(cardIds[i]);
+            card.setOnClickListener(v -> {
+                currentDay = days[index];
+                updateDayUI(index);
+                loadSchedule(currentDay);
+            });
+        }
+    }
+
+    private void updateDayUI(int selectedIndex) {
+        // Loop through all days to reset or highlight
+        for (int i = 0; i < cardIds.length; i++) {
+            CardView card = findViewById(cardIds[i]);
+            TextView txtDay = findViewById(txtDayIds[i]);
+            TextView txtDate = findViewById(txtDateIds[i]);
+
+            if (i == selectedIndex) {
+                // Selected State: Dark Blue Background, White Text
+                card.setCardBackgroundColor(Color.parseColor("#1B254B"));
+                txtDay.setTextColor(Color.WHITE);
+                txtDate.setTextColor(Color.WHITE);
+            } else {
+                // Unselected State: White Background, Gray/Dark Text
+                card.setCardBackgroundColor(Color.WHITE);
+                txtDay.setTextColor(Color.parseColor("#A3AED0")); // Light Gray
+                txtDate.setTextColor(Color.parseColor("#1B254B")); // Dark Blue
+            }
+        }
     }
 
     private void loadSchedule(String day) {
         scheduleList.clear();
         String className = db.getStudentClass(studentId);
+        // Ensure db.getClassSchedule is implemented correctly in DatabaseHelper
         Cursor cursor = db.getClassSchedule(className, day);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                // Adjust column names to match your database schema exactly
                 String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
                 String start = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
-                String end = cursor.getString(cursor.getColumnIndexOrThrow("end_time"));
+                // String end = cursor.getString(cursor.getColumnIndexOrThrow("end_time")); // Optional if needed
                 String room = cursor.getString(cursor.getColumnIndexOrThrow("room_no"));
 
                 scheduleList.add(new ScheduleItem(subject, start, room));
@@ -82,11 +110,11 @@ public class StudentScheduleActivity extends AppCompatActivity {
             cursor.close();
         }
 
-        // Update the adapter to refresh the RecyclerView
         adapter.notifyDataSetChanged();
     }
 
-    // Simple Model Class for the data
+    // --- Inner Classes ---
+
     private static class ScheduleItem {
         String subject, time, room;
 
@@ -97,7 +125,6 @@ public class StudentScheduleActivity extends AppCompatActivity {
         }
     }
 
-    // RecyclerView Adapter Implementation
     private class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
         private final List<ScheduleItem> items;
 
@@ -108,7 +135,6 @@ public class StudentScheduleActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflate your existing item layout
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_teacher_schedule_card, parent, false);
             return new ViewHolder(view);
@@ -132,7 +158,6 @@ public class StudentScheduleActivity extends AppCompatActivity {
 
             ViewHolder(View itemView) {
                 super(itemView);
-                // IDs from your item_teacher_schedule_card.xml
                 tvTime = itemView.findViewById(R.id.tv_start_time);
                 tvSubject = itemView.findViewById(R.id.tv_subject);
                 tvDetails = itemView.findViewById(R.id.tv_details);

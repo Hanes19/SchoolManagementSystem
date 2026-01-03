@@ -80,18 +80,20 @@
                             android:textStyle="bold"/>
 
                         <TextView
+                            android:id="@+id/tv_invoice_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="#INV-2025-008"
+                            android:text="#INV-2025-000"
                             android:textSize="18sp"
                             android:textColor="#1B254B"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="UNPAID"
+                        android:text="LOADING"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="#FF9800"
@@ -119,8 +121,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Billed To" android:textColor="#A3AED0" android:textSize="12sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jason Statham" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginTop="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grade 10-A" android:textColor="#1B254B" android:textSize="12sp"/>
+                        <TextView android:id="@+id/tv_billed_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Student Name" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                        <TextView android:id="@+id/tv_billed_grade" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Class/Grade" android:textColor="#1B254B" android:textSize="12sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -129,8 +131,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="end">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Due Date" android:textColor="#A3AED0" android:textSize="12sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Oct 30, 2025" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Date" android:textColor="#A3AED0" android:textSize="12sp"/>
+                        <TextView android:id="@+id/tv_due_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Oct 30, 2025" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginTop="4dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -150,21 +152,10 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_invoice_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Term 1 Tuition Fee" android:textColor="#1B254B" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱1,500.00" android:textColor="#1B254B" android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Transport (Route A)" android:textColor="#1B254B" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱250.00" android:textColor="#1B254B" android:textStyle="bold"/>
+                    android:orientation="vertical">
                 </LinearLayout>
 
                 <View
@@ -186,9 +177,10 @@
                         android:text="Subtotal"
                         android:textColor="#A3AED0"/>
                     <TextView
+                        android:id="@+id/tv_subtotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="₱1,750.00"
+                        android:text="₱0.00"
                         android:textColor="#1B254B"
                         android:textStyle="bold"/>
                 </LinearLayout>
@@ -201,13 +193,14 @@
                     <TextView android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Tax (5%)"
+                        android:text="Total Paid"
                         android:textColor="#A3AED0"/>
                     <TextView
+                        android:id="@+id/tv_total_paid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="₱87.50"
-                        android:textColor="#1B254B"
+                        android:text="₱0.00"
+                        android:textColor="#05CD99"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -217,8 +210,8 @@
                     android:orientation="horizontal"
                     android:background="#F4F7FE"
                     android:padding="16dp">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Amount" android:textColor="#1B254B" android:textSize="16sp" android:textStyle="bold"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱1,837.50" android:textColor="#1B254B" android:textSize="20sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Balance Due" android:textColor="#1B254B" android:textSize="16sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tv_balance_due" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₱0.00" android:textColor="#1B254B" android:textSize="20sp" android:textStyle="bold"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -245,19 +238,16 @@
             app:cardCornerRadius="28dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="0dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
-
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@android:drawable/stat_sys_download"
                     app:tint="#1B254B"/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -280,19 +270,16 @@
             app:cardCornerRadius="28dp"
             app:cardBackgroundColor="#111C44"
             app:cardElevation="6dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
-
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@android:drawable/ic_menu_share"
                     app:tint="#FFFFFF"/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

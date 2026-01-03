@@ -1,302 +1,210 @@
 package com.example.studentmanagement;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class AdminFeesBillingActivity extends AppCompatActivity {
 
+    private DatabaseHelper db;
     private LinearLayout recordsContainer;
-    // Default filter values
     private String currentStatusFilter = "All";
-    private String currentGradeFilter = "All";
-    private String currentSortOrder = "None";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_fees_billings);
 
-        // 1. Initialize Back Button
+        db = new DatabaseHelper(this);
+
+        // 1. Initialize Views
         ImageView btnBack = findViewById(R.id.header).findViewWithTag("back_btn");
         if(btnBack == null) {
+            // Fallback if tag is missing
             LinearLayout header = findViewById(R.id.header);
-            if(header != null && header.getChildCount() > 0 && header.getChildAt(0) instanceof ImageView) {
-                btnBack = (ImageView) header.getChildAt(0);
-            }
+            if(header != null && header.getChildCount() > 0) btnBack = (ImageView) header.getChildAt(0);
         }
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
-        }
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // 2. Initialize Filter Button
-        ImageView btnFilter = findViewById(R.id.btn_filter);
-        if (btnFilter != null) {
-            btnFilter.setOnClickListener(v -> showFilterBottomSheet());
-        }
+        findViewById(R.id.btn_filter).setOnClickListener(v -> showFilterBottomSheet());
 
-        // 3. Initialize Generate Invoice Button
-        // UPDATED: Now navigates to the Generate Invoice Activity
-        CardView btnInvoice = findViewById(R.id.btn_invoice);
-        if (btnInvoice != null) {
-            btnInvoice.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminFeesBillingActivity.this, AdminGenerateInvoiceActivity.class);
-                startActivity(intent);
-            });
-        }
+        findViewById(R.id.btn_invoice).setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminGenerateInvoiceActivity.class));
+        });
 
-        // 4. Locate the container for student cards for filtering
-        View firstCard = findViewById(R.id.card_student_1);
-        if (firstCard != null) {
-            recordsContainer = (LinearLayout) firstCard.getParent();
-        }
+        // --- FIX IS HERE: Changed R.id.records_container to R.id.ll_transaction_list ---
+        recordsContainer = findViewById(R.id.ll_transaction_list);
 
-        // 5. Setup Click Listeners for the Cards (To open Details)
-        setupCardClickListeners();
+        // Load Data
+        loadStudentFees();
     }
 
-    // ==========================================
-    //           NAVIGATION & ACTIONS
-    // ==========================================
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadStudentFees(); // Refresh when coming back
+    }
 
-    private void setupCardClickListeners() {
-        // List of your hardcoded student card IDs
-        int[] cardIds = {R.id.card_student_1, R.id.card_student_2, R.id.card_student_3};
+    private void loadStudentFees() {
+        if (recordsContainer == null) return;
+        recordsContainer.removeAllViews(); // Clear hardcoded/old views
 
-        for (int id : cardIds) {
-            View card = findViewById(id);
-            if (card != null) {
-                card.setOnClickListener(v -> {
-                    // Navigate to the Invoice Details Activity
-                    Intent intent = new Intent(AdminFeesBillingActivity.this, AdminInvoiceDetailsActivity.class);
-                    // Example of passing data (optional):
-                    // intent.putExtra("STUDENT_NAME", "Jason Statham");
-                    startActivity(intent);
-                });
-            }
+        Cursor cursor = db.getAllStudentsFeeStatus();
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String id = cursor.getString(0);
+                String name = cursor.getString(1);
+                double totalDue = cursor.getDouble(2);
+                double totalPaid = cursor.getDouble(3);
+                double balance = totalDue - totalPaid;
+
+                String status;
+                if (balance <= 0 && totalDue > 0) status = "Paid";
+                else if (totalPaid > 0) status = "Pending";
+                else status = "Unpaid";
+
+                // Filter Logic
+                if (!currentStatusFilter.equals("All") && !status.equalsIgnoreCase(currentStatusFilter)) {
+                    continue;
+                }
+
+                // Add Card
+                addStudentFeeCard(id, name, totalDue, balance, status);
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            TextView empty = new TextView(this);
+            empty.setText("No student records found.");
+            empty.setGravity(Gravity.CENTER);
+            empty.setPadding(20, 50, 20, 20);
+            recordsContainer.addView(empty);
         }
     }
 
-    // ==========================================
-    //           FILTER & SORT LOGIC
-    // ==========================================
+    private void addStudentFeeCard(String studentId, String name, double total, double balance, String status) {
+        CardView card = new CardView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 0, 30);
+        card.setLayoutParams(params);
+        card.setCardBackgroundColor(Color.WHITE);
+        card.setRadius(20);
+        card.setCardElevation(5);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setPadding(40, 40, 40, 40);
+        layout.setGravity(Gravity.CENTER_VERTICAL);
+
+        // Avatar (Placeholder)
+        ImageView avatar = new ImageView(this);
+        avatar.setImageResource(R.drawable.profile_pic);
+        LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(120, 120);
+        imgParams.setMargins(0, 0, 30, 0);
+        avatar.setLayoutParams(imgParams);
+
+        // Text Info
+        LinearLayout textLayout = new LinearLayout(this);
+        textLayout.setOrientation(LinearLayout.VERTICAL);
+        textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        TextView tvName = new TextView(this);
+        tvName.setText(name);
+        tvName.setTypeface(null, Typeface.BOLD);
+        tvName.setTextSize(16);
+        tvName.setTextColor(Color.parseColor("#1B254B"));
+
+        TextView tvId = new TextView(this);
+        tvId.setText("ID: " + studentId);
+        tvId.setTextSize(12);
+        tvId.setTextColor(Color.GRAY);
+
+        TextView tvAmount = new TextView(this);
+        tvAmount.setText("Balance: ₱" + String.format("%.2f", balance));
+        tvAmount.setTextSize(14);
+        tvAmount.setTextColor(balance > 0 ? Color.RED : Color.parseColor("#05CD99"));
+        tvAmount.setTypeface(null, Typeface.BOLD);
+
+        textLayout.addView(tvName);
+        textLayout.addView(tvId);
+        textLayout.addView(tvAmount);
+
+        // Status Badge
+        TextView tvStatus = new TextView(this);
+        tvStatus.setText(status);
+        tvStatus.setTextSize(12);
+        tvStatus.setPadding(20, 10, 20, 10);
+        tvStatus.setTypeface(null, Typeface.BOLD);
+
+        if (status.equals("Paid")) {
+            tvStatus.setTextColor(Color.parseColor("#05CD99"));
+            tvStatus.setBackgroundColor(Color.parseColor("#E0FBF3")); // Light Green
+        } else if (status.equals("Pending")) {
+            tvStatus.setTextColor(Color.parseColor("#FFB547"));
+            tvStatus.setBackgroundColor(Color.parseColor("#FFF5E0")); // Light Orange
+        } else {
+            tvStatus.setTextColor(Color.RED);
+            tvStatus.setBackgroundColor(Color.parseColor("#FFEEEE")); // Light Red
+        }
+
+        layout.addView(avatar);
+        layout.addView(textLayout);
+        layout.addView(tvStatus);
+
+        card.addView(layout);
+
+        // Click Listener
+        card.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminFeesBillingActivity.this, AdminInvoiceDetailsActivity.class);
+            intent.putExtra("STUDENT_ID", studentId);
+            startActivity(intent);
+        });
+
+        recordsContainer.addView(card);
+    }
 
     private void showFilterBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.admin_fees_filter, null);
         bottomSheetDialog.setContentView(view);
 
-        // --- 1. Payment Status Logic ---
-        LinearLayout statusChipsContainer = view.findViewById(R.id.status_chips);
-        setupChipGroup(statusChipsContainer, currentStatusFilter, newSelection -> currentStatusFilter = newSelection);
+        LinearLayout statusContainer = view.findViewById(R.id.status_chips);
 
-        // --- 2. Class Level Logic ---
-        ViewGroup scrollGrades = view.findViewById(R.id.scroll_grades);
-        if (scrollGrades != null && scrollGrades.getChildCount() > 0) {
-            LinearLayout gradeScrollContainer = (LinearLayout) scrollGrades.getChildAt(0);
-            setupChipGroup(gradeScrollContainer, currentGradeFilter, newSelection -> currentGradeFilter = newSelection);
-        }
-
-        // --- 3. Sort By Logic ---
-        RadioGroup rgSort = view.findViewById(R.id.rg_sort);
-        if (currentSortOrder.equals("High")) ((RadioButton) rgSort.getChildAt(0)).setChecked(true);
-        if (currentSortOrder.equals("Low")) ((RadioButton) rgSort.getChildAt(1)).setChecked(true);
-
-        rgSort.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb = group.findViewById(checkedId);
-            if (rb != null) {
-                String text = rb.getText().toString();
-                if (text.contains("High")) currentSortOrder = "High";
-                else if (text.contains("Low")) currentSortOrder = "Low";
-            }
-        });
-
-        // --- 4. Reset Logic ---
-        TextView resetBtn = findTextViewWithText((ViewGroup) view, "Reset");
-        if (resetBtn != null) {
-            resetBtn.setOnClickListener(v -> {
-                currentStatusFilter = "All";
-                currentGradeFilter = "All";
-                currentSortOrder = "None";
-                bottomSheetDialog.dismiss();
-                applyFilters(); // Refresh list to show all
-            });
-        }
-
-        // --- 5. Apply Button ---
-        CardView btnApply = view.findViewById(R.id.btn_apply);
-        btnApply.setOnClickListener(v -> {
-            applyFilters();
-            bottomSheetDialog.dismiss();
-        });
-
-        bottomSheetDialog.show();
-    }
-
-    private void setupChipGroup(LinearLayout container, String initialSelection, OnSelectionChanged listener) {
-        if (container == null) return;
-
-        int childCount = container.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = container.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView chip = (TextView) child;
-                String chipText = chip.getText().toString();
-
-                // Set initial visual state
-                boolean isSelected = chipText.equalsIgnoreCase(initialSelection) ||
-                        (initialSelection.equals("All") && chipText.equals("All"));
-                updateChipVisual(chip, isSelected);
-
-                chip.setOnClickListener(v -> {
-                    // Deselect all others
-                    for (int j = 0; j < childCount; j++) {
-                        View c = container.getChildAt(j);
-                        if (c instanceof TextView) updateChipVisual((TextView)c, false);
-                    }
-                    // Select this one
-                    updateChipVisual(chip, true);
-                    listener.onSelection(chipText);
-                });
-            }
-        }
-    }
-
-    private void updateChipVisual(TextView chip, boolean isSelected) {
-        if (isSelected) {
-            chip.setTextColor(Color.WHITE);
-            chip.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1B254B")));
-        } else {
-            chip.setTextColor(Color.parseColor("#A3AED0"));
-            chip.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F4F7FE")));
-        }
-    }
-
-    private void applyFilters() {
-        if (recordsContainer == null) return;
-
-        List<View> allCards = new ArrayList<>();
-        // Collect all children first
-        for (int i = 0; i < recordsContainer.getChildCount(); i++) {
-            allCards.add(recordsContainer.getChildAt(i));
-        }
-
-        List<View> visibleCards = new ArrayList<>();
-
-        for (View card : allCards) {
-            CardData data = extractDataFromCard(card);
-
-            // Logic for matching filters
-            boolean statusMatch = currentStatusFilter.equalsIgnoreCase("All") ||
-                    data.status.equalsIgnoreCase(currentStatusFilter);
-
-            boolean gradeMatch = currentGradeFilter.equalsIgnoreCase("All") ||
-                    data.details.contains(currentGradeFilter);
-
-            if (statusMatch && gradeMatch) {
-                card.setVisibility(View.VISIBLE);
-                visibleCards.add(card);
-            } else {
-                card.setVisibility(View.GONE);
-            }
-        }
-
-        // Sort Logic
-        if (!currentSortOrder.equals("None")) {
-            Collections.sort(visibleCards, (v1, v2) -> {
-                double amt1 = extractDataFromCard(v1).amountVal;
-                double amt2 = extractDataFromCard(v2).amountVal;
-                return currentSortOrder.equals("High") ? Double.compare(amt2, amt1) : Double.compare(amt1, amt2);
-            });
-
-            // Re-order views: Remove all and add back in sorted order
-            recordsContainer.removeAllViews();
-
-            // Add visible sorted cards
-            for (View v : visibleCards) {
-                recordsContainer.addView(v);
-            }
-            // Add back the hidden ones (so they aren't lost if filter is reset)
-            for (View v : allCards) {
-                if (!visibleCards.contains(v)) {
-                    recordsContainer.addView(v);
+        if(statusContainer != null) {
+            for(int i=0; i<statusContainer.getChildCount(); i++) {
+                View child = statusContainer.getChildAt(i);
+                if(child instanceof TextView) {
+                    child.setOnClickListener(v -> {
+                        currentStatusFilter = ((TextView) v).getText().toString();
+                        loadStudentFees();
+                        bottomSheetDialog.dismiss();
+                    });
                 }
             }
         }
-    }
 
-    // ==========================================
-    //           DATA PARSING HELPERS
-    // ==========================================
-
-    private static class CardData {
-        String status;
-        String details;
-        double amountVal;
-    }
-
-    // Parses the hardcoded XML structure to extract data for filtering/sorting
-    private CardData extractDataFromCard(View card) {
-        CardData data = new CardData();
-        data.status = "";
-        data.details = "";
-        data.amountVal = 0.0;
-
-        try {
-            // Structure: Card -> LinearLayout (Horizontal)
-            LinearLayout mainLayout = (LinearLayout) ((CardView) card).getChildAt(0);
-
-            // Middle Column (Index 1) -> Name and Details
-            LinearLayout middleLayout = (LinearLayout) mainLayout.getChildAt(1);
-            TextView detailsTv = (TextView) middleLayout.getChildAt(1); // "ID: ... • Grade 10"
-            data.details = detailsTv.getText().toString();
-
-            // End Column (Index 2) -> Amount and Status
-            LinearLayout endLayout = (LinearLayout) mainLayout.getChildAt(2);
-            TextView amountTv = (TextView) endLayout.getChildAt(0); // "₱500.00"
-            TextView statusTv = (TextView) endLayout.getChildAt(1); // "PAID"
-
-            data.status = statusTv.getText().toString();
-
-            // Parse Amount: Remove "₱" and ","
-            String amtString = amountTv.getText().toString().replace("₱", "").replace(",", "").trim();
-            data.amountVal = Double.parseDouble(amtString);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Reset Button
+        View btnReset = view.findViewWithTag("reset_btn");
+        if(btnReset != null) {
+            btnReset.setOnClickListener(v -> {
+                currentStatusFilter = "All";
+                loadStudentFees();
+                bottomSheetDialog.dismiss();
+            });
         }
-        return data;
-    }
 
-    private TextView findTextViewWithText(ViewGroup root, String text) {
-        for(int i=0; i<root.getChildCount(); i++) {
-            View child = root.getChildAt(i);
-            if(child instanceof TextView) {
-                if(((TextView)child).getText().toString().equalsIgnoreCase(text)) return (TextView)child;
-            } else if(child instanceof ViewGroup) {
-                TextView found = findTextViewWithText((ViewGroup)child, text);
-                if(found != null) return found;
-            }
-        }
-        return null;
-    }
-
-    interface OnSelectionChanged {
-        void onSelection(String selection);
+        bottomSheetDialog.show();
     }
 }

@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 20: Full Master Timetable Seed
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 24;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -455,8 +455,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('stud01', 'Science', 78, 'B', 'Midterm', 'Keep it up')," +
                 "('stud01', 'History', 90, 'A', 'Midterm', 'Excellent')," +
                 "('stud01', 'English', 88, 'A', 'Midterm', 'Well done')");
+
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud02', 'Sarah Jane', '" + testPassHash + "', 'Student', 2, 'Active')");
+
+
+
     }
 
+    private void seedFeeData(SQLiteDatabase db) {
+        // Defines 'today' so it can be used in the queries below
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        // 1. INVOICES (What they owe)
+        // Student 1 (Jason)
+        db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES " +
+                "('stud01', 'Tuition Fee - Term 1', 15000.00, 'Tuition', '" + today + "')," +
+                "('stud01', 'Laboratory Fee', 2500.00, 'Lab', '" + today + "')," +
+                "('stud01', 'Uniform Set', 1200.00, 'Misc', '" + today + "')");
+
+        // Student 2 (Sarah)
+        db.execSQL("INSERT INTO " + TABLE_FEES + " (student_id, description, amount, type, date) VALUES " +
+                "('stud02', 'Tuition Fee - Term 1', 15000.00, 'Tuition', '" + today + "')," +
+                "('stud02', 'Library Fine', 50.00, 'Fine', '" + today + "')");
+
+        // 2. PAYMENTS (What they paid)
+        // Student 1 Paid partially
+        db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
+                "('stud01', 'admin01', 5000.00, 'Cash', '" + today + "')," +
+                "('stud01', 'admin01', 2000.00, 'Bank Transfer', '" + today + "')");
+
+        // Student 2 Paid Full
+        db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
+                "('stud02', 'admin01', 15050.00, 'Cash', '" + today + "')");
+
+        db.execSQL("INSERT INTO fees (student_id, description, amount, type, date) VALUES ('stud01', 'Tuition Fee - Term 1', 15000.00, 'Tuition', '" + today + "')");
+        db.execSQL("INSERT INTO fees (student_id, description, amount, type, date) VALUES ('stud01', 'Laboratory Fee', 2500.00, 'Lab', '" + today + "')");
+        db.execSQL("INSERT INTO fee_payments (student_id, collected_by, amount, payment_method, date) VALUES ('stud01', 'admin01', 5000.00, 'Cash', '" + today + "')");
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop old tables
@@ -482,6 +519,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXAM_MARKS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTION_BANK);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTICES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
 
         // Create new tables
         onCreate(db);
@@ -545,12 +585,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public String getUserName(String userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS, new String[]{"full_name"}, "user_id = ?", new String[]{userId}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
+        Cursor cursor = db.rawQuery("SELECT full_name FROM users WHERE user_id = ?", new String[]{userId});
+        if(cursor.moveToFirst()){
             String name = cursor.getString(0);
             cursor.close();
             return name;
         }
+        cursor.close();
         return userId;
     }
 
@@ -667,19 +708,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_FEE_PAYMENTS + " WHERE student_id = ? ORDER BY date DESC", new String[]{studentId});
     }
 
-    public boolean addFee(String studentId, String description, double amount, String type) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("student_id", studentId);
-        values.put("description", description);
-        values.put("amount", amount);
-        values.put("type", type);
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String date = sdf.format(new Date());
-        values.put("date", date);
-        long result = db.insert("fees", null, values);
-        return result != -1;
-    }
+
 
     public boolean addExpense(String title, String requestedBy, String category, double amount, String description, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1360,4 +1389,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_USERS, null, values);
         return result != -1;
     }
+
+    public Cursor getAllStudentsFeeStatus() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT u.user_id, u.full_name, " +
+                "COALESCE(SUM(f.amount), 0) as total_due, " +
+                "(SELECT COALESCE(SUM(p.amount), 0) FROM fee_payments p WHERE p.student_id = u.user_id) as total_paid " +
+                "FROM users u " +
+                "LEFT JOIN fees f ON u.user_id = f.student_id " +
+                "WHERE u.role = 'Student' " +
+                "GROUP BY u.user_id";
+        return db.rawQuery(query, null);
+    }
+
+    public boolean addFee(String studentId, String description, double amount, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("description", description);
+        values.put("amount", amount);
+        values.put("type", type);
+        values.put("date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        return db.insert(TABLE_FEES, null, values) != -1;
+    }
+
+    public boolean addPayment(String studentId, String collectedBy, double amount, String method) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("collected_by", collectedBy);
+        values.put("amount", amount);
+        values.put("payment_method", method);
+        values.put("date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        return db.insert(TABLE_FEE_PAYMENTS, null, values) != -1;
+    }
+    public Cursor getStudentInvoices(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Query the fees table
+        return db.rawQuery("SELECT * FROM fees WHERE student_id = ? ORDER BY date DESC", new String[]{studentId});
+    }
+    public double getStudentTotalPaid(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT SUM(amount) FROM fee_payments WHERE student_id = ?", new String[]{studentId});
+        double total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        return total;
+    }
+
+
+
+
+
 }

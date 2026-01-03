@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 10 triggers the onUpgrade to create the new ROLES table and re-seed data
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 18;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -114,9 +114,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "student_id TEXT, " +
                 "date TEXT, " +
                 "status TEXT, " +
-                "class_name TEXT)");
+                "class_name TEXT, " +
+                "remarks TEXT)");
 
-        // 6. Grades Table (Merged Assignment ID and Feedback)
         db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
                 "grade_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "assignment_id INTEGER, " +
@@ -125,7 +125,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "score INTEGER, " +
                 "grade TEXT, " +
                 "semester TEXT, " +
-                "feedback TEXT)");
+                "feedback TEXT, " +
+                "exam_name TEXT, " +
+                "total_marks INTEGER)");
 
         // 7. Fees Table
         db.execSQL("CREATE TABLE " + TABLE_FEES + " (" +
@@ -346,16 +348,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('stud01', 'staff01', 5000.00, 'Cash', '2025-01-10'), " +
                 "('stud01', 'staff01', 1250.00, 'Bank Transfer', '2025-01-12')");
 
-        // --- SEED ATTENDANCE (Sample for Jason 'stud01') ---
         db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status, remarks) VALUES " +
-                "('stud01', '2025-01-02', 'Present', 'On time')," +
-                "('stud01', '2025-01-03', 'Present', 'On time')," +
-                "('stud01', '2025-01-04', 'Late', 'Heavy traffic')," +
-                "('stud01', '2025-01-05', 'Present', 'On time')," +
-                "('stud01', '2025-01-06', 'Absent', 'Medical leave')");
+                "('stud01', '2025-01-06', 'Present', 'On time')," +
+                "('stud01', '2025-01-07', 'Late', 'Traffic')," +
+                "('stud01', '2025-01-08', 'Absent', 'Sick')," +
+                "('stud01', '2025-01-09', 'Present', 'On time')," +
+                "('stud01', '2025-01-10', 'Present', 'On time')");
 
-        // --- SEED EXAM CATEGORIES ---
-        db.execSQL("INSERT INTO " + TABLE_EXAM_CATEGORIES + " (exam_name, date) VALUES " +
+        db.execSQL("INSERT INTO " + TABLE_EXAM_CATEGORIES + " (exam_name, start_date) VALUES " +
                 "('First Grading', '2025-01-15')");
 
 // --- SEED EXAM MARKS (Sample for Jason 'stud01') ---
@@ -366,7 +366,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(1, 'stud01', 'English', 95, 100)," +
                 "(1, 'stud01', 'Filipino', 90, 100)," +
                 "(1, 'stud01', 'History', 85, 100)");
+
+        db.execSQL("INSERT INTO " + TABLE_GRADES + " (student_id, subject, score, grade, semester, feedback) VALUES " +
+                "('stud01', 'Mathematics', 85, 'A', 'Midterm', 'Good job')," +
+                "('stud01', 'Science', 78, 'B', 'Midterm', 'Keep it up')," +
+                "('stud01', 'History', 90, 'A', 'Midterm', 'Excellent')," +
+                "('stud01', 'English', 88, 'A', 'Midterm', 'Well done')");
+
+        // 2. Seed Exams (Using 'start_date' instead of 'date')
+        db.execSQL("INSERT INTO " + TABLE_EXAM_CATEGORIES + " (exam_name, start_date, end_date) VALUES " +
+                "('Midterm', '2025-03-10', '2025-03-15')," +
+                "('Finals', '2025-06-20', '2025-06-25')");
     }
+
+
 
 
     @Override

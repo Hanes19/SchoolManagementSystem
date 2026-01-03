@@ -21,12 +21,16 @@ public class StudentGradesActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
+        if (studentId == null) studentId = "stud01"; // Fallback for testing
 
-        // FIX 1: Match the XML ID for the container (see XML fix below)
+        // Link the LinearLayout we just added to XML
         llList = findViewById(R.id.ll_grades_list);
 
-        // FIX 2: Match the XML ID for the back button
-        findViewById(R.id.btn_back_grades).setOnClickListener(v -> finish());
+        // Link the correct Back Button ID from XML
+        View btnBack = findViewById(R.id.btn_back_grades);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
         loadGrades();
     }

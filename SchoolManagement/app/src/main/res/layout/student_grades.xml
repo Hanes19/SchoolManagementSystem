@@ -145,10 +145,12 @@
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Grade" android:gravity="center" android:textStyle="bold" android:textColor="#1B254B"/>
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_grades"
+        <LinearLayout
+            android:id="@+id/ll_grades_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

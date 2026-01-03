@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 10 triggers the onUpgrade to create the new ROLES table and re-seed data
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -345,6 +345,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
                 "('stud01', 'staff01', 5000.00, 'Cash', '2025-01-10'), " +
                 "('stud01', 'staff01', 1250.00, 'Bank Transfer', '2025-01-12')");
+
+        // --- SEED ATTENDANCE (Sample for Jason 'stud01') ---
+        db.execSQL("INSERT INTO " + TABLE_ATTENDANCE + " (student_id, date, status, remarks) VALUES " +
+                "('stud01', '2025-01-02', 'Present', 'On time')," +
+                "('stud01', '2025-01-03', 'Present', 'On time')," +
+                "('stud01', '2025-01-04', 'Late', 'Heavy traffic')," +
+                "('stud01', '2025-01-05', 'Present', 'On time')," +
+                "('stud01', '2025-01-06', 'Absent', 'Medical leave')");
+
+        // --- SEED EXAM CATEGORIES ---
+        db.execSQL("INSERT INTO " + TABLE_EXAM_CATEGORIES + " (exam_name, date) VALUES " +
+                "('First Grading', '2025-01-15')");
+
+// --- SEED EXAM MARKS (Sample for Jason 'stud01') ---
+// Assuming exam_id 1 is 'First Grading'
+        db.execSQL("INSERT INTO " + TABLE_EXAM_MARKS + " (exam_id, student_id, subject, score, total_marks) VALUES " +
+                "(1, 'stud01', 'Mathematics', 92, 100)," +
+                "(1, 'stud01', 'Science', 88, 100)," +
+                "(1, 'stud01', 'English', 95, 100)," +
+                "(1, 'stud01', 'Filipino', 90, 100)," +
+                "(1, 'stud01', 'History', 85, 100)");
     }
 
 

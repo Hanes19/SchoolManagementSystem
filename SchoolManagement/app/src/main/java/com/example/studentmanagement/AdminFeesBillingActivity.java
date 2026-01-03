@@ -29,13 +29,23 @@ public class AdminFeesBillingActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
 
         // 1. Initialize Views
-        ImageView btnBack = findViewById(R.id.header).findViewWithTag("back_btn");
-        if(btnBack == null) {
-            // Fallback if tag is missing
-            LinearLayout header = findViewById(R.id.header);
-            if(header != null && header.getChildCount() > 0) btnBack = (ImageView) header.getChildAt(0);
+        ImageView btnBack = null;
+        View header = findViewById(R.id.header);
+
+        // Try to find back button by tag, otherwise get the first child of header
+        if (header != null) {
+            btnBack = header.findViewWithTag("back_btn");
+            if (btnBack == null && header instanceof ViewGroup) {
+                ViewGroup headerGroup = (ViewGroup) header;
+                if (headerGroup.getChildCount() > 0 && headerGroup.getChildAt(0) instanceof ImageView) {
+                    btnBack = (ImageView) headerGroup.getChildAt(0);
+                }
+            }
         }
-        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
         findViewById(R.id.btn_filter).setOnClickListener(v -> showFilterBottomSheet());
 

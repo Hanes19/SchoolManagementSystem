@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 20: Full Master Timetable Seed
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -465,7 +465,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void seedFeeData(SQLiteDatabase db) {
-        // Defines 'today' so it can be used in the queries below
+        // --- FIX: Define 'today' here so the code below can use it ---
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         // 1. INVOICES (What they owe)
@@ -481,18 +481,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('stud02', 'Library Fine', 50.00, 'Fine', '" + today + "')");
 
         // 2. PAYMENTS (What they paid)
-        // Student 1 Paid partially
         db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
                 "('stud01', 'admin01', 5000.00, 'Cash', '" + today + "')," +
                 "('stud01', 'admin01', 2000.00, 'Bank Transfer', '" + today + "')");
 
-        // Student 2 Paid Full
         db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
                 "('stud02', 'admin01', 15050.00, 'Cash', '" + today + "')");
-
-        db.execSQL("INSERT INTO fees (student_id, description, amount, type, date) VALUES ('stud01', 'Tuition Fee - Term 1', 15000.00, 'Tuition', '" + today + "')");
-        db.execSQL("INSERT INTO fees (student_id, description, amount, type, date) VALUES ('stud01', 'Laboratory Fee', 2500.00, 'Lab', '" + today + "')");
-        db.execSQL("INSERT INTO fee_payments (student_id, collected_by, amount, payment_method, date) VALUES ('stud01', 'admin01', 5000.00, 'Cash', '" + today + "')");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

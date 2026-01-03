@@ -21,9 +21,12 @@ public class StudentGradesActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
+
+        // FIX 1: Match the XML ID for the container (see XML fix below)
         llList = findViewById(R.id.ll_grades_list);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        // FIX 2: Match the XML ID for the back button
+        findViewById(R.id.btn_back_grades).setOnClickListener(v -> finish());
 
         loadGrades();
     }

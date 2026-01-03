@@ -45,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <TextView
+            android:id="@+id/tabStudents"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,6 +54,7 @@
             android:textColor="#A3AED0"/>
 
         <TextView
+            android:id="@+id/tabTeachers"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -63,12 +65,13 @@
             android:background="@drawable/rounded_blue_bg_placeholder"/>
 
         <TextView
+            android:id="@+id/tabStaff"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Staff"
             android:gravity="center"
-            android:textColor="#A3AED0"/>
+            android:text="Staff"
+            android:textColor="#A3AED0" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

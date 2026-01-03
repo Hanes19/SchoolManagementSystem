@@ -37,7 +37,7 @@ public class StudentFeesActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         double totalPaid = 0;
-        double annualFee = 2500.00; // Mock total fee
+        double annualFee = 25000.00;
 
         if (cursor.moveToFirst()) {
             do {
@@ -54,7 +54,7 @@ public class StudentFeesActivity extends AppCompatActivity {
 
                 tvTitle.setText("Fee Paid");
                 tvDesc.setText(date + " via " + method);
-                tvAmount.setText("-$" + amount);
+                tvAmount.setText("-₱" + amount);
                 tvAmount.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
 
                 llHistory.addView(view);
@@ -63,6 +63,6 @@ public class StudentFeesActivity extends AppCompatActivity {
         cursor.close();
 
         double due = Math.max(0, annualFee - totalPaid);
-        tvOutstanding.setText("Outstanding: $" + String.format("%.2f", due));
+        tvOutstanding.setText("₱" + String.format("%.2f", due));
     }
 }

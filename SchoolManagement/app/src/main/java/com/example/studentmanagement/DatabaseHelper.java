@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 10 triggers the onUpgrade to create the new ROLES table and re-seed data
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -305,12 +305,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // --- SEED TIMETABLE (Sample for Grade 10 / Class ID 1) ---
         // Monday
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '08:00', '09:00', 'Mathematics', 'Rm 101', 'Mr. Langdon')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Monday', '09:00', '10:00', 'History', 'Rm 102', 'Ms. Connor')");
-        // Tuesday
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Tuesday', '08:00', '09:00', 'Science', 'Lab 1', 'Mr. White')");
-        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room, teacher_name) VALUES (1, 'Tuesday', '10:00', '11:00', 'English', 'Rm 101', 'Mr. Keating')");
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES (1, 'Monday', '08:00', '09:00', 'Mathematics', 'Rm 101', 'Mr. Langdon')");
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES (1, 'Monday', '09:00', '10:00', 'History', 'Rm 102', 'Ms. Connor')");
 
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, class_name, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES " +
+                "(1, 'Grade 10-A', 'Monday', '08:00 AM', '09:00 AM', 'Mathematics', 'Rm 101', 'Mr. Langdon')," +
+                "(1, 'Grade 10-A', 'Monday', '09:00 AM', '10:00 AM', 'History', 'Rm 102', 'Ms. Connor')," +
+                "(1, 'Grade 10-A', 'Tuesday', '08:00 AM', '09:30 AM', 'Science', 'Lab 1', 'Mr. White')");
+        // Tuesday
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES (1, 'Tuesday', '08:00', '09:00', 'Science', 'Lab 1', 'Mr. White')");
+        db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES (1, 'Tuesday', '10:00', '11:00', 'English', 'Rm 101', 'Mr. Keating')");
         // --- SEED ROLES ---
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Admin', 'Full System Access & Configuration')");
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_ROLES + " (role_name, description) VALUES ('Teacher', 'Class Management, Grading, Attendance')");
@@ -320,7 +324,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // --- SEED EXPENSES ---
         db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, requested_by, category, amount, description, date, status) VALUES ('Lab Equipment', 'teach03', 'Science Dept', 1200.00, 'New beakers', '" + todayDate + "', 'Pending')");
 
-        db.execSQL("INSERT INTO " + TABLE_MESSAGES + " (sender_id, receiver_id, sender_name, subject, body, timestamp) VALUES " +
+        db.execSQL("INSERT INTO " + TABLE_MESSAGES + " (sender_id, receiver_id, sender_name, subject, message_body, timestamp) VALUES " +
                 "('admin01', 'teach01', 'Principal Skinner', 'Staff Meeting', 'Please attend the meeting at 2 PM tomorrow.', '2025-10-24 09:00')," +
                 "('parent05', 'teach01', 'Mrs. Smith', 'Regarding Jason', 'Can we schedule a call regarding his grades?', '2025-10-23 18:30')");
 
@@ -337,7 +341,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + TABLE_EXPENSES + " (title, category, amount, date, description) VALUES ('Electric Bill', 'Utilities', 450.00, '2025-10-01', 'September Electricity')");
 
-
+        // --- SEED FEE PAYMENTS (Sample for Student 'stud01') ---
+        db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
+                "('stud01', 'staff01', 5000.00, 'Cash', '2025-01-10'), " +
+                "('stud01', 'staff01', 1250.00, 'Bank Transfer', '2025-01-12')");
     }
 
 
@@ -560,7 +567,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getStudentFees(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_FEES + " WHERE student_id = ? ORDER BY date DESC", new String[]{studentId});
+        // CHANGE: Query TABLE_FEE_PAYMENTS to include the payment_method column
+        return db.rawQuery("SELECT * FROM " + TABLE_FEE_PAYMENTS + " WHERE student_id = ? ORDER BY date DESC", new String[]{studentId});
     }
 
     public boolean addFee(String studentId, String description, double amount, String type) {

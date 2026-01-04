@@ -40,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_EXAM_MARKS = "exam_marks";
     private static final String TABLE_QUESTION_BANK = "question_bank";
     private static final String TABLE_NOTICES = "notices";
+    private static final String TABLE_SESSIONS = "academic_sessions";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -272,6 +273,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "audience TEXT, " +
                 "date_posted TEXT)");
 
+        db.execSQL("CREATE TABLE " + TABLE_SESSIONS + " (" +
+                "session_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "session_name TEXT, " +
+                "start_date TEXT, " +
+                "end_date TEXT, " +
+                "is_active INTEGER DEFAULT 0)");
+
         seedData(db);
     }
 
@@ -480,7 +488,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (String date : dates) {
             db.execSQL("INSERT INTO attendance (student_id, date, status, class_name) VALUES ('stud01', '" + date + "', 'Present', 'Grade 10-Emerald')");
             db.execSQL("INSERT INTO attendance (student_id, date, status, class_name) VALUES ('stud02', '" + date + "', 'Absent', 'Grade 10-Emerald')");
+
+
         }
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
 
 
 
@@ -540,6 +551,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSIONS);
 
 
         // Create new tables
@@ -1549,4 +1561,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.rawQuery(query, new String[]{examId, subject, className});
     }
+
+    // ==========================================
+    //       ACADEMIC SESSION METHODS (NEW)
+    // ==========================================
+
+    public boolean addAcademicSession(String name, String start, String end, boolean isActive) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // If this session is set to active, deactivate all other sessions first
+        if (isActive) {
+            ContentValues cv = new ContentValues();
+            cv.put("is_active", 0);
+            db.update(TABLE_SESSIONS, cv, null, null);
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("session_name", name);
+        values.put("start_date", start);
+        values.put("end_date", end);
+        values.put("is_active", isActive ? 1 : 0);
+
+        long result = db.insert(TABLE_SESSIONS, null, values);
+        return result != -1;
+    }
+
+    public Cursor getAllSessions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Order by active first, then by start date descending
+        return db.rawQuery("SELECT * FROM " + TABLE_SESSIONS + " ORDER BY is_active DESC, start_date DESC", null);
+    }
+
+
 }

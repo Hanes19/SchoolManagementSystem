@@ -3,12 +3,19 @@ package com.example.studentmanagement;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +27,8 @@ public class AdminScheduleExamActivity extends AppCompatActivity {
     private Spinner spCategory, spClass, spSubject;
     private TextView tvDate, tvTime;
     private EditText etRoom;
+    private Button btnSave;
+    private ImageView btnBack;
     private List<String> examIds = new ArrayList<>();
 
     @Override
@@ -29,20 +38,56 @@ public class AdminScheduleExamActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
+        // Initialize Views
         spCategory = findViewById(R.id.sp_category);
         spClass = findViewById(R.id.sp_class);
         spSubject = findViewById(R.id.sp_subject);
         tvDate = findViewById(R.id.tv_exam_date);
         tvTime = findViewById(R.id.tv_exam_time);
         etRoom = findViewById(R.id.et_room_no);
+        btnSave = findViewById(R.id.btn_save_schedule);
+        btnBack = findViewById(R.id.btn_back);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_save_schedule).setOnClickListener(v -> saveSchedule());
+        // --- FORCE TEXT COLORS (Fix for White Text Issue) ---
+        int darkColor = Color.parseColor("#1B254B");
+        if (etRoom != null) {
+            etRoom.setTextColor(darkColor);
+            etRoom.setHintTextColor(Color.parseColor("#A3AED0"));
+        }
+        if (tvDate != null) tvDate.setTextColor(darkColor);
+        if (tvTime != null) tvTime.setTextColor(darkColor);
 
-        tvDate.setOnClickListener(v -> showDatePicker());
-        tvTime.setOnClickListener(v -> showTimePicker());
+        // Null Safety Check & Listeners
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+        if (tvDate != null) tvDate.setOnClickListener(v -> showDatePicker());
+        if (tvTime != null) tvTime.setOnClickListener(v -> showTimePicker());
+        if (btnSave != null) btnSave.setOnClickListener(v -> saveSchedule());
 
         loadSpinners();
+    }
+
+    // --- CUSTOM ADAPTER TO FORCE BLACK TEXT IN SPINNERS ---
+    private ArrayAdapter<String> getColoredAdapter(List<String> items) {
+        return new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(Color.parseColor("#1B254B")); // Force Dark Blue
+                }
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                if (view instanceof TextView) {
+                    ((TextView) view).setTextColor(Color.parseColor("#1B254B")); // Force Dark Blue
+                }
+                return view;
+            }
+        };
     }
 
     private void loadSpinners() {
@@ -56,9 +101,14 @@ public class AdminScheduleExamActivity extends AppCompatActivity {
                 exams.add(cExams.getString(1));
             } while (cExams.moveToNext());
             cExams.close();
+        } else {
+            exams.add("No Exams Found");
         }
-        ArrayAdapter<String> adapterExams = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, exams);
-        spCategory.setAdapter(adapterExams);
+
+        // Use the custom colored adapter
+        ArrayAdapter<String> adapterExams = getColoredAdapter(exams);
+        adapterExams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (spCategory != null) spCategory.setAdapter(adapterExams);
 
         // 2. Load Classes
         List<String> classes = new ArrayList<>();
@@ -68,14 +118,22 @@ public class AdminScheduleExamActivity extends AppCompatActivity {
                 classes.add(cClasses.getString(1) + "-" + cClasses.getString(2));
             } while (cClasses.moveToNext());
             cClasses.close();
+        } else {
+            classes.add("No Classes Found");
         }
-        ArrayAdapter<String> adapterClasses = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classes);
-        spClass.setAdapter(adapterClasses);
 
-        // 3. Load Subjects (Hardcoded for now, or fetch from DB if you have a Subjects table)
+        ArrayAdapter<String> adapterClasses = getColoredAdapter(classes);
+        adapterClasses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (spClass != null) spClass.setAdapter(adapterClasses);
+
+        // 3. Load Subjects
         String[] subjects = {"Mathematics", "English", "Science", "History", "Physics", "Chemistry", "Computer Science"};
-        ArrayAdapter<String> adapterSubjects = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subjects);
-        spSubject.setAdapter(adapterSubjects);
+        List<String> subjectList = new ArrayList<>();
+        for(String s : subjects) subjectList.add(s);
+
+        ArrayAdapter<String> adapterSubjects = getColoredAdapter(subjectList);
+        adapterSubjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (spSubject != null) spSubject.setAdapter(adapterSubjects);
     }
 
     private void showDatePicker() {
@@ -93,8 +151,8 @@ public class AdminScheduleExamActivity extends AppCompatActivity {
     }
 
     private void saveSchedule() {
-        if (spCategory.getSelectedItem() == null || spClass.getSelectedItem() == null) {
-            Toast.makeText(this, "Please select Exam and Class", Toast.LENGTH_SHORT).show();
+        if (spCategory == null || spCategory.getSelectedItem() == null || examIds.isEmpty()) {
+            Toast.makeText(this, "Please select an Exam", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -1,13 +1,7 @@
-
-quick status:
-
-unread messages from teachers
-pending grade book submissions
-library books overview
-
-
-quick actions(the "+" button)
-
-post notice
-reports
-take attendance(for students,teachers, staff)
+ADMIN
+admin_add_student
+admin_student_profile
+view_class_schedule
+attendance_directory
+exams_categories
+performance analytics

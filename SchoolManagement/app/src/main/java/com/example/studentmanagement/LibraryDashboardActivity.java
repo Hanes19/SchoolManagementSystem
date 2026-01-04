@@ -2,68 +2,127 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import java.util.Map;
 
 public class LibraryDashboardActivity extends AppCompatActivity {
-
-    private DatabaseHelper db;
-    private TextView tvActiveIssues, tvOverdueItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.library_dashboard);
 
-        db = new DatabaseHelper(this);
+        // 1. Initialize Header (Name & Role) using layout traversal
+        setupHeader();
 
-        // Initialize UI Elements
-        tvActiveIssues = findViewById(R.id.tv_active_issues_count); // *Note: Add ID to XML
-        tvOverdueItems = findViewById(R.id.tv_overdue_items_count); // *Note: Add ID to XML
+        // 2. Initialize Navigation Cards using layout traversal
+        setupCards();
 
-        // 1. Catalog Button
-        CardView btnCatalog = findViewById(R.id.btn_catalog);
-        btnCatalog.setOnClickListener(v -> {
-            // Intent intent = new Intent(this, LibraryCatalogActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "Book Catalog Coming Soon", Toast.LENGTH_SHORT).show();
-        });
-
-        // 2. Circulation Button
-        CardView btnCirculation = findViewById(R.id.btn_circulation);
-        btnCirculation.setOnClickListener(v -> {
-            // Intent intent = new Intent(this, LibraryIssueReturnActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "Circulation Module Coming Soon", Toast.LENGTH_SHORT).show();
-        });
-
-        // 3. FAB (Add Book)
-        CardView fabAction = findViewById(R.id.fab_library_action);
-        fabAction.setOnClickListener(v -> {
-            Intent intent = new Intent(LibraryDashboardActivity.this, LibraryAddBookActivity.class);
-            startActivity(intent);
-        });
-
-        // Note: You can hook up btn_fines and btn_digital similarly
+        // 3. Setup Logout Button
+        // Assuming logout is the ImageButton/ImageView in the header (usually the last child)
+        setupLogout();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadDashboardStats();
+    private void setupHeader() {
+        // Traverse to find the Header layout (usually the first LinearLayout container)
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content).getRootView();
+        LinearLayout header = findFirstLinearLayout(root);
+
+        if (header != null) {
+            // Usually: 0=Img, 1=TextContainer, 2=Logout
+            if (header.getChildCount() > 1 && header.getChildAt(1) instanceof LinearLayout) {
+                LinearLayout textContainer = (LinearLayout) header.getChildAt(1);
+
+                if (textContainer.getChildCount() > 0 && textContainer.getChildAt(0) instanceof TextView) {
+                    ((TextView) textContainer.getChildAt(0)).setText("Madam Pince"); // Name
+                }
+                if (textContainer.getChildCount() > 1 && textContainer.getChildAt(1) instanceof TextView) {
+                    ((TextView) textContainer.getChildAt(1)).setText("Head Librarian"); // Role
+                }
+            }
+        }
     }
 
-    private void loadDashboardStats() {
-        Map<String, Integer> stats = db.getLibraryStats();
+    private void setupCards() {
+        // Find the main GridLayout containing the menu cards
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content).getRootView();
+        GridLayout grid = findGridLayout(root);
 
-        // These TextViews need IDs in your library_dashboard.xml
-        // Update your XML: <TextView android:id="@+id/tv_active_issues_count" ... text="142" />
-        if(tvActiveIssues != null) tvActiveIssues.setText(String.valueOf(stats.getOrDefault("active_issues", 0)));
+        if (grid != null) {
+            // Card 1: Catalog
+            setCardClickListener(grid, 0, LibraryBookCatalogActivity.class);
+            // Card 2: Issue/Return
+            setCardClickListener(grid, 1, LibraryIssueReturnActivity.class);
+            // Card 3: Active Issues
+            setCardClickListener(grid, 2, LibraryActiveIssuesActivity.class);
+            // Card 4: Overdue Items
+            setCardClickListener(grid, 3, LibraryOverdueItemsActivity.class);
 
-        // Update your XML: <TextView android:id="@+id/tv_overdue_items_count" ... text="18" />
-        if(tvOverdueItems != null) tvOverdueItems.setText(String.valueOf(stats.getOrDefault("overdue_items", 0)));
+            // Card 5: Add Book (if it exists in the grid)
+            setCardClickListener(grid, 4, LibraryAddBookActivity.class);
+            // Card 6: Add Resource (if it exists in the grid)
+            setCardClickListener(grid, 5, LibraryAddEResourceActivity.class);
+        }
+    }
+
+    private void setupLogout() {
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content).getRootView();
+        LinearLayout header = findFirstLinearLayout(root);
+
+        if (header != null && header.getChildCount() > 0) {
+            // Usually the logout button is the last child in the header row
+            View lastChild = header.getChildAt(header.getChildCount() - 1);
+            lastChild.setOnClickListener(v -> {
+                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        }
+    }
+
+    // --- Helper Methods to Find Views without IDs ---
+
+    private void setCardClickListener(GridLayout grid, int index, Class<?> destination) {
+        if (grid.getChildCount() > index) {
+            View child = grid.getChildAt(index);
+            child.setOnClickListener(v -> startActivity(new Intent(this, destination)));
+        }
+    }
+
+    private GridLayout findGridLayout(View view) {
+        if (view instanceof GridLayout) {
+            return (GridLayout) view;
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                GridLayout result = findGridLayout(group.getChildAt(i));
+                if (result != null) return result;
+            }
+        }
+        return null;
+    }
+
+    private LinearLayout findFirstLinearLayout(View view) {
+        // Helper to find the Header container
+        if (view instanceof LinearLayout) {
+            return (LinearLayout) view;
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                // We skip the root ConstraintLayout/ScrollView to find the inner containers
+                View child = group.getChildAt(i);
+                if (child instanceof LinearLayout) return (LinearLayout) child;
+
+                // Recursively search deeper
+                LinearLayout result = findFirstLinearLayout(child);
+                if (result != null) return result;
+            }
+        }
+        return null;
     }
 }

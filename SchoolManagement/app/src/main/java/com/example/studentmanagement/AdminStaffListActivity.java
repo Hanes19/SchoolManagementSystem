@@ -21,26 +21,20 @@ public class AdminStaffListActivity extends AppCompatActivity {
         setContentView(R.layout.admin_user_directory_staff);
 
         listContainer = findViewById(R.id.listContainer);
+        setupTabs();
+        loadSampleStaff();
 
-        setupTabs(); // Handles navigation to Student/Teacher tabs
-
-        // Add Button
         findViewById(R.id.btn_add_staff).setOnClickListener(v ->
                 startActivity(new Intent(this, AddStaffActivity.class)));
-
-        loadSampleStaff();
     }
 
     private void loadSampleStaff() {
         if(listContainer == null) return;
-        listContainer.removeAllViews(); // Clear hardcoded XML items if any
+        listContainer.removeAllViews();
 
-        // Add Sample Items
         addStaffCard("STF001", "Argus Filch", "Caretaker", "Active");
         addStaffCard("STF002", "Madam Pomfrey", "Nurse", "Active");
         addStaffCard("STF003", "Rubeus Hagrid", "Groundskeeper", "Active");
-        addStaffCard("STF004", "Irma Pince", "Librarian", "On Leave");
-        addStaffCard("STF005", "Mr. Ollivander", "Supplier", "Inactive");
     }
 
     private void addStaffCard(String id, String name, String role, String status) {
@@ -50,8 +44,8 @@ public class AdminStaffListActivity extends AppCompatActivity {
         params.setMargins(0, 0, 0, 30);
         card.setLayoutParams(params);
         card.setRadius(30);
-        card.setCardElevation(0);
         card.setCardBackgroundColor(Color.WHITE);
+        card.setCardElevation(0);
 
         card.setOnClickListener(v -> {
             Intent intent = new Intent(this, AdminStaffProfileActivity.class);
@@ -89,17 +83,15 @@ public class AdminStaffListActivity extends AppCompatActivity {
         textInfo.addView(tvRole);
         inner.addView(textInfo);
 
-        // Status
         TextView tvStatus = new TextView(this);
         tvStatus.setText(status);
         tvStatus.setTextSize(12);
         tvStatus.setPadding(20, 10, 20, 10);
-
         if(status.equals("Active")) {
-            tvStatus.setTextColor(Color.parseColor("#4CAF50")); // Green
+            tvStatus.setTextColor(Color.parseColor("#4CAF50"));
             tvStatus.setBackgroundColor(Color.parseColor("#E8F5E9"));
         } else {
-            tvStatus.setTextColor(Color.parseColor("#FF9800")); // Orange
+            tvStatus.setTextColor(Color.parseColor("#FF9800"));
             tvStatus.setBackgroundColor(Color.parseColor("#FFF3E0"));
         }
         inner.addView(tvStatus);
@@ -109,18 +101,29 @@ public class AdminStaffListActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
+        LinearLayout header = findViewById(R.id.header);
+        if (header != null) {
+            for (int i = 0; i < header.getChildCount(); i++) {
+                View child = header.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setText("Staff Directory");
+                    break;
+                }
+            }
+        }
+
         LinearLayout tabContainer = findViewById(R.id.tab_container);
 
-        // Navigation Logic
-        tabContainer.getChildAt(0).setOnClickListener(v -> { // Student Tab
+        tabContainer.getChildAt(0).setOnClickListener(v -> { // Student
             startActivity(new Intent(this, AdminStudentListActivity.class));
             overridePendingTransition(0,0);
             finish();
         });
-        tabContainer.getChildAt(1).setOnClickListener(v -> { // Teacher Tab
+        tabContainer.getChildAt(1).setOnClickListener(v -> { // Teacher
             startActivity(new Intent(this, AdminTeacherListActivity.class));
             overridePendingTransition(0,0);
             finish();
         });
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 }

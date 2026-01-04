@@ -2,57 +2,40 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 public class StudentDashboardActivity extends AppCompatActivity {
 
-    private DatabaseHelper db;
-    private TextView tvName, tvId;
-    private String studentId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_dashboard);
 
-        db = new DatabaseHelper(this);
-        // In real app, get from Session/Intent. Mocking 'STU-001'.
-        studentId = "STU-001";
+        // 1. Sample User Info
+        TextView tvName = findViewById(R.id.tv_student_name);
+        TextView tvClass = findViewById(R.id.tv_class_name);
 
-        tvName = findViewById(R.id.tv_student_name);
-        tvId = findViewById(R.id.tv_student_id);
+        if (tvName != null) tvName.setText("Jason Statham");
+        if (tvClass != null) tvClass.setText("Grade 12 - Diamond");
 
-        loadStudentInfo();
-        setupNavigation();
+        // 2. Navigation
+        setupCard(R.id.card_grades, StudentGradesActivity.class);
+        setupCard(R.id.card_schedule, StudentScheduleActivity.class);
+        setupCard(R.id.card_attendance, StudentAttendanceActivity.class);
+        setupCard(R.id.card_fees, StudentFeesActivity.class);
+
+        // 3. Back/Logout
+        ImageView btnBack = findViewById(R.id.btn_back);
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
     }
 
-    private void loadStudentInfo() {
-        // Fetch name from DB
-        String name = db.getStudentName(studentId);
-        tvName.setText(name != null ? name : "Welcome Student");
-        tvId.setText("ID: " + studentId);
-    }
-
-    private void setupNavigation() {
-        setNav(R.id.card_attendance, StudentAttendanceActivity.class);
-        setNav(R.id.card_grades, StudentGradesActivity.class);
-        setNav(R.id.card_fees, StudentFeesActivity.class);
-        setNav(R.id.card_schedule, StudentScheduleActivity.class);
-
-        // Profile or Settings if available
-        // setNav(R.id.card_profile, StudentProfileActivity.class);
-    }
-
-    private void setNav(int id, Class<?> cls) {
+    private void setupCard(int id, Class<?> cls) {
         CardView card = findViewById(id);
         if (card != null) {
-            card.setOnClickListener(v -> {
-                Intent intent = new Intent(this, cls);
-                intent.putExtra("STUDENT_ID", studentId);
-                startActivity(intent);
-            });
+            card.setOnClickListener(v -> startActivity(new Intent(this, cls)));
         }
     }
 }

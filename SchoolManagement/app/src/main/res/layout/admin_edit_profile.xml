@@ -48,6 +48,8 @@
             android:paddingBottom="40dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Basic Information"
                 android:textColor="#1B254B"
                 android:textStyle="bold"
@@ -123,6 +125,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Emergency Contact"
                 android:textColor="#1B254B"
                 android:textStyle="bold"

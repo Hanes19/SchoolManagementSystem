@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,32 +18,49 @@ public class AdminStudentListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_user_directory_staff);
+        setContentView(R.layout.admin_user_directory_staff); // Reusing layout
 
         listContainer = findViewById(R.id.listContainer);
 
         setupTabsAndHeader();
         loadSampleStudents();
 
+        // Add Button
         findViewById(R.id.btn_add_staff).setOnClickListener(v ->
                 startActivity(new Intent(this, AddStudentActivity.class)));
     }
 
     private void setupTabsAndHeader() {
+        // 1. Change Header Title programmatically
+        // We find the TextView inside the header (assuming it's the 3rd child or finding by traversal)
+        LinearLayout header = findViewById(R.id.header);
+        if (header != null) {
+            for (int i = 0; i < header.getChildCount(); i++) {
+                View child = header.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setText("Student Directory");
+                    break;
+                }
+            }
+        }
+
+        // 2. Setup Tabs
         LinearLayout tabContainer = findViewById(R.id.tab_container);
         TextView tabStudent = (TextView) tabContainer.getChildAt(0);
         TextView tabTeacher = (TextView) tabContainer.getChildAt(1);
         TextView tabStaff = (TextView) tabContainer.getChildAt(2);
 
-        // Highlight Student Tab
+        // Highlight Student
         tabStudent.setTextColor(Color.WHITE);
         tabStudent.setBackgroundResource(R.drawable.rounded_blue_bg_placeholder);
 
-        // Un-highlight Staff
+        // Reset others
+        tabTeacher.setTextColor(Color.parseColor("#A3AED0"));
+        tabTeacher.setBackground(null);
         tabStaff.setTextColor(Color.parseColor("#A3AED0"));
         tabStaff.setBackground(null);
 
-        // Navigation
+        // Click Listeners
         tabTeacher.setOnClickListener(v -> {
             startActivity(new Intent(this, AdminTeacherListActivity.class));
             overridePendingTransition(0,0);
@@ -53,6 +71,7 @@ public class AdminStudentListActivity extends AppCompatActivity {
             overridePendingTransition(0,0);
             finish();
         });
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 
@@ -68,7 +87,8 @@ public class AdminStudentListActivity extends AppCompatActivity {
 
     private void addStudentCard(String id, String name, String grade) {
         CardView card = new CardView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 30);
         card.setLayoutParams(params);
         card.setRadius(30);
@@ -87,7 +107,7 @@ public class AdminStudentListActivity extends AppCompatActivity {
         inner.setGravity(Gravity.CENTER_VERTICAL);
 
         ImageView img = new ImageView(this);
-        img.setImageResource(R.drawable.profile_pic); // Make sure you have this drawable
+        img.setImageResource(R.drawable.profile_pic);
         img.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
         inner.addView(img);
 

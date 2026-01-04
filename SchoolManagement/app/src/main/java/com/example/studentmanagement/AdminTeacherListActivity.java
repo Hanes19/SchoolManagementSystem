@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +18,6 @@ public class AdminTeacherListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // We reuse the layout because it has the same structure
         setContentView(R.layout.admin_user_directory_staff);
 
         listContainer = findViewById(R.id.listContainer);
@@ -31,23 +31,32 @@ public class AdminTeacherListActivity extends AppCompatActivity {
 
     private void setupTabsAndHeader() {
         // Change Header Title
-        TextView headerTitle = findViewById(R.id.header).findViewById(android.R.id.text1); // Actually we need to find by text if ID missing, but let's assume standard logic
-        // Easier: Just find the TextView in header manually if ID is unknown, or ignore if XML uses "User Directory" generically.
+        LinearLayout header = findViewById(R.id.header);
+        if (header != null) {
+            for (int i = 0; i < header.getChildCount(); i++) {
+                View child = header.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setText("Teacher Directory");
+                    break;
+                }
+            }
+        }
 
         LinearLayout tabContainer = findViewById(R.id.tab_container);
         TextView tabStudent = (TextView) tabContainer.getChildAt(0);
         TextView tabTeacher = (TextView) tabContainer.getChildAt(1);
         TextView tabStaff = (TextView) tabContainer.getChildAt(2);
 
-        // Highlight Teacher Tab
+        // Highlight Teacher
         tabTeacher.setTextColor(Color.WHITE);
-        tabTeacher.setBackgroundResource(R.drawable.rounded_blue_bg_placeholder); // Assuming drawable exists
+        tabTeacher.setBackgroundResource(R.drawable.rounded_blue_bg_placeholder);
 
-        // Un-highlight Staff
+        // Reset others
+        tabStudent.setTextColor(Color.parseColor("#A3AED0"));
+        tabStudent.setBackground(null);
         tabStaff.setTextColor(Color.parseColor("#A3AED0"));
         tabStaff.setBackground(null);
 
-        // Click Listeners
         tabStudent.setOnClickListener(v -> {
             startActivity(new Intent(this, AdminStudentListActivity.class));
             overridePendingTransition(0,0);
@@ -67,12 +76,10 @@ public class AdminTeacherListActivity extends AppCompatActivity {
 
         addTeacherCard("TCH001", "Mr. Walter White", "Chemistry", "Active");
         addTeacherCard("TCH002", "Ms. Frizzle", "Biology", "Active");
-        addTeacherCard("TCH003", "Mr. Miyagi", "Physical Ed.", "On Leave");
-        addTeacherCard("TCH004", "Prof. Dumbledore", "Headmaster", "Active");
+        addTeacherCard("TCH003", "Prof. Snape", "Potions", "On Leave");
     }
 
     private void addTeacherCard(String id, String name, String subject, String status) {
-        // ... (Same Card Logic as Staff, just creating view programmatically)
         CardView card = new CardView(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 30);
@@ -117,23 +124,21 @@ public class AdminTeacherListActivity extends AppCompatActivity {
         textInfo.addView(tvSub);
         inner.addView(textInfo);
 
-        inner.addView(createStatusBadge(status)); // Helper method for badge
+        // Status Badge
+        TextView tvStatus = new TextView(this);
+        tvStatus.setText(status);
+        tvStatus.setTextSize(12);
+        tvStatus.setPadding(20, 10, 20, 10);
+        if(status.equals("Active")) {
+            tvStatus.setTextColor(Color.parseColor("#4CAF50"));
+            tvStatus.setBackgroundColor(Color.parseColor("#E8F5E9"));
+        } else {
+            tvStatus.setTextColor(Color.parseColor("#FF9800"));
+            tvStatus.setBackgroundColor(Color.parseColor("#FFF3E0"));
+        }
+        inner.addView(tvStatus);
+
         card.addView(inner);
         listContainer.addView(card);
-    }
-
-    private TextView createStatusBadge(String status) {
-        TextView tv = new TextView(this);
-        tv.setText(status);
-        tv.setTextSize(12);
-        tv.setPadding(20, 10, 20, 10);
-        if(status.equals("Active")) {
-            tv.setTextColor(Color.parseColor("#4CAF50"));
-            tv.setBackgroundColor(Color.parseColor("#E8F5E9"));
-        } else {
-            tv.setTextColor(Color.parseColor("#FF9800"));
-            tv.setBackgroundColor(Color.parseColor("#FFF3E0"));
-        }
-        return tv;
     }
 }

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="320dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="340dp"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="8dp"
     app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="28dp">
 
+        <!-- Dialog Title -->
         <TextView
             android:id="@+id/tv_dialog_title"
             android:layout_width="match_parent"
@@ -21,60 +24,104 @@
             android:textStyle="bold"
             android:textColor="#1B254B"
             android:gravity="center"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="28dp"/>
 
+        <!-- Input: Role Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Role Title"
+            android:text="ROLE TITLE"
             android:textColor="#A3AED0"
-            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
             android:layout_marginBottom="8dp"/>
 
         <EditText
             android:id="@+id/et_role_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_corner_input_bg"
+            android:layout_height="52dp"
+            android:background="@drawable/rounded_corner_white_bg"
+            android:backgroundTint="#F4F7FE"
             android:hint="e.g. Librarian"
             android:paddingHorizontal="16dp"
             android:textColor="#1B254B"
             android:textSize="14sp"
-            android:layout_marginBottom="16dp"/>
+            android:inputType="textCapWords"
+            android:layout_marginBottom="20dp"/>
 
+        <!-- Input: Permissions Selector -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Assign Permissions"
+            android:text="ASSIGN PERMISSIONS"
             android:textColor="#A3AED0"
-            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
             android:layout_marginBottom="8dp"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_corner_input_bg"
-            android:paddingHorizontal="8dp"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="24dp">
+            android:layout_height="52dp"
+            android:background="@drawable/rounded_corner_white_bg"
+            android:backgroundTint="#F4F7FE"
+            android:layout_marginBottom="32dp">
 
             <Spinner
                 android:id="@+id/spinner_permissions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingHorizontal="12dp"
+                android:background="@android:color/transparent"
                 android:spinnerMode="dropdown"/>
-        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_save_role"
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="#A3AED0"
+                tools:ignore="ContentDescription"/>
+        </RelativeLayout>
+
+        <!-- Action Button -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_save_role_container"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Confirm"
-            android:textColor="#FFFFFF"
+            android:layout_height="56dp"
+            app:cardCornerRadius="28dp"
+            app:cardBackgroundColor="#111C44"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <TextView
+                android:id="@+id/btn_save_role"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Confirm &amp; Create"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:gravity="center"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Secondary Action: Cancel -->
+        <TextView
+            android:id="@+id/btn_cancel_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#A3AED0"
+            android:gravity="center"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:backgroundTint="#4CAF50"
-            android:background="@drawable/btn_background"/>
+            android:textSize="14sp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -243,7 +243,19 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Expenses" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
                 </LinearLayout>
 
-                
+                <LinearLayout
+                    android:id="@+id/btn_module_library"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+                    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/book" android:background="@drawable/rounded_corner_white_bg" android:backgroundTint="#FFFFFF" android:padding="12dp" app:tint="#FFB547"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Library" android:textColor="#1B254B" android:textSize="11sp" android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+
 
             </GridLayout>
 
@@ -295,7 +307,7 @@
 
             </LinearLayout>
 
-            
+
         </LinearLayout>
 
 

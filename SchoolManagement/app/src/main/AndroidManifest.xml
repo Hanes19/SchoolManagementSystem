@@ -56,9 +56,9 @@
         <activity android:name=".AdminSettingsActivity" />
         <activity android:name=".AdminBackupRestoreActivity" />
         <activity android:name=".AdminIntegrationConfigActivity" />
-        <activity android:name=".AdminRoleActivity" />
         <activity android:name=".AdminRolesPermissionActivity" />
         <activity android:name=".SystemLogActivity" />
+        <activity android:name=".AdminAttendanceActivity" />
 
         <activity android:name=".AdminStudentListActivity" />
         <activity android:name=".AdminTeacherListActivity" />

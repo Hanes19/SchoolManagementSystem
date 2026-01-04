@@ -2,9 +2,9 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class AdminSettingsActivity extends AppCompatActivity {
 
@@ -13,29 +13,32 @@ public class AdminSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_settings);
 
+        // We use the generic 'View' type to handle both LinearLayout and CardView
         setupOption(R.id.card_school_profile, AdminSchoolProfileActivity.class);
-        setupOption(R.id.card_change_password, ChangePasswordActivity.class);
+        setupOption(R.id.btn_change_password, ChangePasswordActivity.class);
 
-
-        // System Config / Privacy Policy could be static pages or placeholders
-        // setupOption(R.id.card_system_config, AdminSystemConfigActivity.class);
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        ImageView btnBack = findViewById(R.id.btn_back);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
         // Logout Logic
-        findViewById(R.id.btn_logout).setOnClickListener(v -> {
-            // Clear sessions here
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+        View btnLogout = findViewById(R.id.btn_logout);
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
+        }
     }
 
+    // FIX: Changed parameter from 'CardView' to 'View' to prevent ClassCastException
     private void setupOption(int id, Class<?> cls) {
-        CardView card = findViewById(id);
-        if (card != null) {
-            card.setOnClickListener(v -> startActivity(new Intent(this, cls)));
+        View view = findViewById(id);
+        if (view != null) {
+            view.setOnClickListener(v -> startActivity(new Intent(this, cls)));
         }
     }
 }

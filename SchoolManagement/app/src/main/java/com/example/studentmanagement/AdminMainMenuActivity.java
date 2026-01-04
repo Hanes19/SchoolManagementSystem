@@ -41,7 +41,7 @@ public class AdminMainMenuActivity extends AppCompatActivity {
         setupLink(R.id.btn_module_fees, AdminFeesBillingActivity.class, null);
         setupLink(R.id.btn_module_payroll, AdminPayrollActivity.class, null);
 
-        // This is the ONLY new button we added to XML
+        // This button now exists in the XML, so this line is valid
         setupLink(R.id.btn_module_library, LibraryDashboardActivity.class, null);
     }
 

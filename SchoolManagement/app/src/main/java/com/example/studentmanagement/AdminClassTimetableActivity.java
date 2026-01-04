@@ -1,6 +1,9 @@
 package com.example.studentmanagement;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -101,6 +104,10 @@ public class AdminClassTimetableActivity extends AppCompatActivity {
                 String room = cursor.getString(cursor.getColumnIndexOrThrow("room"));
                 String startTime = cursor.getString(cursor.getColumnIndexOrThrow("start_time"));
 
+                // Get ID for deletion (safely check if column exists)
+                int idIndex = cursor.getColumnIndex("schedule_id");
+                final String scheduleId = (idIndex != -1) ? cursor.getString(idIndex) : null;
+
                 // 2. Inflate Row
                 View view = getLayoutInflater().inflate(R.layout.item_schedule_class_row, container, false);
 
@@ -131,6 +138,11 @@ public class AdminClassTimetableActivity extends AppCompatActivity {
                 int[] colors = {Color.parseColor("#4318FF"), Color.parseColor("#FFB547"), Color.parseColor("#05CD99")};
                 indicator.setBackgroundColor(colors[Math.abs(subject.hashCode()) % 3]);
 
+                // 4. Click Listener for Details
+                if (scheduleId != null) {
+                    view.setOnClickListener(v -> showDetailsDialog(scheduleId, subject, teacher, room, startTime));
+                }
+
                 container.addView(view);
 
             } while (cursor.moveToNext());
@@ -143,6 +155,40 @@ public class AdminClassTimetableActivity extends AppCompatActivity {
             emptyMsg.setPadding(0, 50, 0, 0);
             emptyMsg.setTextColor(Color.GRAY);
             container.addView(emptyMsg);
+        }
+    }
+
+    private void showDetailsDialog(String scheduleId, String subject, String teacher, String room, String time) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Class Details");
+        builder.setMessage("Subject: " + subject + "\n" +
+                "Teacher: " + teacher + "\n" +
+                "Room: " + room + "\n" +
+                "Time: " + time);
+
+        builder.setPositiveButton("Delete", (dialog, which) -> {
+            // Confirm Deletion
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Schedule")
+                    .setMessage("Are you sure you want to remove this class?")
+                    .setPositiveButton("Yes", (d, w) -> deleteSchedule(scheduleId))
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
+        builder.setNegativeButton("Close", null);
+        builder.show();
+    }
+
+    private void deleteSchedule(String scheduleId) {
+        SQLiteDatabase database = db.getWritableDatabase();
+        int result = database.delete("timetable", "schedule_id = ?", new String[]{scheduleId});
+
+        if (result > 0) {
+            Toast.makeText(this, "Schedule removed", Toast.LENGTH_SHORT).show();
+            loadTimetable(); // Refresh list
+        } else {
+            Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show();
         }
     }
 }

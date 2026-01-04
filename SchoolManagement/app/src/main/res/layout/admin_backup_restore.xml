@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="8dp"
@@ -100,7 +101,7 @@
                 android:layout_marginBottom="24dp">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/btn_create_backup"
+                    android:id="@+id/btn_backup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -130,7 +131,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/card_restore_backup"
+                    android:id="@+id/btn_restore"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -179,7 +180,7 @@
                 app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
-                    android:id="@+id/tv_last_backup"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
@@ -201,7 +202,7 @@
                         android:orientation="vertical"
                         android:layout_marginStart="16dp">
                         <TextView
-                            android:id="@+id/card_create_backup"
+                            android:id="@+id/txt_last_backup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="backup_2025_10_24.sql"
@@ -254,6 +255,7 @@
                         android:orientation="vertical"
                         android:layout_marginStart="16dp">
                         <TextView
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="backup_2025_10_23.sql"

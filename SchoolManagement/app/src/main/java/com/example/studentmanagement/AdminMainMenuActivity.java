@@ -5,13 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-// Import your new activities here if they are in a different package,
-// otherwise they will be found automatically.
-// import com.example.studentmanagement.AdminParentDirectoryActivity;
-// import com.example.studentmanagement.AdminReportsGuideActivity;
 
 public class AdminMainMenuActivity extends AppCompatActivity {
 
@@ -22,52 +16,138 @@ public class AdminMainMenuActivity extends AppCompatActivity {
 
         // --- Header Actions ---
         ImageView btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish()); // Go back to Dashboard
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
-        // --- PEOPLE & ROLES ---
+        // ==========================================
+        // 1. PEOPLE & ROLES (Redirect to Directory)
+        // ==========================================
+
+        // Students -> AdminUserDirectoryActivity (Filter: Student)
         LinearLayout btnStudents = findViewById(R.id.btn_module_students);
-        btnStudents.setOnClickListener(v -> startActivity(new Intent(this, AdminStudentListActivity.class)));
+        if (btnStudents != null) {
+            btnStudents.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AdminUserDirectoryActivity.class);
+                intent.putExtra("type", "Student");
+                startActivity(intent);
+            });
+        }
 
+        // Teachers -> AdminUserDirectoryActivity (Filter: Teacher)
         LinearLayout btnTeachers = findViewById(R.id.btn_module_teachers);
-        btnTeachers.setOnClickListener(v -> startActivity(new Intent(this, AdminTeacherListActivity.class)));
+        if (btnTeachers != null) {
+            btnTeachers.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AdminUserDirectoryActivity.class);
+                intent.putExtra("type", "Teacher");
+                startActivity(intent);
+            });
+        }
 
+        // Staff -> AdminUserDirectoryActivity (Filter: Staff)
         LinearLayout btnStaff = findViewById(R.id.btn_module_staff);
-        btnStaff.setOnClickListener(v -> startActivity(new Intent(this, AdminStaffListActivity.class)));
+        if (btnStaff != null) {
+            btnStaff.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AdminUserDirectoryActivity.class);
+                intent.putExtra("type", "Staff");
+                startActivity(intent);
+            });
+        }
 
-        // UPDATED: Now links to the Parent Directory
+        // Parents -> AdminParentDirectoryActivity
         LinearLayout btnParents = findViewById(R.id.btn_module_parents);
-        btnParents.setOnClickListener(v -> startActivity(new Intent(this, AdminParentDirectoryActivity.class)));
+        if (btnParents != null) {
+            btnParents.setOnClickListener(v -> startActivity(new Intent(this, AdminParentDirectoryActivity.class)));
+        }
 
-        // --- ACADEMICS ---
+        // ==========================================
+        // 2. ACADEMICS
+        // ==========================================
+
+        // Classes
         LinearLayout btnClasses = findViewById(R.id.btn_module_classes);
-        btnClasses.setOnClickListener(v -> startActivity(new Intent(this, AdminClassListActivity.class)));
+        if (btnClasses != null) {
+            btnClasses.setOnClickListener(v -> startActivity(new Intent(this, AdminClassListActivity.class)));
+        }
 
+        // Timetable
         LinearLayout btnTimetable = findViewById(R.id.btn_module_timetable);
-        btnTimetable.setOnClickListener(v -> startActivity(new Intent(this, AdminMasterTimetableActivity.class)));
+        if (btnTimetable != null) {
+            btnTimetable.setOnClickListener(v -> startActivity(new Intent(this, AdminMasterTimetableActivity.class)));
+        }
 
+        // Attendance (FIX: Linked to new Activity)
         LinearLayout btnAttendance = findViewById(R.id.btn_module_attendance);
-        btnAttendance.setOnClickListener(v -> Toast.makeText(this, "Attendance Module Coming Soon", Toast.LENGTH_SHORT).show());
+        if (btnAttendance != null) {
+            btnAttendance.setOnClickListener(v -> startActivity(new Intent(this, AdminAttendanceActivity.class)));
+        }
 
+        // Exams (Linked to Dashboard)
         LinearLayout btnExams = findViewById(R.id.btn_module_exams);
-        btnExams.setOnClickListener(v -> Toast.makeText(this, "Exams Module Coming Soon", Toast.LENGTH_SHORT).show());
+        if (btnExams != null) {
+            btnExams.setOnClickListener(v -> startActivity(new Intent(this, AdminExamDashboardActivity.class)));
+        }
 
-        // --- FINANCE & ADMIN ---
+        // ==========================================
+        // 3. FINANCE & ADMIN
+        // ==========================================
+
+        // Fees (FIX: Linked to Billing Activity)
         LinearLayout btnFees = findViewById(R.id.btn_module_fees);
-        btnFees.setOnClickListener(v -> startActivity(new Intent(this, AdminFeesBillingActivity.class)));
+        if (btnFees != null) {
+            btnFees.setOnClickListener(v -> startActivity(new Intent(this, AdminFeesBillingActivity.class)));
+        }
 
+        // Payroll
         LinearLayout btnPayroll = findViewById(R.id.btn_module_payroll);
-        btnPayroll.setOnClickListener(v -> startActivity(new Intent(this, AdminPayrollActivity.class)));
+        if (btnPayroll != null) {
+            btnPayroll.setOnClickListener(v -> startActivity(new Intent(this, AdminPayrollActivity.class)));
+        }
 
-        LinearLayout btnExpenses = findViewById(R.id.btn_module_expenses);
-        btnExpenses.setOnClickListener(v -> startActivity(new Intent(this, AdminExpensesActivity.class)));
+        // Library
+        LinearLayout btnLibrary = findViewById(R.id.btn_module_library);
+        if (btnLibrary != null) {
+            btnLibrary.setOnClickListener(v -> startActivity(new Intent(this, LibraryDashboardActivity.class)));
+        }
 
-        // --- GENERAL ---
-        LinearLayout btnSystemConfig = findViewById(R.id.btn_general_config);
-        btnSystemConfig.setOnClickListener(v -> startActivity(new Intent(this, AdminSystemConfigActivity.class)));
+        // ==========================================
+        // 4. OTHERS (Coming Soon / Minor)
+        // ==========================================
 
-        LinearLayout btnSettings = findViewById(R.id.btn_general_settings);
-        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, AdminSettingsActivity.class)));
+        // Notice Board
+        LinearLayout btnNotice = findViewById(R.id.btn_module_notice);
+        if (btnNotice != null) {
+            btnNotice.setOnClickListener(v -> startActivity(new Intent(this, AdminNoticeBoardActivity.class)));
+        }
 
-        // FAQ button is intentionally omitted as requested.
+        // Events / Calendar
+        LinearLayout btnEvents = findViewById(R.id.btn_module_events);
+        if (btnEvents != null) {
+            btnEvents.setOnClickListener(v -> startActivity(new Intent(this, AdminCalendarActivity.class)));
+        }
+
+        // System Logs
+        LinearLayout btnLogs = findViewById(R.id.btn_module_logs);
+        if (btnLogs != null) {
+            btnLogs.setOnClickListener(v -> startActivity(new Intent(this, SystemLogActivity.class)));
+        }
+
+        // Settings
+        LinearLayout btnSettings = findViewById(R.id.btn_module_settings);
+        if (btnSettings != null) {
+            btnSettings.setOnClickListener(v -> startActivity(new Intent(this, AdminSettingsActivity.class)));
+        }
+
+        // Placeholders for features not yet implemented
+        setupComingSoon(R.id.btn_module_leaves, "Leave Management");
+        setupComingSoon(R.id.btn_module_transport, "Transport");
+        setupComingSoon(R.id.btn_module_inventory, "Inventory");
+    }
+
+    private void setupComingSoon(int id, String featureName) {
+        LinearLayout btn = findViewById(id);
+        if (btn != null) {
+            btn.setOnClickListener(v -> Toast.makeText(this, featureName + " Module Coming Soon", Toast.LENGTH_SHORT).show());
+        }
     }
 }

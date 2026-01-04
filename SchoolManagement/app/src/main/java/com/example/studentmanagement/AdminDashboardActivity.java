@@ -39,9 +39,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(new Intent(this, AdminFeesBillingActivity.class));
         });
 
-        // Note: Listeners for Exams, Communications, and Library were removed
-        // because those buttons are not in your admin_dashboard.xml design.
 
+        findViewById(R.id.btn_system_config).setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminSystemConfigActivity.class));
+        });
         setupBottomNavigation();
     }
 

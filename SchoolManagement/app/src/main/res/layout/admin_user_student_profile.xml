@@ -38,10 +38,6 @@
             android:textColor="#1B254B"
             android:gravity="center"/>
 
-        <!-- Spacer for symmetry -->
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
     </LinearLayout>
 
     <ScrollView

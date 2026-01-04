@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Version 20: Full Master Timetable Seed
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 30;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -459,6 +459,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active')");
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, class_id, status) VALUES ('stud02', 'Sarah Jane', '" + testPassHash + "', 'Student', 2, 'Active')");
+        // stud05 = Hermione Granger (Grade 11)
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, class_id, status, roll_no) VALUES ('stud05', 'Hermione Granger', '" + testPassHash + "', 'Student', 2, 'Active', '1101')");
+        // 1. Seed Staff
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, status) VALUES ('teach01', 'Mr. Robert Langdon', '" + testPassHash + "', 'Teacher', 'Active')");
+
+        // 2. Seed Classes
+        db.execSQL("INSERT INTO classes (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 10', 'Emerald', 'Rm 101', 'teach01')");
+        db.execSQL("INSERT INTO classes (grade_level, section_name, room_number, teacher_id) VALUES ('Grade 11', 'Ruby', 'Rm 104', 'teach01')");
+
+        // 3. Seed Multiple Students
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, class_id, status, roll_no) VALUES ('stud01', 'Jason Statham', '" + testPassHash + "', 'Student', 1, 'Active', '1001')");
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, class_id, status, roll_no) VALUES ('stud02', 'Alice Wonderland', '" + testPassHash + "', 'Student', 1, 'Active', '1002')");
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, class_id, status, roll_no) VALUES ('stud03', 'Peter Parker', '" + testPassHash + "', 'Student', 1, 'Active', '1003')");
+        db.execSQL("INSERT OR IGNORE INTO users (user_id, full_name, password_hash, role, class_id, status, roll_no) VALUES ('stud05', 'Hermione Granger', '" + testPassHash + "', 'Student', 2, 'Active', '1101')");
+
+        // 4. Seed Attendance History
+        String[] dates = {"2025-01-01", "2025-01-02", "2025-01-03"};
+        for (String date : dates) {
+            db.execSQL("INSERT INTO attendance (student_id, date, status, class_name) VALUES ('stud01', '" + date + "', 'Present', 'Grade 10-Emerald')");
+            db.execSQL("INSERT INTO attendance (student_id, date, status, class_name) VALUES ('stud02', '" + date + "', 'Absent', 'Grade 10-Emerald')");
+        }
 
 
 
@@ -487,6 +509,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + TABLE_FEE_PAYMENTS + " (student_id, collected_by, amount, payment_method, date) VALUES " +
                 "('stud02', 'admin01', 15050.00, 'Cash', '" + today + "')");
+
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -516,6 +540,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
+
 
         // Create new tables
         onCreate(db);
@@ -654,13 +679,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public Cursor getAllClasses() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT c.class_id, c.grade_level, c.section_name, c.room_number, u.full_name " +
-                "FROM " + TABLE_CLASSES + " c " +
-                "LEFT JOIN " + TABLE_USERS + " u ON c.teacher_id = u.user_id";
-        return db.rawQuery(query, null);
-    }
 
     public Cursor getStudentsByClass(String classId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -683,10 +701,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //       STUDENT PROFILE & FINANCE METHODS
     // ==========================================
 
-    public Cursor getStudentAttendance(String studentId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_ATTENDANCE + " WHERE student_id = ?", new String[]{studentId});
-    }
+
 
     public Cursor getStudentGrades(String studentId, String semester) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1438,7 +1453,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete("timetable", "schedule_id = ?", new String[]{scheduleId}) > 0;
     }
 
+    public Cursor getAllStudentsWithClassDetails() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Joins Users with Classes to get Grade and Section
+        String query = "SELECT u.user_id, u.full_name, u.roll_no, u.status, c.grade_level, c.section_name " +
+                "FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
+                "WHERE u.role = 'Student' " +
+                "ORDER BY u.full_name ASC";
+        return db.rawQuery(query, null);
+    }
+    public Cursor getAllClasses() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT c.class_id, c.grade_level, c.section_name, c.room_number, u.full_name " +
+                "FROM " + TABLE_CLASSES + " c " +
+                "LEFT JOIN " + TABLE_USERS + " u ON c.teacher_id = u.user_id";
+        return db.rawQuery(query, null);
+    }
 
-
+    public Cursor getStudentAttendance(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_ATTENDANCE + " WHERE student_id = ?", new String[]{studentId});
+    }
 
 }

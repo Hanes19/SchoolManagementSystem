@@ -1,9 +1,11 @@
 package com.example.studentmanagement;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,11 +14,11 @@ import java.util.ArrayList;
 public class StudentAttendanceActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private TextView tvPercentage, tvSummary;
-    private RecyclerView recyclerView; // <--- Add this
-    private String studentId;
-    private ArrayList<AttendanceModel> attendanceList; // <--- List to hold data
+    private RecyclerView recyclerView;
     private StudentHistoryAdapter adapter;
+    private ArrayList<AttendanceModel> attendanceList;
+    private String studentId;
+    private TextView tvSummary, tvPercentage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,77 +26,74 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.student_attendance);
 
         db = new DatabaseHelper(this);
-        studentId = getIntent().getStringExtra("STUDENT_ID");
-        if (studentId == null) studentId = "stud01";
 
-        tvPercentage = findViewById(R.id.tv_attendance_percentage);
+        // --- 1. GET STUDENT ID ---
+        // Try to get from Intent (if passed from Admin)
+        if (getIntent().hasExtra("STUDENT_ID")) {
+            studentId = getIntent().getStringExtra("STUDENT_ID");
+        } else {
+            // FALLBACK: Use a known seeded ID for testing if no intent passed
+            // In a real app, use: studentId = sessionManager.getUserId();
+            studentId = "stud01";
+        }
+
+        // --- 2. SETUP VIEWS ---
         tvSummary = findViewById(R.id.tv_attendance_summary);
-
-        // 1. Find the RecyclerView
+        tvPercentage = findViewById(R.id.tv_attendance_percentage);
         recyclerView = findViewById(R.id.calendar_recycler_view);
 
-        // 2. Setup Layout Manager
+        ImageView btnBack = findViewById(R.id.btn_back_attendance);
+        if(btnBack != null) btnBack.setOnClickListener(v -> finish());
+
+        // --- 3. SETUP RECYCLERVIEW ---
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        findViewById(R.id.btn_back_attendance).setOnClickListener(v -> finish());
-
-        loadAttendanceSummary(); // Kept your old logic here
-        loadAttendanceList();    // <--- NEW METHOD TO SHOW DATA
+        // --- 4. LOAD DATA ---
+        loadAttendanceData();
     }
 
-    private void loadAttendanceSummary() {
-        // ... (Keep your existing percentage calculation logic here) ...
-        Cursor cursor = db.getStudentAttendance(studentId);
-        int total = 0;
-        int present = 0;
-        if (cursor.moveToFirst()) {
-            do {
-                total++;
-                String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
-                if ("Present".equalsIgnoreCase(status)) present++;
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        if (total > 0) {
-            int percent = (present * 100) / total;
-            tvPercentage.setText(percent + "%");
-            tvSummary.setText("You have attended " + present + " out of " + total + " days.");
-            if (percent < 75) tvPercentage.setTextColor(Color.RED);
-            else tvPercentage.setTextColor(Color.parseColor("#4CAF50"));
-        } else {
-            tvPercentage.setText("0%");
-            tvSummary.setText("No attendance records found.");
-        }
-    }
-
-    // --- NEW METHOD ---
-    private void loadAttendanceList() {
+    private void loadAttendanceData() {
         attendanceList = new ArrayList<>();
+
+        // Fetch from DB
         Cursor cursor = db.getStudentAttendance(studentId);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
+            // DATA FOUND
+            int presentCount = 0;
+            int totalCount = 0;
+
             do {
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
-                int remarkIndex = cursor.getColumnIndex("remarks");
-                String remarks = (remarkIndex != -1) ? cursor.getString(remarkIndex) : "";
+                // Column indices based on table: att_id, student_id, date, status, class_name, remarks
+                String date = cursor.getString(2); // Date is 3rd column
+                String status = cursor.getString(3); // Status is 4th column
 
-                // --- CHANGED SECTION ---
-                // Use the empty constructor and setters to avoid the error
-                AttendanceModel model = new AttendanceModel();
-                model.setDate(date);
-                model.setStatus(status);
-                model.setRemarks(remarks);
+                attendanceList.add(new AttendanceModel(date, status));
 
-                attendanceList.add(model);
-                // -----------------------
-
+                if ("Present".equalsIgnoreCase(status)) {
+                    presentCount++;
+                }
+                totalCount++;
             } while (cursor.moveToNext());
-        }
-        cursor.close();
+            cursor.close();
 
-        adapter = new StudentHistoryAdapter(attendanceList);
-        recyclerView.setAdapter(adapter);
+            // Calculate Percentage
+            if (totalCount > 0) {
+                int percentage = (presentCount * 100) / totalCount;
+                tvPercentage.setText(percentage + "%");
+                tvSummary.setText(presentCount + " Present out of " + totalCount + " days");
+            }
+
+            // Bind to Adapter
+            // FIX: Passing 'this' as Context for the Edit button to work
+            adapter = new StudentHistoryAdapter(this, attendanceList);
+            recyclerView.setAdapter(adapter);
+
+        } else {
+            // NO DATA FOUND
+            tvPercentage.setText("N/A");
+            tvSummary.setText("No attendance records found.");
+            Toast.makeText(this, "No records found for ID: " + studentId, Toast.LENGTH_LONG).show();
+        }
     }
 }

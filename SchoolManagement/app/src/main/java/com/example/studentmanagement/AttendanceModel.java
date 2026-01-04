@@ -7,14 +7,20 @@ public class AttendanceModel {
     private String date;
     private String remarks;
 
-    // 1. Empty Constructor (For Student View)
+    // 1. Empty Constructor
     public AttendanceModel() {
     }
 
-    // 2. Teacher Constructor (For Teacher View)
+    // 2. Teacher Constructor (List of students)
     public AttendanceModel(String id, String name, String status) {
         this.id = id;
         this.name = name;
+        this.status = status;
+    }
+
+    // --- NEW: Student History Constructor (Date & Status) ---
+    public AttendanceModel(String date, String status) {
+        this.date = date;
         this.status = status;
     }
 

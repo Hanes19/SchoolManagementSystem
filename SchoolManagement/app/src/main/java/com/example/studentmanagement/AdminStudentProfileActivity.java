@@ -3,19 +3,26 @@ package com.example.studentmanagement;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 public class AdminStudentProfileActivity extends AppCompatActivity {
 
-    private String currentStudentId = "stud01"; // Dynamically pass this in a real app
+    private String currentStudentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_user_student_profile);
 
+        // --- FIX: Get ID from Intent ---
+        if (getIntent().hasExtra("STUDENT_ID")) {
+            currentStudentId = getIntent().getStringExtra("STUDENT_ID");
+        } else {
+            currentStudentId = "stud01"; // Fallback
+            Toast.makeText(this, "No Student ID provided, defaulting to stud01", Toast.LENGTH_SHORT).show();
+        }
 
         ImageView btnBack = findViewById(R.id.btn_back_profile);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
@@ -27,6 +34,7 @@ public class AdminStudentProfileActivity extends AppCompatActivity {
         CardView cardSchedule = findViewById(R.id.card_schedule);
 
         // --- NAVIGATION ---
+        // Pass the dynamic ID to sub-activities
 
         cardAttendance.setOnClickListener(v -> {
             Intent intent = new Intent(this, StudentAttendanceActivity.class);

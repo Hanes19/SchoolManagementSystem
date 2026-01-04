@@ -120,6 +120,9 @@
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".AdminAttendanceActivity" />
+        <activity android:name=".AdminAttendanceSheetActivity" />
+        <activity android:name=".AdminTimetableDetailsActivity" />
 
     </application>
 

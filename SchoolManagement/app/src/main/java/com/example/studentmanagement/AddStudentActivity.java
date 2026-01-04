@@ -161,7 +161,8 @@ public class AddStudentActivity extends AppCompatActivity {
 
     private void addSubjectCheckBox(SubjectItem item) {
         CheckBox checkBox = new CheckBox(this);
-        checkBox.setText(item.name + " ($" + String.format("%.2f", item.cost) + ")");
+        // CHANGED: $ to ₱
+        checkBox.setText(item.name + " (₱" + String.format("%.2f", item.cost) + ")");
         checkBox.setTextSize(14);
         checkBox.setTextColor(getResources().getColor(R.color.black));
         checkBox.setPadding(0, 10, 0, 10);
@@ -182,7 +183,8 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private void updateTotalDisplay() {
-        tvTotalFees.setText("$" + String.format("%.2f", currentTotal));
+        // CHANGED: $ to ₱
+        tvTotalFees.setText("₱" + String.format("%.2f", currentTotal));
     }
 
     private void saveStudent() {

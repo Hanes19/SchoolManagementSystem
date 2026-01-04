@@ -1824,4 +1824,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             this.hasFailedSubjects = hasFailed;
         }
     }
+
+    // ==========================================
+    //            PARENT METHODS (NEW)
+    // ==========================================
+
+    public boolean addParent(String name, String userId, String email, String phone, String linkedStudentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("full_name", name);
+        values.put("user_id", userId);
+        values.put("role", "Parent");
+        values.put("email", email);
+        values.put("phone_number", phone);
+        values.put("status", "Active");
+        // Default password for new parents
+        values.put("password_hash", SecurityUtil.hashPassword("123456"));
+
+        // Currently, we store the linked student ID in 'emergency_contact_name'
+        // as a temporary holder if no specific column exists, or you can ignore it if just creating the user.
+        // For better design, add a 'child_id' column to TABLE_USERS.
+        values.put("emergency_contact_name", linkedStudentId);
+
+        long result = db.insert(TABLE_USERS, null, values);
+        return result != -1;
+    }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,31 +53,32 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
             boolean hasHistory = false;
 
             do {
+                // [CHANGED] Get ID column
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("session_id"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("session_name"));
                 String start = cursor.getString(cursor.getColumnIndexOrThrow("start_date"));
                 String end = cursor.getString(cursor.getColumnIndexOrThrow("end_date"));
                 int isActive = cursor.getInt(cursor.getColumnIndexOrThrow("is_active"));
 
                 if (isActive == 1) {
-                    // Add Header if it's the first active one
                     if (!hasActive) {
                         addHeader("CURRENT SESSION");
                         hasActive = true;
                     }
-                    addActiveSessionCard(name, start, end);
+                    // [CHANGED] Pass ID
+                    addActiveSessionCard(id, name, start, end);
                 } else {
-                    // Add Header if it's the first history one
                     if (!hasHistory) {
                         addHeader("HISTORY");
                         hasHistory = true;
                     }
-                    addHistorySessionCard(name);
+                    // [CHANGED] Pass ID, start, end
+                    addHistorySessionCard(id, name, start, end);
                 }
 
             } while (cursor.moveToNext());
             cursor.close();
         } else {
-            // No sessions found
             TextView emptyView = new TextView(this);
             emptyView.setText("No academic sessions found.");
             emptyView.setPadding(20, 20, 20, 20);
@@ -98,8 +100,8 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         container.addView(header);
     }
 
-    private void addActiveSessionCard(String name, String start, String end) {
-        // Create CardView
+    // [CHANGED] Added ID parameter and Edit logic
+    private void addActiveSessionCard(int id, String name, String start, String end) {
         CardView card = new CardView(this);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -109,13 +111,12 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         card.setRadius(40);
         card.setCardElevation(10);
 
-        // Content Layout
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(60, 60, 60, 60);
-        content.setBackgroundColor(Color.parseColor("#4318FF")); // Match card bg
+        content.setBackgroundColor(Color.parseColor("#4318FF"));
 
-        // Top Row (Year + Active Badge)
+        // Top Row
         LinearLayout topRow = new LinearLayout(this);
         topRow.setOrientation(LinearLayout.HORIZONTAL);
         topRow.setGravity(Gravity.CENTER_VERTICAL);
@@ -127,6 +128,7 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         tvName.setTypeface(null, android.graphics.Typeface.BOLD);
         tvName.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
+        // Active Badge
         TextView tvBadge = new TextView(this);
         tvBadge.setText("ACTIVE");
         tvBadge.setTextColor(Color.parseColor("#4318FF"));
@@ -135,10 +137,17 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         tvBadge.setTextSize(12);
         tvBadge.setTypeface(null, android.graphics.Typeface.BOLD);
 
+        // [NEW] Edit Icon for Active Card (White to match theme)
+        ImageView btnEdit = new ImageView(this);
+        btnEdit.setImageResource(android.R.drawable.ic_menu_edit); // Use system edit icon
+        btnEdit.setColorFilter(Color.WHITE); // Make it white
+        btnEdit.setPadding(20, 0, 0, 0);
+        btnEdit.setOnClickListener(v -> openEditActivity(id, name, start, end));
+
         topRow.addView(tvName);
         topRow.addView(tvBadge);
+        topRow.addView(btnEdit); // Add edit button
 
-        // Date Text
         TextView tvDates = new TextView(this);
         tvDates.setText("Starts: " + start + " • Ends: " + end);
         tvDates.setTextColor(Color.parseColor("#E0E0E0"));
@@ -151,7 +160,8 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         container.addView(card);
     }
 
-    private void addHistorySessionCard(String name) {
+    // [CHANGED] Added ID, start, end params and Edit logic
+    private void addHistorySessionCard(int id, String name, String start, String end) {
         CardView card = new CardView(this);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -177,14 +187,33 @@ public class AdminAcademicSessionActivity extends AppCompatActivity {
         tvName.setTypeface(null, android.graphics.Typeface.BOLD);
 
         TextView tvStatus = new TextView(this);
-        tvStatus.setText("Closed");
+        tvStatus.setText("Closed • " + start + " to " + end);
         tvStatus.setTextColor(Color.parseColor("#A3AED0"));
         tvStatus.setTextSize(12);
 
         textLayout.addView(tvName);
         textLayout.addView(tvStatus);
+
+        // [NEW] Edit Icon for History Card (Dark blue)
+        ImageView btnEdit = new ImageView(this);
+        btnEdit.setImageResource(android.R.drawable.ic_menu_edit);
+        btnEdit.setColorFilter(Color.parseColor("#1B254B"));
+        btnEdit.setPadding(20, 20, 20, 20);
+        btnEdit.setOnClickListener(v -> openEditActivity(id, name, start, end));
+
         content.addView(textLayout);
+        content.addView(btnEdit); // Add edit button
         card.addView(content);
         container.addView(card);
+    }
+
+    // [NEW] Helper to open Edit Screen
+    private void openEditActivity(int id, String name, String start, String end) {
+        Intent intent = new Intent(this, AdminAddAcademicSessionActivity.class);
+        intent.putExtra("SESSION_ID", String.valueOf(id));
+        intent.putExtra("SESSION_NAME", name);
+        intent.putExtra("START_DATE", start);
+        intent.putExtra("END_DATE", end);
+        startActivity(intent);
     }
 }

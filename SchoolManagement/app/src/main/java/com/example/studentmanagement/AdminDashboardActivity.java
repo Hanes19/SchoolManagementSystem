@@ -2,7 +2,9 @@ package com.example.studentmanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -23,13 +25,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }
 
         // --- 1. Users & Staff Module Group ---
-        // Opens the User Directory we set up earlier
         findViewById(R.id.btn_users_staff).setOnClickListener(v -> {
             startActivity(new Intent(this, AdminUserDirectoryActivity.class));
         });
 
         // --- 2. Academic Structure Group ---
-        // Changed to open Class List directly since bottom_sheet_academic layout does not exist
         findViewById(R.id.btn_classes_sections).setOnClickListener(v -> {
             startActivity(new Intent(this, AdminClassListActivity.class));
         });
@@ -60,7 +60,54 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(new Intent(this, LibraryOverdueItemsActivity.class));
         });
 
+        // --- FAB: Quick Actions Bottom Sheet ---
+        findViewById(R.id.fab_add_new).setOnClickListener(v -> showQuickActionSheet());
+
         setupBottomNavigation();
+    }
+
+    private void showQuickActionSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.admin_quick_action, null);
+        bottomSheetDialog.setContentView(view);
+
+        // 1. Add Student
+        view.findViewById(R.id.btn_quick_add_student).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AddStudentActivity.class));
+        });
+
+        // 2. Add Teacher
+        view.findViewById(R.id.btn_quick_add_teacher).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AddTeacherActivity.class));
+        });
+
+        // 3. New Invoice
+        view.findViewById(R.id.btn_quick_invoice).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AdminGenerateInvoiceActivity.class));
+        });
+
+        // 4. Post Notice
+        view.findViewById(R.id.btn_quick_notice).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AdminNoticeBoardActivity.class));
+        });
+
+        // 5. Take Attendance
+        view.findViewById(R.id.btn_quick_attendance).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AdminAttendanceActivity.class));
+        });
+
+        // 6. View Reports
+        view.findViewById(R.id.btn_quick_reports).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, AdminReportsGuideActivity.class));
+        });
+
+        bottomSheetDialog.show();
     }
 
     private void setupBottomNavigation() {

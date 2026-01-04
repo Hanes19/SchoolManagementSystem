@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -41,6 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_QUESTION_BANK = "question_bank";
     private static final String TABLE_NOTICES = "notices";
     private static final String TABLE_SESSIONS = "academic_sessions";
+    private static final String TABLE_SUBJECTS = "subjects";
+    private static final String TABLE_STUDENT_SUBJECTS = "student_subjects";
     // REMOVED DUPLICATE CONSTANT: private static final String TABLE_ACADEMIC_SESSIONS = "academic_sessions";
 
     public DatabaseHelper(Context context) {
@@ -74,6 +78,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "user_id TEXT, " +
                 "action TEXT, " +
                 "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id TEXT UNIQUE, " +
+                "full_name TEXT, " +
+                "password_hash TEXT, " +
+                "role TEXT, " +
+                "class_id INTEGER, " +
+                "status TEXT, " +
+                "email TEXT, " +
+                "phone_number TEXT, " +
+                "is_2fa_enabled INTEGER DEFAULT 0, " +
+                "secret_key TEXT, " +
+                "previous_school TEXT, " +
+                "transfer_cert_no TEXT, " +
+                "emergency_contact_name TEXT, " +
+                "emergency_contact_phone TEXT, " +
+                "roll_no TEXT)");
+
+        // 3. Classes Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CLASSES + " (" +
+                "class_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "grade_level TEXT, " +
+                "section_name TEXT, " +
+                "room_number TEXT, " +
+                "teacher_id TEXT)");
+
+        // 7. Fees Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FEES + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "student_id TEXT, " +
+                "description TEXT, " +
+                "amount REAL, " +
+                "type TEXT, " +
+                "date TEXT)");
+
+        // --- NEW TABLES ---
+
+        // Subjects Table with Cost
+        db.execSQL("CREATE TABLE " + TABLE_SUBJECTS + " (" +
+                "subject_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "subject_name TEXT, " +
+                "grade_level TEXT, " +
+                "cost REAL, " +
+                "description TEXT)");
+
+        // Link Table: Which student takes which subject
+        db.execSQL("CREATE TABLE " + TABLE_STUDENT_SUBJECTS + " (" +
+                "link_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "student_id TEXT, " +
+                "subject_id INTEGER, " +
+                "enrollment_date TEXT)");
 
         // 3. Classes Table
         db.execSQL("CREATE TABLE " + TABLE_CLASSES + " (" +
@@ -333,6 +389,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(3, 'Grade 12-A', 'Monday', '10:30', '11:30', 'English', 'Rm 103', 'Mr. John Keating')," +
                 "(3, 'Grade 12-A', 'Monday', '01:00', '02:00', 'Chemistry', 'Lab 3', 'Mr. Walter White')");
 
+        // Seed Users & Classes (Keep your existing seeds)
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
+        db.execSQL("INSERT OR IGNORE INTO classes (grade_level, section_name, room_number) VALUES ('Grade 10', 'Emerald', 'Rm 101')");
+        db.execSQL("INSERT OR IGNORE INTO classes (grade_level, section_name, room_number) VALUES ('Grade 11', 'Ruby', 'Rm 104')");
+
+        // --- SEED SUBJECTS WITH COSTS ---
+        // Grade 10 Subjects
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Mathematics 10', 'Grade 10', 300.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Science 10', 'Grade 10', 350.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('History 10', 'Grade 10', 200.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('English 10', 'Grade 10', 200.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Physical Ed 10', 'Grade 10', 150.00)");
+
+        // Grade 11 Subjects
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Adv Math 11', 'Grade 11', 400.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Physics 11', 'Grade 11', 450.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Chemistry 11', 'Grade 11', 450.00)");
+        db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Biology 11', 'Grade 11', 450.00)");
+
+
         // TUESDAY
         // Grade 10
         db.execSQL("INSERT INTO " + TABLE_TIMETABLE + " (class_id, class_name, day_of_week, start_time, end_time, subject, room_no, teacher_name) VALUES " +
@@ -556,6 +632,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBJECTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENT_SUBJECTS);
         // REMOVED DUPLICATE DROP: db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_SESSIONS);
 
 
@@ -1428,16 +1506,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean addFee(String studentId, String description, double amount, String type) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("student_id", studentId);
-        values.put("description", description);
-        values.put("amount", amount);
-        values.put("type", type);
-        values.put("date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
-        return db.insert(TABLE_FEES, null, values) != -1;
-    }
 
     public boolean addPayment(String studentId, String collectedBy, double amount, String method) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1478,13 +1546,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "LEFT JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
                 "WHERE u.role = 'Student' " +
                 "ORDER BY u.full_name ASC";
-        return db.rawQuery(query, null);
-    }
-    public Cursor getAllClasses() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT c.class_id, c.grade_level, c.section_name, c.room_number, u.full_name " +
-                "FROM " + TABLE_CLASSES + " c " +
-                "LEFT JOIN " + TABLE_USERS + " u ON c.teacher_id = u.user_id";
         return db.rawQuery(query, null);
     }
 
@@ -1612,5 +1673,98 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteSession(String sessionId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SESSIONS, "session_id = ?", new String[]{sessionId});
+    }
+
+    // [Add this method to DatabaseHelper.java]
+
+    // ==========================================
+    //       ACADEMIC SESSION METHODS
+    // ==========================================
+
+    public boolean updateAcademicSession(String sessionId, String name, String start, String end) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("session_name", name);
+        values.put("start_date", start);
+        values.put("end_date", end);
+
+        int result = db.update(TABLE_SESSIONS, values, "session_id = ?", new String[]{sessionId});
+        return result > 0;
+    }
+
+
+    // 2. Fetch distinct subjects for a specific class from the Timetable
+    public List<String> getSubjectsForClass(int classId) {
+        List<String> subjects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Select distinct subjects linked to this class ID
+        Cursor cursor = db.rawQuery("SELECT DISTINCT subject FROM timetable WHERE class_id = ? ORDER BY subject ASC",
+                new String[]{String.valueOf(classId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                subjects.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return subjects;
+    }
+
+    // ==========================================
+    //           SUBJECT & ENROLLMENT METHODS
+    // ==========================================
+
+    // Get Subjects available for a specific grade
+    public Cursor getSubjectsByGrade(String gradeLevel) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_SUBJECTS + " WHERE grade_level = ?", new String[]{gradeLevel});
+    }
+
+    // Enroll Student (Basic Info)
+    public boolean enrollStudent(String name, String id, int classId, String prevSchool, String transferCert, String email, String emergencyContact) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("full_name", name);
+        values.put("user_id", id);
+        values.put("role", "Student");
+        values.put("class_id", classId);
+        values.put("previous_school", prevSchool);
+        values.put("transfer_cert_no", transferCert);
+        values.put("email", email);
+        values.put("emergency_contact_name", emergencyContact);
+        values.put("status", "Active");
+        values.put("password_hash", SecurityUtil.hashPassword("123456"));
+
+        long result = db.insert(TABLE_USERS, null, values);
+        return result != -1;
+    }
+
+    // Enroll Student in Specific Subject
+    public void enrollStudentInSubject(String studentId, int subjectId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("subject_id", subjectId);
+        values.put("enrollment_date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        db.insert(TABLE_STUDENT_SUBJECTS, null, values);
+    }
+
+    // Add Fee Record (Used when enrolling in a subject)
+    public void addFee(String studentId, String description, double amount, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("description", description);
+        values.put("amount", amount);
+        values.put("type", type);
+        values.put("date", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+        db.insert(TABLE_FEES, null, values);
+    }
+
+    // Helper to get all classes
+    public Cursor getAllClasses() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT class_id, grade_level, section_name FROM " + TABLE_CLASSES, null);
     }
 }

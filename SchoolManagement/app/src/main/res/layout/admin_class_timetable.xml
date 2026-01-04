@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
+    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -16,11 +17,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="8dp"
+            android:padding="10dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             tools:ignore="ContentDescription"/>
 
         <LinearLayout
@@ -40,11 +45,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weekly Timetable"
-                android:textColor="#A3AED0"
-                android:textSize="12sp"/>
+                android:textColor="#1B254B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"/>
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Day Navigation Tabs -->
     <LinearLayout
         android:id="@+id/day_tabs"
         android:layout_width="match_parent"
@@ -54,13 +62,14 @@
         android:weightSum="5"
         app:layout_constraintTop_toBottomOf="@id/header">
 
+        <!-- Monday (Selected) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_day_mon"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="12dp"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#111C44"
             app:cardElevation="4dp">
             <LinearLayout
@@ -68,86 +77,66 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
-                <TextView android:text="Mon" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView android:text="MON" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Other Days (Unselected) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_day_tue"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="12dp"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="0dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <TextView android:text="Tue" android:textColor="#A3AED0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center"><TextView android:text="TUE" android:textColor="#A3AED0" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_day_wed"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="12dp"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="0dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <TextView android:text="Wed" android:textColor="#A3AED0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center"><TextView android:text="WED" android:textColor="#A3AED0" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_day_thu"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="12dp"
+            android:layout_marginEnd="6dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="0dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <TextView android:text="Thu" android:textColor="#A3AED0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center"><TextView android:text="THU" android:textColor="#A3AED0" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_day_fri"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="64dp"
             android:layout_weight="1"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="0dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <TextView android:text="Fri" android:textColor="#A3AED0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center"><TextView android:text="FRI" android:textColor="#A3AED0" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
+    <!-- Timetable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
+        android:scrollbars="none"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/day_tabs"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -158,6 +147,185 @@
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
+
+            <!-- Time Slot Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MORNING SESSION"
+                android:textColor="#1B254B"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Class Item 1: Mathematics -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView android:text="08:00" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AM" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="1dp" android:layout_height="40dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView android:text="Mathematics" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Mr. Robert Langdon • Room 101" android:textColor="#A3AED0" android:textSize="13sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="4dp" android:layout_height="32dp" android:background="#4318FF"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Class Item 2: Physics -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView android:text="09:30" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AM" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="1dp" android:layout_height="40dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView android:text="Physics" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Dr. Bruce Banner • Lab 2" android:textColor="#A3AED0" android:textSize="13sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="4dp" android:layout_height="32dp" android:background="#05CD99"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Break Indicator -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="12dp"
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/rounded_corner_white_bg"
+                android:backgroundTint="#F4F7FE">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/clock"
+                    app:tint="#A3AED0"
+                    tools:ignore="ContentDescription"/>
+                <TextView
+                    android:text="Morning Break (15 Mins)"
+                    android:textColor="#1B254B"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Class Item 3: English -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView android:text="11:15" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="AM" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="1dp" android:layout_height="40dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView android:text="English Literature" android:textStyle="bold" android:textColor="#1B254B" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Ms. Jane Austen • Room 302" android:textColor="#A3AED0" android:textSize="13sp" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="4dp" android:layout_height="32dp" android:background="#FF9800"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
+
+    <!-- FAB: Manage Schedule -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fab_edit_schedule"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="#111C44"
+        app:cardElevation="6dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_edit"
+            app:tint="#FFFFFF"
+            android:padding="16dp"
+            tools:ignore="ContentDescription"/>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

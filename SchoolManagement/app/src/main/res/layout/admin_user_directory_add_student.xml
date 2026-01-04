@@ -6,212 +6,327 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
+    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/header"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="24dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="8dp"
+            android:padding="10dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             tools:ignore="ContentDescription"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Student Enrollment"
-            android:textSize="24sp"
+            android:layout_marginStart="16dp"
+            android:text="Enroll New Student"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#1B254B"
-            android:layout_marginStart="16dp"/>
+            android:textColor="#1B254B"/>
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="#FFFFFF"
+        android:scrollbars="none"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toTopOf="@id/btn_register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
 
-            <LinearLayout
+            <!-- Section 1: Basic Identity -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    style="@style/LabelText"
-                    android:text="Full Name"/>
-                <EditText
-                    android:id="@+id/et_student_name"
-                    style="@style/InputBox"
-                    android:hint="e.g. John Doe"
-                    android:inputType="textPersonName"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="4dp">
-                    <TextView
-                        style="@style/LabelText"
-                        android:layout_weight="1"
-                        android:text="Student ID"/>
-                    <TextView
-                        android:id="@+id/btn_generate_student_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Auto-Generate"
-                        android:textColor="#4318FF"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-                <EditText
-                    android:id="@+id/et_student_id"
-                    style="@style/InputBox"
-                    android:hint="Click Auto-Generate"/>
-
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="Select Grade &amp; Section"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/rounded_corner_input_bg"
-                    android:gravity="center_vertical">
-
-                    <Spinner
-                        android:id="@+id/sp_student_class"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingHorizontal="8dp"/>
-                </LinearLayout>
-
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="20dp"
-                    android:text="Choose Subjects to Enroll"/>
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="8dp"
-                    android:background="#F4F7FE"
-                    android:padding="12dp">
+                    android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/tv_no_subjects"
+                    <TextView android:text="STUDENT IDENTITY"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView android:text="Full Name" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/et_student_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Select a class to view subjects"
-                        android:textColor="#A3AED0"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:visibility="visible"/>
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:hint="Full Name"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"
+                        android:inputType="textPersonName"/>
 
                     <LinearLayout
-                        android:id="@+id/ll_subject_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#E0E5F2"
-                        android:layout_marginVertical="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_vertical">
+                        <TextView android:text="Student ID" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Total Tuition:"
-                            android:textStyle="bold"
-                            android:textColor="#1B254B"/>
-                        <TextView
-                            android:id="@+id/tv_total_fees"
+                            android:id="@+id/btn_generate_student_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$0.00"
+                            android:text="GENERATE ID"
+                            android:textColor="#4318FF"
                             android:textStyle="bold"
-                            android:textColor="#4CAF50"/>
+                            android:textSize="11sp"
+                            android:background="#F4F7FE"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"/>
+                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_student_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:hint="STU-XXXXX"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Section 2: Academic Placement -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:text="ACADEMIC PLACEMENT"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView android:text="Target Grade &amp; Section" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE">
+                        <Spinner
+                            android:id="@+id/sp_student_class"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingHorizontal="12dp"
+                            android:background="@android:color/transparent"/>
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#A3AED0"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Section 3: Enrollment & Fees -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:text="SUBJECT ENROLLMENT"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tv_no_subjects"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Please select a class first"
+                            android:textColor="#A3AED0"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:padding="8dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/ll_subject_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E5F2" android:layout_marginVertical="12dp"/>
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="TOTAL ESTIMATED FEES" android:textColor="#A3AED0" android:textStyle="bold" android:textSize="10sp"/>
+                            <TextView
+                                android:id="@+id/tv_total_fees"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="₱0.00"
+                                android:textStyle="bold"
+                                android:textColor="#05CD99"
+                                android:textSize="18sp"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="Email Address"/>
-                <EditText
-                    android:id="@+id/et_student_email"
-                    style="@style/InputBox"
-                    android:inputType="textEmailAddress"
-                    android:hint="e.g. name@school.edu"/>
+            <!-- Section 4: Contact & Emergency -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                android:layout_marginTop="16dp">
 
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="Emergency Contact"/>
-                <EditText
-                    android:id="@+id/et_emergency_contact"
-                    style="@style/InputBox"
-                    android:hint="Name - Phone Number"/>
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:text="COMMUNICATION"
+                        android:textColor="#1B254B"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cardCornerRadius="30dp"
-        app:cardBackgroundColor="#111C44"
-        app:cardElevation="6dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:text="Student Email"
+                        android:textStyle="bold"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/et_student_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:hint="email@example.com"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"
+                        android:inputType="textEmailAddress"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Confirm Enrollment"
-            android:textColor="#FFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-    </androidx.cardview.widget.CardView>
+                    <TextView android:text="Emergency Contact" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_marginTop="20dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/et_emergency_contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#F4F7FE"
+                        android:paddingHorizontal="16dp"
+                        android:hint="Guardian Name / Phone"
+                        android:textColor="#1B254B"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
+            <!-- Final Register Button (Part of Scroll) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:cardCornerRadius="30dp"
+                app:cardBackgroundColor="#111C44"
+                app:cardElevation="6dp"
+                android:layout_marginTop="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Complete Enrollment"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

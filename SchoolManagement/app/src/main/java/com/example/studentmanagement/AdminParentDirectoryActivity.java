@@ -42,7 +42,7 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
         // Click Card 1 -> Open Profile Details
         cardParent1.setOnClickListener(v -> {
             Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminParentProfileDetailsActivity.class);
-            intent.putExtra("PARENT_NAME", "Mrs. Sarah Smith");
+            intent.putExtra("PARENT_ID", "PAR1001"); // Pass the ACTUAL ID from your database
             startActivity(intent);
         });
 

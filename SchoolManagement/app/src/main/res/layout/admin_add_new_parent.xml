@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -37,7 +36,6 @@
             android:textColor="#1B254B"/>
     </LinearLayout>
 
-    <!-- Form Container -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -55,7 +53,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="40dp">
 
-            <!-- Section 1: Family Identification -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +116,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 2: Contact Information -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,7 +141,9 @@
                     android:padding="24dp">
 
                     <TextView android:text="Phone Number" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
                     <EditText
+                        android:id="@+id/et_parent_phone"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
@@ -158,7 +156,9 @@
                         android:inputType="phone"/>
 
                     <TextView android:text="Email Address" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_marginTop="20dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
                     <EditText
+                        android:id="@+id/et_parent_email"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
@@ -172,7 +172,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section 3: Student Linking -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -237,7 +236,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Register Button Pinned to Bottom -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_register_container"
         android:layout_width="0dp"

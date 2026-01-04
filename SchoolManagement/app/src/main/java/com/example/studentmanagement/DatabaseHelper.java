@@ -1420,10 +1420,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //           PROFILE & USER DETAILS
     // ==========================================
 
-    public Cursor getUserDetails(String userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE user_id = ?", new String[]{userId});
-    }
+
 
     public boolean updateUserProfile(String userId, String name, String email, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1717,7 +1714,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Helper to get all classes
     public Cursor getAllClasses() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT class_id, grade_level, section_name FROM " + TABLE_CLASSES, null);
+        {
+            Cursor cursor = db.rawQuery("SELECT * FROM class_table", null);
+        }
+        return null;
     }
 
     public Cursor getAllStudentsWithClassDetails() {
@@ -1848,5 +1848,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_USERS, null, values);
         return result != -1;
+    }
+
+    public Cursor getUserDetails(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE user_id = ?", new String[]{userId});
+    }
+
+    // 2. Get Children Linked to Parent
+    // Note: This relies on how you linked them.
+    // Scenario A: If you stored the student ID in the parent's 'emergency_contact_name' column (from the Add Parent fix).
+
+    // Fetch parent details by ID
+    public Cursor getParentById(String parentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM parent_table WHERE id = ?", new String[]{parentId});
+    }
+
+    // Fetch students linked to a specific parent
+    public Cursor getLinkedChildren(String parentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // IMPORTANT: Check your actual table name (e.g., 'student_table') and foreign key column ('parent_id')
+        return db.rawQuery("SELECT * FROM student_table WHERE parent_id = ?", new String[]{parentId});
     }
 }

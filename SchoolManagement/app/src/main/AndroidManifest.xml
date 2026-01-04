@@ -130,6 +130,7 @@
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".AdminAddAcademicSessionActivity" />
         <activity android:name=".AdminSystemConfigActivity" />
+        <activity android:name=".AdminAddParentActivity" />
 
     </application>
 

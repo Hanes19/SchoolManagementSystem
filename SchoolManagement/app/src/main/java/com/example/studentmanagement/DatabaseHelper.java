@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Updated Version to trigger upgrade/recreation
-    private static final int DATABASE_VERSION = 31;
+    private static final int DATABASE_VERSION = 32;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -54,31 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 1. Users Table
-        db.execSQL("CREATE TABLE " + TABLE_USERS + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id TEXT UNIQUE, " +
-                "full_name TEXT, " +
-                "password_hash TEXT, " +
-                "role TEXT, " +
-                "class_id INTEGER, " +
-                "status TEXT, " +
-                "email TEXT, " +
-                "phone_number TEXT, " +
-                "is_2fa_enabled INTEGER DEFAULT 0, " +
-                "secret_key TEXT, " +
-                "previous_school TEXT, " +
-                "transfer_cert_no TEXT, " +
-                "emergency_contact_name TEXT, " +
-                "emergency_contact_phone TEXT, " +
-                "roll_no TEXT)");
-
-        // 2. Logs Table
-        db.execSQL("CREATE TABLE " + TABLE_LOGS + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id TEXT, " +
-                "action TEXT, " +
-                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
-
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT UNIQUE, " +
@@ -97,7 +72,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "emergency_contact_phone TEXT, " +
                 "roll_no TEXT)");
 
-        // 3. Classes Table
+        // 2. Logs Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOGS + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id TEXT, " +
+                "action TEXT, " +
+                "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+        // 3. Classes Table (REMOVED DUPLICATE)
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CLASSES + " (" +
                 "class_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "grade_level TEXT, " +
@@ -105,42 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "room_number TEXT, " +
                 "teacher_id TEXT)");
 
-        // 7. Fees Table
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FEES + " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "student_id TEXT, " +
-                "description TEXT, " +
-                "amount REAL, " +
-                "type TEXT, " +
-                "date TEXT)");
-
-        // --- NEW TABLES ---
-
-        // Subjects Table with Cost
-        db.execSQL("CREATE TABLE " + TABLE_SUBJECTS + " (" +
-                "subject_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "subject_name TEXT, " +
-                "grade_level TEXT, " +
-                "cost REAL, " +
-                "description TEXT)");
-
-        // Link Table: Which student takes which subject
-        db.execSQL("CREATE TABLE " + TABLE_STUDENT_SUBJECTS + " (" +
-                "link_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "student_id TEXT, " +
-                "subject_id INTEGER, " +
-                "enrollment_date TEXT)");
-
-        // 3. Classes Table
-        db.execSQL("CREATE TABLE " + TABLE_CLASSES + " (" +
-                "class_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "grade_level TEXT, " +
-                "section_name TEXT, " +
-                "room_number TEXT, " +
-                "teacher_id TEXT)");
-
         // 4. Timetable Table
-        db.execSQL("CREATE TABLE " + TABLE_TIMETABLE + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TIMETABLE + " (" +
                 "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "class_id INTEGER, " +
                 "teacher_id TEXT, " +
@@ -153,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "teacher_name TEXT)");
 
         // 5. Attendance Table
-        db.execSQL("CREATE TABLE " + TABLE_ATTENDANCE + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ATTENDANCE + " (" +
                 "att_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "date TEXT, " +
@@ -162,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "remarks TEXT)");
 
         // 6. Grades Table
-        db.execSQL("CREATE TABLE " + TABLE_GRADES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_GRADES + " (" +
                 "grade_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "assignment_id INTEGER, " +
                 "student_id TEXT, " +
@@ -175,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "total_marks INTEGER)");
 
         // 7. Fees Table
-        db.execSQL("CREATE TABLE " + TABLE_FEES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FEES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "description TEXT, " +
@@ -184,7 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT)");
 
         // 8. Expenses Table
-        db.execSQL("CREATE TABLE " + TABLE_EXPENSES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_EXPENSES + " (" +
                 "expense_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "requested_by TEXT, " +
@@ -195,13 +143,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT DEFAULT 'Pending')");
 
         // 9. Roles Table
-        db.execSQL("CREATE TABLE " + TABLE_ROLES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ROLES + " (" +
                 "role_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "role_name TEXT UNIQUE, " +
                 "description TEXT)");
 
         // 10. Library Books Table
-        db.execSQL("CREATE TABLE " + TABLE_BOOKS + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_BOOKS + " (" +
                 "book_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "author TEXT, " +
@@ -212,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date_added TEXT)");
 
         // 11. Library Issues Table
-        db.execSQL("CREATE TABLE " + TABLE_LIBRARY_ISSUES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LIBRARY_ISSUES + " (" +
                 "issue_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "book_id INTEGER, " +
                 "student_id TEXT, " +
@@ -223,7 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "fine_amount REAL DEFAULT 0)");
 
         // 12. E-Resources Table
-        db.execSQL("CREATE TABLE " + TABLE_E_RESOURCES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_E_RESOURCES + " (" +
                 "resource_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "category TEXT, " +
@@ -232,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date_added TEXT)");
 
         // 13. Assignments Table
-        db.execSQL("CREATE TABLE " + TABLE_ASSIGNMENTS + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_ASSIGNMENTS + " (" +
                 "assignment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "class_name TEXT, " +
@@ -243,7 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date_created TEXT)");
 
         // 14. Messages Table
-        db.execSQL("CREATE TABLE " + TABLE_MESSAGES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_MESSAGES + " (" +
                 "msg_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "sender_id TEXT, " +
                 "receiver_id TEXT, " +
@@ -254,7 +202,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "is_read INTEGER DEFAULT 0)");
 
         // 15. Leave Applications Table
-        db.execSQL("CREATE TABLE " + TABLE_LEAVE + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LEAVE + " (" +
                 "leave_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT, " +
                 "leave_type TEXT, " +
@@ -265,7 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "applied_on TEXT)");
 
         // 16. Payroll Table
-        db.execSQL("CREATE TABLE " + TABLE_PAYROLL + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PAYROLL + " (" +
                 "payroll_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_id TEXT, " +
                 "month TEXT, " +
@@ -277,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "generated_on TEXT)");
 
         // 17. Fee Payments Table
-        db.execSQL("CREATE TABLE " + TABLE_FEE_PAYMENTS + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FEE_PAYMENTS + " (" +
                 "payment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "student_id TEXT, " +
                 "collected_by TEXT, " +
@@ -286,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT)");
 
         // 18. Exam Categories Table
-        db.execSQL("CREATE TABLE " + TABLE_EXAM_CATEGORIES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_EXAM_CATEGORIES + " (" +
                 "exam_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_name TEXT, " +
                 "start_date TEXT, " +
@@ -294,7 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT DEFAULT 'Draft')");
 
         // 19. Exam Schedule Table
-        db.execSQL("CREATE TABLE " + TABLE_EXAM_SCHEDULE + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_EXAM_SCHEDULE + " (" +
                 "schedule_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_id INTEGER, " +
                 "class_name TEXT, " +
@@ -304,7 +252,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "room_no TEXT)");
 
         // 20. Exam Marks Table
-        db.execSQL("CREATE TABLE " + TABLE_EXAM_MARKS + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_EXAM_MARKS + " (" +
                 "mark_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "exam_id INTEGER, " +
                 "student_id TEXT, " +
@@ -313,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "total_marks INTEGER DEFAULT 100)");
 
         // 21. Question Bank Table
-        db.execSQL("CREATE TABLE " + TABLE_QUESTION_BANK + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_QUESTION_BANK + " (" +
                 "question_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "subject TEXT, " +
                 "grade_level TEXT, " +
@@ -323,25 +271,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "correct_answer TEXT)");
 
         // 22. Notice Board Table
-        db.execSQL("CREATE TABLE " + TABLE_NOTICES + " (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NOTICES + " (" +
                 "notice_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
                 "description TEXT, " +
                 "audience TEXT, " +
                 "date_posted TEXT)");
 
-        // 23. Academic Sessions Table (SINGLE CREATION)
-        db.execSQL("CREATE TABLE " + TABLE_SESSIONS + " (" +
+        // 23. Academic Sessions Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SESSIONS + " (" +
                 "session_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "session_name TEXT, " +
                 "start_date TEXT, " +
                 "end_date TEXT, " +
                 "is_active INTEGER DEFAULT 0)");
 
-        // Removed duplicate TABLE_ACADEMIC_SESSIONS creation here
+        // 24. Subjects Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SUBJECTS + " (" +
+                "subject_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "subject_name TEXT, " +
+                "grade_level TEXT, " +
+                "cost REAL, " +
+                "description TEXT)");
+
+        // 25. Student-Subject Link Table
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STUDENT_SUBJECTS + " (" +
+                "link_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "student_id TEXT, " +
+                "subject_id INTEGER, " +
+                "enrollment_date TEXT)");
 
         seedData(db);
     }
+
 
     private void seedData(SQLiteDatabase db) {
         String testPassHash = SecurityUtil.hashPassword("123456");
@@ -1538,16 +1500,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete("timetable", "schedule_id = ?", new String[]{scheduleId}) > 0;
     }
 
-    public Cursor getAllStudentsWithClassDetails() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Joins Users with Classes to get Grade and Section
-        String query = "SELECT u.user_id, u.full_name, u.roll_no, u.status, c.grade_level, c.section_name " +
-                "FROM " + TABLE_USERS + " u " +
-                "LEFT JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
-                "WHERE u.role = 'Student' " +
-                "ORDER BY u.full_name ASC";
-        return db.rawQuery(query, null);
-    }
 
     public Cursor getStudentAttendance(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1766,5 +1718,110 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllClasses() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT class_id, grade_level, section_name FROM " + TABLE_CLASSES, null);
+    }
+
+    public Cursor getAllStudentsWithClassDetails() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT u.user_id, u.full_name, u.roll_no, u.status, c.grade_level, c.section_name " +
+                "FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
+                "WHERE u.role = 'Student' " +
+                "ORDER BY u.full_name ASC";
+        return db.rawQuery(query, null);
+    }
+
+    // [Add this inside DatabaseHelper.java]
+
+// ==========================================
+//       ELIGIBILITY & PROMOTION CHECK
+// ==========================================
+
+    // 1. Check Attendance Percentage
+    public double getAttendancePercentage(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Count total days
+        Cursor totalCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ATTENDANCE + " WHERE student_id = ?", new String[]{studentId});
+        int totalDays = 0;
+        if (totalCursor.moveToFirst()) {
+            totalDays = totalCursor.getInt(0);
+        }
+        totalCursor.close();
+
+        if (totalDays == 0) return 100.0; // Default to 100% if no records yet
+
+        // Count present days
+        Cursor presentCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ATTENDANCE + " WHERE student_id = ? AND status = 'Present'", new String[]{studentId});
+        int presentDays = 0;
+        if (presentCursor.moveToFirst()) {
+            presentDays = presentCursor.getInt(0);
+        }
+        presentCursor.close();
+
+        return ((double) presentDays / totalDays) * 100.0;
+    }
+
+    // 2. Check Outstanding Fees
+    public double getOutstandingBalance(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Total Fees Charged
+        Cursor feeCursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_FEES + " WHERE student_id = ?", new String[]{studentId});
+        double totalFees = 0;
+        if (feeCursor.moveToFirst()) {
+            totalFees = feeCursor.getDouble(0);
+        }
+        feeCursor.close();
+
+        // Total Paid
+        Cursor paidCursor = db.rawQuery("SELECT SUM(amount) FROM " + TABLE_FEE_PAYMENTS + " WHERE student_id = ?", new String[]{studentId});
+        double totalPaid = 0;
+        if (paidCursor.moveToFirst()) {
+            totalPaid = paidCursor.getDouble(0);
+        }
+        paidCursor.close();
+
+        return totalFees - totalPaid;
+    }
+
+    // 3. Check for Failing Grades (Score < 75)
+    public boolean hasFailedSubjects(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Assuming 75 is the passing mark
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_GRADES + " WHERE student_id = ? AND score < 75", new String[]{studentId});
+
+        boolean hasFailures = false;
+        if (cursor.moveToFirst()) {
+            hasFailures = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+        return hasFailures;
+    }
+
+    // 4. Master Eligibility Check
+    public EligibilityResult checkEnrollmentEligibility(String studentId) {
+        double attendance = getAttendancePercentage(studentId);
+        double balance = getOutstandingBalance(studentId);
+        boolean hasFailed = hasFailedSubjects(studentId);
+
+        // Criteria: Attendance > 80%, Balance <= 0, No Failed Subjects
+        boolean isEligible = (attendance >= 80.0) && (balance <= 0) && (!hasFailed);
+
+        return new EligibilityResult(isEligible, attendance, balance, hasFailed);
+    }
+
+    // Helper Class for results
+    public static class EligibilityResult {
+        public boolean isEligible;
+        public double attendancePercent;
+        public double outstandingBalance;
+        public boolean hasFailedSubjects;
+
+        public EligibilityResult(boolean isEligible, double attendance, double balance, boolean hasFailed) {
+            this.isEligible = isEligible;
+            this.attendancePercent = attendance;
+            this.outstandingBalance = balance;
+            this.hasFailedSubjects = hasFailed;
+        }
     }
 }

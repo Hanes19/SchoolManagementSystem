@@ -14,8 +14,8 @@ import java.util.Map;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    // Version 20: Full Master Timetable Seed
-    private static final int DATABASE_VERSION = 30;
+    // Updated Version to trigger upgrade/recreation
+    private static final int DATABASE_VERSION = 31;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_QUESTION_BANK = "question_bank";
     private static final String TABLE_NOTICES = "notices";
     private static final String TABLE_SESSIONS = "academic_sessions";
-    private static final String TABLE_ACADEMIC_SESSIONS = "academic_sessions";
+    // REMOVED DUPLICATE CONSTANT: private static final String TABLE_ACADEMIC_SESSIONS = "academic_sessions";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -274,6 +274,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "audience TEXT, " +
                 "date_posted TEXT)");
 
+        // 23. Academic Sessions Table (SINGLE CREATION)
         db.execSQL("CREATE TABLE " + TABLE_SESSIONS + " (" +
                 "session_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "session_name TEXT, " +
@@ -281,13 +282,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "end_date TEXT, " +
                 "is_active INTEGER DEFAULT 0)");
 
-        // Academic Sessions Table
-        db.execSQL("CREATE TABLE " + TABLE_ACADEMIC_SESSIONS + " (" +
-                "session_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "session_name TEXT, " +
-                "start_date TEXT, " +
-                "end_date TEXT, " +
-                "is_active INTEGER DEFAULT 0)"); // 1 for active, 0 for inactive
+        // Removed duplicate TABLE_ACADEMIC_SESSIONS creation here
 
         seedData(db);
     }
@@ -561,7 +556,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEE_PAYMENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSIONS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_SESSIONS);
+        // REMOVED DUPLICATE DROP: db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_SESSIONS);
 
 
         // Create new tables
@@ -1576,24 +1571,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //       ACADEMIC SESSION METHODS (NEW)
     // ==========================================
 
-    public boolean addAcademicSession(String name, String start, String end, boolean isActive) {
+    public long addAcademicSession(String name, String start, String end) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // If this session is set to active, deactivate all other sessions first
-        if (isActive) {
-            ContentValues cv = new ContentValues();
-            cv.put("is_active", 0);
-            db.update(TABLE_SESSIONS, cv, null, null);
-        }
-
         ContentValues values = new ContentValues();
         values.put("session_name", name);
         values.put("start_date", start);
         values.put("end_date", end);
-        values.put("is_active", isActive ? 1 : 0);
-
-        long result = db.insert(TABLE_SESSIONS, null, values);
-        return result != -1;
+        values.put("is_active", 0);
+        return db.insert("academic_sessions", null, values);
     }
 
     public Cursor getAllSessions() {
@@ -1602,21 +1587,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_SESSIONS + " ORDER BY is_active DESC, start_date DESC", null);
     }
 
-    // ==========================================
-    //       ACADEMIC SESSION METHODS
-    // ==========================================
-
-    public long addAcademicSession(String name, String start, String end) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("session_name", name);
-        values.put("start_date", start);
-        values.put("end_date", end);
-        values.put("is_active", 0); // Default to inactive
-        return db.insert(TABLE_ACADEMIC_SESSIONS, null, values);
-    }
-
-
+    // Removed Duplicate addAcademicSession(String name, String start, String end) method
 
     public void setSessionActive(String sessionId) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1625,12 +1596,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // 1. Deactivate all
             ContentValues disable = new ContentValues();
             disable.put("is_active", 0);
-            db.update(TABLE_ACADEMIC_SESSIONS, disable, null, null);
+            db.update(TABLE_SESSIONS, disable, null, null);
 
             // 2. Activate selected
             ContentValues enable = new ContentValues();
             enable.put("is_active", 1);
-            db.update(TABLE_ACADEMIC_SESSIONS, enable, "session_id = ?", new String[]{sessionId});
+            db.update(TABLE_SESSIONS, enable, "session_id = ?", new String[]{sessionId});
 
             db.setTransactionSuccessful();
         } finally {
@@ -1640,6 +1611,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteSession(String sessionId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ACADEMIC_SESSIONS, "session_id = ?", new String[]{sessionId});
+        db.delete(TABLE_SESSIONS, "session_id = ?", new String[]{sessionId});
     }
 }

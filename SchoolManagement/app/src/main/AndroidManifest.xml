@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,7 +27,8 @@
 
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".StudentDashboardActivity" /> <activity android:name=".StudentAttendanceActivity" />
+        <activity android:name=".StudentDashboardActivity" />
+        <activity android:name=".StudentAttendanceActivity" />
         <activity android:name=".StudentFeesActivity" />
         <activity android:name=".StudentGradesActivity" />
         <activity android:name=".StudentScheduleActivity" />
@@ -50,7 +54,8 @@
 
         <activity android:name=".AdminDashboardActivity" />
         <activity android:name=".AdminMainMenuActivity" />
-        <activity android:name=".AdminAnalyticsActivity" /> <activity android:name=".AdminUserDirectoryActivity" />
+        <activity android:name=".AdminAnalyticsActivity" />
+        <activity android:name=".AdminUserDirectoryActivity" />
         <activity android:name=".AdminUserAccConfigActivity" />
         <activity android:name=".AdminSystemConfigActivity" />
         <activity android:name=".AdminSettingsActivity" />
@@ -60,7 +65,7 @@
         <activity android:name=".SystemLogActivity" />
         <activity android:name=".AdminAttendanceActivity" />
         <activity android:name=".AdminTimetableDetailsActivity" />
-
+        <activity android:name=".AdminAttendanceSheetActivity" />
 
         <activity android:name=".AdminStudentListActivity" />
         <activity android:name=".AdminTeacherListActivity" />
@@ -81,7 +86,9 @@
         <activity android:name=".AddStaffActivity" />
         <activity android:name=".AdminAddClassActivity" />
         <activity android:name=".AdminAddEventActivity" />
-        <activity android:name=".AdminAddExpensesActivity" /> <activity android:name=".AdminNoticeBoardActivity" /> <activity android:name=".AdminNotificationActivity" />
+        <activity android:name=".AdminAddExpensesActivity" />
+        <activity android:name=".AdminNoticeBoardActivity" />
+        <activity android:name=".AdminNotificationActivity" />
         <activity android:name=".AdminCalendarActivity" />
         <activity android:name=".AdminExpensesActivity" />
         <activity android:name=".AdminExpenseDetailsActivity" />
@@ -92,7 +99,8 @@
         <activity android:name=".AdminInvoiceDetailsActivity" />
         <activity android:name=".AdminClassDetailsActivity" />
         <activity android:name=".AdminClassTimetableActivity" />
-        <activity android:name=".AdminMasterTimetableActivity" /> <activity android:name=".AdminAcademicSessionActivity" />
+        <activity android:name=".AdminMasterTimetableActivity" />
+        <activity android:name=".AdminAcademicSessionActivity" />
 
         <activity android:name=".AdminExamDashboardActivity" />
         <activity android:name=".AdminExamCategoriesActivity" />
@@ -120,9 +128,8 @@
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".AdminAttendanceActivity" />
-        <activity android:name=".AdminAttendanceSheetActivity" />
-        <activity android:name=".AdminTimetableDetailsActivity" />
+        <activity android:name=".AdminAddAcademicSessionActivity" />
+        <activity android:name=".AdminSystemConfigActivity" />
 
     </application>
 

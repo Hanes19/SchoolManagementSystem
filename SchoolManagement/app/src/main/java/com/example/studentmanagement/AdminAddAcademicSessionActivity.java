@@ -2,79 +2,71 @@ package com.example.studentmanagement;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import java.util.Calendar;
+import android.widget.Button;
+import androidx.cardview.widget.CardView; // Only if you use CardView
 
 public class AdminAddAcademicSessionActivity extends AppCompatActivity {
 
+    private DatabaseHelper db;
     private EditText etSessionName;
     private TextView tvStartDate, tvEndDate;
-    private Switch switchActive;
-    private DatabaseHelper dbHelper;
+    private Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_add_academic_session);
 
-        dbHelper = new DatabaseHelper(this);
+        db = new DatabaseHelper(this);
 
-        // Bind Views
         etSessionName = findViewById(R.id.et_session_name);
         tvStartDate = findViewById(R.id.tv_start_date);
         tvEndDate = findViewById(R.id.tv_end_date);
-        switchActive = findViewById(R.id.switch_active);
+        btnSave = findViewById(R.id.btn_save_session);
+        ImageView btnBack = findViewById(R.id.btn_back);
 
-        LinearLayout btnPickStart = findViewById(R.id.btn_pick_start);
-        LinearLayout btnPickEnd = findViewById(R.id.btn_pick_end);
-        CardView btnCreate = findViewById(R.id.btn_create_container);
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // Date Pickers
-        btnPickStart.setOnClickListener(v -> showDatePicker(tvStartDate));
-        btnPickEnd.setOnClickListener(v -> showDatePicker(tvEndDate));
+        tvStartDate.setOnClickListener(v -> showDatePicker(tvStartDate));
+        tvEndDate.setOnClickListener(v -> showDatePicker(tvEndDate));
 
-        // Create Button Logic
-        btnCreate.setOnClickListener(v -> saveSession());
+        btnSave.setOnClickListener(v -> saveSession());
     }
 
     private void showDatePicker(TextView targetView) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year1, month1, dayOfMonth) -> {
-                    // Format: YYYY-MM-DD
-                    String date = year1 + "-" + (month1 + 1) + "-" + dayOfMonth;
-                    targetView.setText(date);
-                }, year, month, day);
-        datePickerDialog.show();
+        Calendar c = Calendar.getInstance();
+        new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            String date = year + "-" + (month + 1) + "-" + dayOfMonth;
+            targetView.setText(date);
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void saveSession() {
         String name = etSessionName.getText().toString().trim();
         String start = tvStartDate.getText().toString();
         String end = tvEndDate.getText().toString();
-        boolean isActive = switchActive.isChecked();
 
-        if (name.isEmpty() || start.equals("Select Date") || end.equals("Select Date")) {
+        if (name.isEmpty() || start.contains("Select") || end.contains("Select")) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (dbHelper.addAcademicSession(name, start, end, isActive)) {
-            Toast.makeText(this, "Session Created Successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Go back to the list
+        // Make sure this matches your DatabaseHelper method signature!
+        // If your helper expects 4 args, use: db.addAcademicSession(name, start, end, false);
+        long result = db.addAcademicSession(name, start, end);
+
+        if (result != -1) {
+            Toast.makeText(this, "Session Added!", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
-            Toast.makeText(this, "Error creating session", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error adding session", Toast.LENGTH_SHORT).show();
         }
     }
 }

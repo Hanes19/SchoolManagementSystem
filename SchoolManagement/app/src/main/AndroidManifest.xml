@@ -131,6 +131,7 @@
         <activity android:name=".AdminAddAcademicSessionActivity" />
         <activity android:name=".AdminSystemConfigActivity" />
         <activity android:name=".AdminAddParentActivity" />
+        <activity android:name=".AdminManageSubjectsActivity" />
 
     </application>
 

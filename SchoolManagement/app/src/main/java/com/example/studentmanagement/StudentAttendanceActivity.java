@@ -1,99 +1,134 @@
 package com.example.studentmanagement;
 
-import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
+import androidx.cardview.widget.CardView;
 
 public class StudentAttendanceActivity extends AppCompatActivity {
 
-    private DatabaseHelper db;
-    private RecyclerView recyclerView;
-    private StudentHistoryAdapter adapter;
-    private ArrayList<AttendanceModel> attendanceList;
-    private String studentId;
-    private TextView tvSummary, tvPercentage;
+    private LinearLayout listContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_attendance);
 
-        db = new DatabaseHelper(this);
-
-        // --- 1. GET STUDENT ID ---
-        // Try to get from Intent (if passed from Admin)
-        if (getIntent().hasExtra("STUDENT_ID")) {
-            studentId = getIntent().getStringExtra("STUDENT_ID");
-        } else {
-            // FALLBACK: Use a known seeded ID for testing if no intent passed
-            // In a real app, use: studentId = sessionManager.getUserId();
-            studentId = "stud01";
-        }
-
-        // --- 2. SETUP VIEWS ---
-        tvSummary = findViewById(R.id.tv_attendance_summary);
-        tvPercentage = findViewById(R.id.tv_attendance_percentage);
-        recyclerView = findViewById(R.id.calendar_recycler_view);
-
-        ImageView btnBack = findViewById(R.id.btn_back_attendance);
-        if(btnBack != null) btnBack.setOnClickListener(v -> finish());
-
-        // --- 3. SETUP RECYCLERVIEW ---
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // --- 4. LOAD DATA ---
-        loadAttendanceData();
+        setupHeader();
+        findContainer();
+        loadSampleData();
     }
 
-    private void loadAttendanceData() {
-        attendanceList = new ArrayList<>();
-
-        // Fetch from DB
-        Cursor cursor = db.getStudentAttendance(studentId);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            // DATA FOUND
-            int presentCount = 0;
-            int totalCount = 0;
-
-            do {
-                // Column indices based on table: att_id, student_id, date, status, class_name, remarks
-                String date = cursor.getString(2); // Date is 3rd column
-                String status = cursor.getString(3); // Status is 4th column
-
-                attendanceList.add(new AttendanceModel(date, status));
-
-                if ("Present".equalsIgnoreCase(status)) {
-                    presentCount++;
+    private void setupHeader() {
+        ViewGroup root = findViewById(android.R.id.content);
+        LinearLayout header = findHeaderLayout(root);
+        if (header != null && header.getChildCount() > 0) {
+            header.getChildAt(0).setOnClickListener(v -> finish());
+            // Try to set title
+            for(int i=0; i<header.getChildCount(); i++){
+                if(header.getChildAt(i) instanceof TextView){
+                    ((TextView)header.getChildAt(i)).setText("Attendance History");
+                    break;
                 }
-                totalCount++;
-            } while (cursor.moveToNext());
-            cursor.close();
-
-            // Calculate Percentage
-            if (totalCount > 0) {
-                int percentage = (presentCount * 100) / totalCount;
-                tvPercentage.setText(percentage + "%");
-                tvSummary.setText(presentCount + " Present out of " + totalCount + " days");
             }
-
-            // Bind to Adapter
-            // FIX: Passing 'this' as Context for the Edit button to work
-            adapter = new StudentHistoryAdapter(this, attendanceList);
-            recyclerView.setAdapter(adapter);
-
-        } else {
-            // NO DATA FOUND
-            tvPercentage.setText("N/A");
-            tvSummary.setText("No attendance records found.");
-            Toast.makeText(this, "No records found for ID: " + studentId, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void findContainer() {
+        ViewGroup root = findViewById(android.R.id.content);
+        ScrollView scrollView = findScrollView(root);
+        if (scrollView != null && scrollView.getChildCount() > 0) {
+            if (scrollView.getChildAt(0) instanceof LinearLayout) {
+                listContainer = (LinearLayout) scrollView.getChildAt(0);
+            }
+        }
+    }
+
+    private void loadSampleData() {
+        if (listContainer == null) return;
+
+        // Add Month Header
+        addMonthHeader("October 2023");
+        addAttendanceRow("Oct 25, 2023", "Present", "#4CAF50");
+        addAttendanceRow("Oct 24, 2023", "Present", "#4CAF50");
+        addAttendanceRow("Oct 23, 2023", "Absent", "#F44336");
+        addAttendanceRow("Oct 22, 2023", "Present", "#4CAF50");
+        addAttendanceRow("Oct 21, 2023", "Weekend", "#9E9E9E");
+
+        addMonthHeader("September 2023");
+        addAttendanceRow("Sep 30, 2023", "Late", "#FF9800");
+        addAttendanceRow("Sep 29, 2023", "Present", "#4CAF50");
+    }
+
+    private void addMonthHeader(String month) {
+        TextView tv = new TextView(this);
+        tv.setText(month);
+        tv.setTextSize(16);
+        tv.setPadding(16, 32, 16, 16);
+        tv.setTextColor(Color.parseColor("#1B254B"));
+        tv.setTypeface(null, android.graphics.Typeface.BOLD);
+        listContainer.addView(tv);
+    }
+
+    private void addAttendanceRow(String date, String status, String colorHex) {
+        CardView card = new CardView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 8, 0, 8);
+        card.setLayoutParams(params);
+        card.setCardElevation(2);
+        card.setRadius(16);
+
+        LinearLayout inner = new LinearLayout(this);
+        inner.setOrientation(LinearLayout.HORIZONTAL);
+        inner.setPadding(32, 24, 32, 24);
+        inner.setGravity(Gravity.CENTER_VERTICAL);
+
+        TextView tvDate = new TextView(this);
+        tvDate.setText(date);
+        tvDate.setTextSize(14);
+        tvDate.setTextColor(Color.parseColor("#1B254B"));
+        tvDate.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1f));
+
+        TextView tvStatus = new TextView(this);
+        tvStatus.setText(status);
+        tvStatus.setTextColor(Color.parseColor(colorHex));
+        tvStatus.setTypeface(null, android.graphics.Typeface.BOLD);
+
+        inner.addView(tvDate);
+        inner.addView(tvStatus);
+        card.addView(inner);
+        listContainer.addView(card);
+    }
+
+    // --- Helpers ---
+    private LinearLayout findHeaderLayout(View view) {
+        if (view instanceof LinearLayout) return (LinearLayout) view;
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                LinearLayout res = findHeaderLayout(group.getChildAt(i));
+                if (res != null) return res;
+            }
+        }
+        return null;
+    }
+
+    private ScrollView findScrollView(View view) {
+        if (view instanceof ScrollView) return (ScrollView) view;
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                ScrollView res = findScrollView(group.getChildAt(i));
+                if (res != null) return res;
+            }
+        }
+        return null;
     }
 }

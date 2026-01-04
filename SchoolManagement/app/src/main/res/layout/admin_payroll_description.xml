@@ -91,6 +91,7 @@
                         android:layout_marginStart="16dp">
 
                         <TextView
+                            android:id="@+id/tv_details_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Mr. Walter White"
@@ -99,6 +100,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_details_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ID: #EMP-9921 • Teacher"
@@ -108,6 +110,7 @@
 
                     <!-- Status Badge -->
                     <TextView
+                        android:id="@+id/tv_details_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="PAID"
@@ -143,6 +146,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
+                        android:id="@+id/tv_details_month"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="October 2025"
@@ -166,6 +170,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
+                        android:id="@+id/tv_details_net_pay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="₱3,500.00"
@@ -207,6 +212,7 @@
                         android:textColor="#A3AED0"
                         android:textSize="14sp"/>
                     <TextView
+                        android:id="@+id/tv_details_basic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="₱3,000.00"
@@ -228,6 +234,7 @@
                         android:textColor="#A3AED0"
                         android:textSize="14sp"/>
                     <TextView
+                        android:id="@+id/tv_details_allowance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+ ₱400.00"
@@ -249,6 +256,7 @@
                         android:textColor="#A3AED0"
                         android:textSize="14sp"/>
                     <TextView
+                        android:id="@+id/tv_details_deduction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+ ₱250.00"

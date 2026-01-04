@@ -1880,16 +1880,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //       STUDENT SUBJECT MANAGEMENT
 // ==========================================
 
-    // 1. Get subjects a student is currently enrolled in
-    public Cursor getStudentEnrolledSubjects(String studentId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Joins Student-Subjects table with Subjects table to get names
-        String query = "SELECT ss.link_id, s.subject_id, s.subject_name, s.cost " +
-                "FROM " + TABLE_STUDENT_SUBJECTS + " ss " +
-                "JOIN " + TABLE_SUBJECTS + " s ON ss.subject_id = s.subject_id " +
-                "WHERE ss.student_id = ?";
-        return db.rawQuery(query, new String[]{studentId});
-    }
 
     // 2. Remove a subject from a student
     public boolean removeStudentSubject(String studentId, int subjectId) {
@@ -1912,5 +1902,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return grade;
+    }
+
+    public Cursor getStudentEnrolledSubjects(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // --- FIX: Change 'ss.link_id' to 'ss.link_id AS _id' ---
+        String query = "SELECT ss.link_id AS _id, s.subject_id, s.subject_name, s.cost " +
+                "FROM " + TABLE_STUDENT_SUBJECTS + " ss " +
+                "JOIN " + TABLE_SUBJECTS + " s ON ss.subject_id = s.subject_id " +
+                "WHERE ss.student_id = ?";
+
+        return db.rawQuery(query, new String[]{studentId});
+    }
+
+    public boolean addPayroll(String userId, String month, double basic, double allowances, double deductions, double net, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("month", month);
+        values.put("basic_salary", basic);
+        values.put("allowances", allowances);
+        values.put("deductions", deductions);
+        values.put("net_salary", net);
+        values.put("status", status);
+        values.put("generated_on", new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
+
+        long result = db.insert("payroll", null, values);
+        return result != -1;
+    }
+
+    public Cursor getPayrollDetails(String userId, String month) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM payroll WHERE user_id = ? AND month = ?", new String[]{userId, month});
     }
 }

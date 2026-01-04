@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_top_corners_white"
@@ -82,25 +81,28 @@
                     android:layout_marginStart="16dp">
 
                     <TextView
+                        android:id="@+id/tv_proc_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Argus Filch"
+                        android:text="Staff Name"
                         android:textColor="#1B254B"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
                     <TextView
+                        android:id="@+id/tv_proc_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Staff ID: #STF-2025-004"
+                        android:text="Staff ID"
                         android:textColor="#A3AED0"
                         android:textSize="12sp"/>
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_proc_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Oct 2025"
+                    android:text="Month"
                     android:textColor="#4318FF"
                     android:textStyle="bold"
                     android:background="#E0E5FF"
@@ -140,9 +142,10 @@
                     android:textColor="#A3AED0"
                     android:textSize="14sp"/>
                 <TextView
+                    android:id="@+id/tv_proc_basic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="₱1,500.00"
+                    android:text="0.00"
                     android:textColor="#1B254B"
                     android:textStyle="bold"
                     android:textSize="14sp"/>
@@ -161,9 +164,10 @@
                     android:textColor="#A3AED0"
                     android:textSize="14sp"/>
                 <TextView
+                    android:id="@+id/tv_proc_allowance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+ ₱400.00"
+                    android:text="+ 0.00"
                     android:textColor="#4CAF50"
                     android:textStyle="bold"
                     android:textSize="14sp"/>
@@ -182,9 +186,10 @@
                     android:textColor="#A3AED0"
                     android:textSize="14sp"/>
                 <TextView
+                    android:id="@+id/tv_proc_deduction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="- ₱100.00"
+                    android:text="- 0.00"
                     android:textColor="#FF5252"
                     android:textStyle="bold"
                     android:textSize="14sp"/>
@@ -210,9 +215,10 @@
                     android:textStyle="bold"
                     android:textSize="16sp"/>
                 <TextView
+                    android:id="@+id/tv_proc_net"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="₱1,800.00"
+                    android:text="0.00"
                     android:textColor="#1B254B"
                     android:textStyle="bold"
                     android:textSize="24sp"/>

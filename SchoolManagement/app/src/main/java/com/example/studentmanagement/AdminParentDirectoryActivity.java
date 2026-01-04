@@ -33,28 +33,27 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
         // Back Button
         btnBack.setOnClickListener(v -> finish());
 
-        // FAB: Add New Parent
+        // FAB: Add New Parent (FIXED: Redirects to Add Activity now)
         fabAddParent.setOnClickListener(v -> {
-            // Opens the "Edit/Add" screen directly, but in "Add Mode" (logic to be handled inside that activity)
-            Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminEditParentProfileActivity.class);
+            Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminAddParentActivity.class);
             startActivity(intent);
         });
 
-        // --- NEW: Click Card 1 -> Open Profile Details ---
+        // Click Card 1 -> Open Profile Details
         cardParent1.setOnClickListener(v -> {
             Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminParentProfileDetailsActivity.class);
-            intent.putExtra("PARENT_NAME", "Mrs. Sarah Smith"); // Pass data if needed
+            intent.putExtra("PARENT_NAME", "Mrs. Sarah Smith");
             startActivity(intent);
         });
 
-        // --- NEW: Click Card 2 -> Open Profile Details ---
+        // Click Card 2 -> Open Profile Details
         cardParent2.setOnClickListener(v -> {
             Intent intent = new Intent(AdminParentDirectoryActivity.this, AdminParentProfileDetailsActivity.class);
             intent.putExtra("PARENT_NAME", "Mr. Thomas Wayne");
             startActivity(intent);
         });
 
-        // Search Logic (Existing)
+        // Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

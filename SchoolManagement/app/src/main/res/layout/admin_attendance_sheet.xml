@@ -22,7 +22,8 @@
             android:padding="8dp"
             android:src="@drawable/bck_btn"
             app:tint="#1B254B"
-            tools:ignore="ContentDescription"/>
+            android:clickable="true"
+            android:focusable="true"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,27 +73,35 @@
             android:padding="16dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:id="@+id/btn_prev_date"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
                 android:src="@android:drawable/ic_media_previous"
-                app:tint="#A3AED0"/>
+                app:tint="#A3AED0"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Wed, Oct 24 2025"
+                android:text="Loading..."
                 android:textColor="#1B254B"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textSize="16sp"/>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:id="@+id/btn_next_date"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
                 android:src="@android:drawable/ic_media_next"
-                app:tint="#1B254B"/>
+                app:tint="#1B254B"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -117,7 +126,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
+            android:text="Status (P/A/L)"
             android:textColor="#A3AED0"
             android:textStyle="bold"
             android:textSize="12sp"
@@ -125,7 +134,6 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/rv_attendance_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -133,7 +141,6 @@
         app:layout_constraintBottom_toTopOf="@id/btn_save">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -175,10 +182,36 @@
                     <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P" android:textColor="#4CAF50" android:buttonTint="#4CAF50" android:checked="true"/>
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A" android:textColor="#F44336" android:buttonTint="#F44336"/>
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textColor="#FF9800" android:buttonTint="#FF9800"/>
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/rb_p_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="P"
+                            android:textSize="12sp"
+                            android:textColor="#4CAF50"
+                            android:buttonTint="#4CAF50"
+                            android:checked="true"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_a_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A"
+                            android:textSize="12sp"
+                            android:textColor="#F44336"
+                            android:buttonTint="#F44336"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_l_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="L"
+                            android:textSize="12sp"
+                            android:textColor="#FF9800"
+                            android:buttonTint="#FF9800"/>
                     </RadioGroup>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -218,10 +251,36 @@
                     <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="P" android:textColor="#4CAF50" android:buttonTint="#4CAF50"/>
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A" android:textColor="#F44336" android:buttonTint="#F44336" android:checked="true"/>
-                        <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textColor="#FF9800" android:buttonTint="#FF9800"/>
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/rb_p_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="P"
+                            android:textSize="12sp"
+                            android:textColor="#4CAF50"
+                            android:buttonTint="#4CAF50"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_a_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A"
+                            android:textSize="12sp"
+                            android:textColor="#F44336"
+                            android:buttonTint="#F44336"
+                            android:checked="true"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_l_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="L"
+                            android:textSize="12sp"
+                            android:textColor="#FF9800"
+                            android:buttonTint="#FF9800"/>
                     </RadioGroup>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -117,8 +117,10 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
         popup.show();
     }
 
+// In AdminMasterTimetableActivity.java
+
     private void loadTimetableData() {
-        if(containerTimetable == null) return;
+        if (containerTimetable == null) return;
         containerTimetable.removeAllViews();
 
         Cursor cursor = db.getScheduleForDay(selectedDay);
@@ -126,15 +128,16 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Safe Column Fetching - Fixed "room" to "room_no"
+                // 1. Fetch Columns (Added schedule_id)
                 int idxGrade = cursor.getColumnIndex("grade_level");
                 int idxTeacher = cursor.getColumnIndex("teacher_name");
                 int idxSection = cursor.getColumnIndex("section_name");
                 int idxSubject = cursor.getColumnIndex("subject");
-                int idxRoom = cursor.getColumnIndex("room_no"); // CORRECTED COLUMN NAME
+                int idxRoom = cursor.getColumnIndex("room_no");
                 int idxStart = cursor.getColumnIndex("start_time");
+                int idxEnd = cursor.getColumnIndex("end_time");
+                int idxId = cursor.getColumnIndex("schedule_id"); // Important
 
-                // Check if any critical column is missing to prevent crash
                 if (idxGrade == -1 || idxTeacher == -1 || idxSection == -1 || idxSubject == -1 || idxRoom == -1 || idxStart == -1) {
                     continue;
                 }
@@ -142,7 +145,7 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
                 String grade = cursor.getString(idxGrade);
                 String teacher = cursor.getString(idxTeacher);
 
-                // Filters
+                // 2. Filters
                 if (!selectedGrade.equals("All Grades") && !grade.equals(selectedGrade)) continue;
                 if (!selectedTeacher.equals("All Teachers") && !teacher.equals(selectedTeacher)) continue;
 
@@ -152,8 +155,10 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
                 String subject = cursor.getString(idxSubject);
                 String room = cursor.getString(idxRoom);
                 String startTime = cursor.getString(idxStart);
+                String endTime = (idxEnd != -1) ? cursor.getString(idxEnd) : "";
+                final String scheduleId = (idxId != -1) ? cursor.getString(idxId) : null;
 
-                // Inflate Layout
+                // 3. Inflate Layout
                 View row = getLayoutInflater().inflate(R.layout.item_schedule_class_row, containerTimetable, false);
 
                 TextView tvTime = row.findViewById(R.id.tv_schedule_time);
@@ -162,35 +167,45 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
                 TextView tvLocation = row.findViewById(R.id.tv_schedule_location);
                 View indicator = row.findViewById(R.id.view_status_indicator);
 
-                // Format Time safely
+                // 4. Format Time
                 if (startTime != null && startTime.contains(":")) {
-                    String[] timeParts = startTime.split(":");
-                    if (timeParts.length >= 2) {
-                        try {
-                            int hour = Integer.parseInt(timeParts[0].trim());
-                            String meridiem = (hour >= 12) ? "PM" : "AM";
-                            if (hour > 12) hour -= 12;
-                            if (hour == 0) hour = 12; // Handle 00:00 as 12 AM
-                            tvTime.setText(String.format("%02d:%s", hour, timeParts[1]));
-                            tvMeridiem.setText(meridiem);
-                        } catch (NumberFormatException e) {
-                            tvTime.setText(startTime);
-                            tvMeridiem.setText("");
-                        }
-                    } else {
+                    try {
+                        String[] timeParts = startTime.split(":");
+                        int hour = Integer.parseInt(timeParts[0].trim());
+                        String meridiem = (hour >= 12) ? "PM" : "AM";
+                        if (hour > 12) hour -= 12;
+                        if (hour == 0) hour = 12;
+                        tvTime.setText(String.format("%02d:%s", hour, timeParts[1]));
+                        tvMeridiem.setText(meridiem);
+                    } catch (Exception e) {
                         tvTime.setText(startTime);
+                        tvMeridiem.setText("");
                     }
                 } else {
-                    tvTime.setText(startTime != null ? startTime : "--:--");
+                    tvTime.setText(startTime);
                 }
 
                 tvSubject.setText(subject + " (" + grade + "-" + section + ")");
                 tvLocation.setText(room + " • " + teacher);
 
-                // Color Coding
-                if(grade.contains("10")) indicator.setBackgroundColor(Color.parseColor("#4318FF"));
-                else if(grade.contains("11")) indicator.setBackgroundColor(Color.parseColor("#FFB547"));
+                // 5. Color Indicator
+                if (grade.contains("10")) indicator.setBackgroundColor(Color.parseColor("#4318FF"));
+                else if (grade.contains("11")) indicator.setBackgroundColor(Color.parseColor("#FFB547"));
                 else indicator.setBackgroundColor(Color.parseColor("#05CD99"));
+
+                // 6. ON CLICK LISTENER (This is the new part)
+                if (scheduleId != null) {
+                    row.setOnClickListener(v -> {
+                        android.content.Intent intent = new android.content.Intent(AdminMasterTimetableActivity.this, AdminTimetableDetailsActivity.class);
+                        intent.putExtra("SCHEDULE_ID", scheduleId);
+                        intent.putExtra("SUBJECT", subject);
+                        intent.putExtra("CLASS_NAME", grade + " - " + section);
+                        intent.putExtra("TEACHER", teacher);
+                        intent.putExtra("TIME", startTime + " - " + endTime);
+                        intent.putExtra("ROOM", room);
+                        startActivity(intent);
+                    });
+                }
 
                 containerTimetable.addView(row);
 
@@ -198,6 +213,7 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
             cursor.close();
         }
 
+        // Empty State
         if (count == 0) {
             TextView emptyView = new TextView(this);
             emptyView.setText("No classes found for " + selectedDay);
@@ -207,4 +223,11 @@ public class AdminMasterTimetableActivity extends AppCompatActivity {
             containerTimetable.addView(emptyView);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTimetableData(); // Refresh list when returning from Details
+    }
+
 }

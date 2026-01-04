@@ -1433,6 +1433,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return total;
     }
 
+    public boolean deleteSchedule(String scheduleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("timetable", "schedule_id = ?", new String[]{scheduleId}) > 0;
+    }
 
 
 

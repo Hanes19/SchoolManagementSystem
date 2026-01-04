@@ -6,41 +6,66 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class AdminAttendanceActivity extends AppCompatActivity {
+
+    private TextView tvDate;
+    private Calendar currentCalendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_attendance_sheet);
 
-        // Header Back Button
-        ImageView btnBack = findViewById(R.id.btn_back);
-        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+        // Initialize Calendar to today
+        currentCalendar = Calendar.getInstance();
 
-        // Date Display
-        TextView tvDate = findViewById(R.id.tv_date); // Now matches XML
-        if (tvDate != null) {
-            String currentDate = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(new Date());
-            tvDate.setText(currentDate);
+        // 1. Back Button
+        ImageView btnBack = findViewById(R.id.btn_back);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
         }
 
-        // Save Button (Fixed: Uses View instead of Button to avoid ClassCastException)
-        View btnSave = findViewById(R.id.btn_save);
-        if (btnSave != null) {
-            btnSave.setOnClickListener(v -> {
-                Toast.makeText(this, "Attendance Saved Successfully!", Toast.LENGTH_SHORT).show();
-                finish();
+        // 2. Date Setup & Navigation
+        tvDate = findViewById(R.id.tv_date);
+        updateDateDisplay(); // Show initial date
+
+        View btnPrevDate = findViewById(R.id.btn_prev_date);
+        if (btnPrevDate != null) {
+            btnPrevDate.setOnClickListener(v -> {
+                // Move back 1 day
+                currentCalendar.add(Calendar.DAY_OF_MONTH, -1);
+                updateDateDisplay();
             });
         }
 
-        // RecyclerView (Optional, currently using hardcoded ScrollView in XML)
-        // If you plan to switch to dynamic list later:
-        RecyclerView rv = findViewById(R.id.rv_attendance_list);
-        if (rv != null) rv.setLayoutManager(new LinearLayoutManager(this));
+        View btnNextDate = findViewById(R.id.btn_next_date);
+        if (btnNextDate != null) {
+            btnNextDate.setOnClickListener(v -> {
+                // Move forward 1 day
+                currentCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                updateDateDisplay();
+            });
+        }
+
+        // 3. Save Button
+        View btnSave = findViewById(R.id.btn_save);
+        if (btnSave != null) {
+            btnSave.setOnClickListener(v -> {
+                Toast.makeText(this, "Attendance Saved for " + tvDate.getText(), Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        }
+    }
+
+    private void updateDateDisplay() {
+        if (tvDate != null) {
+            // Format: "Wed, Oct 24 2026"
+            String dateText = new SimpleDateFormat("EEE, MMM dd yyyy", Locale.getDefault()).format(currentCalendar.getTime());
+            tvDate.setText(dateText);
+        }
     }
 }

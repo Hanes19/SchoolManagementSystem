@@ -1476,4 +1476,77 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_ATTENDANCE + " WHERE student_id = ?", new String[]{studentId});
     }
 
+
+    public Cursor getAllExamCategories() {
+        return this.getReadableDatabase().rawQuery("SELECT * FROM " + TABLE_EXAM_CATEGORIES + " ORDER BY start_date DESC", null);
+    }
+
+    public void deleteExamCategory(String examId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EXAM_CATEGORIES, "exam_id = ?", new String[]{examId});
+    }
+
+    // --- 2. Exam Schedule ---
+    public long addExamSchedule(String examId, String className, String subject, String date, String time, String room) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("exam_id", examId);
+        values.put("class_name", className);
+        values.put("subject", subject);
+        values.put("date", date);
+        values.put("start_time", time);
+        values.put("room_no", room);
+        return db.insert(TABLE_EXAM_SCHEDULE, null, values);
+    }
+
+    // --- 3. Marks Entry ---
+    public void saveExamMark(String examId, String studentId, String subject, int score, int total) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("exam_id", examId);
+        values.put("student_id", studentId);
+        values.put("subject", subject);
+        values.put("score", score);
+        values.put("total_marks", total);
+
+        // Check if mark exists
+        Cursor cursor = db.rawQuery("SELECT mark_id FROM " + TABLE_EXAM_MARKS +
+                " WHERE exam_id=? AND student_id=? AND subject=?", new String[]{examId, studentId, subject});
+
+        if (cursor.moveToFirst()) {
+            // Update
+            String id = cursor.getString(0);
+            db.update(TABLE_EXAM_MARKS, values, "mark_id=?", new String[]{id});
+        } else {
+            // Insert
+            db.insert(TABLE_EXAM_MARKS, null, values);
+        }
+        cursor.close();
+    }
+
+    // Get marks for a specific class/subject to populate the entry list
+    public Cursor getStudentsWithMarks(String className, String examId, String subject) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Join Users with Marks (Left Join so we see all students even if no mark yet)
+        // Assuming className in Users is stored as "Grade 10-Emerald" matching your spinner
+        // You might need to adjust the join condition based on how you store class_id vs class_name
+        // Ideally, store class_id. For this fix, we assume the user table stores 'class_id' and we need to resolve it
+        // OR we just query by class_id if we have it.
+
+        // Simpler approach for this specific schema:
+        // 1. Get Class ID from Class Name (Helper needed or logic in Activity)
+        // 2. Query users.
+
+        // Let's do a raw query assuming we pass the raw Class Name for now (or handle mapping in Activity)
+        String query = "SELECT u.user_id, u.full_name, m.score " +
+                "FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_EXAM_MARKS + " m ON u.user_id = m.student_id " +
+                "AND m.exam_id = ? AND m.subject = ? " +
+                "LEFT JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
+                "WHERE (c.grade_level || '-' || c.section_name) = ? " +
+                "AND u.role = 'Student' " +
+                "ORDER BY u.full_name ASC";
+
+        return db.rawQuery(query, new String[]{examId, subject, className});
+    }
 }

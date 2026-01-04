@@ -488,6 +488,9 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/btn_quick_msg"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
@@ -519,6 +522,9 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btn_quick_grade"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
@@ -550,6 +556,9 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btn_quick_library"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"

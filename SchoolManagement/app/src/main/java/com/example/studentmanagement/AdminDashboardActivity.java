@@ -39,10 +39,27 @@ public class AdminDashboardActivity extends AppCompatActivity {
             startActivity(new Intent(this, AdminFeesBillingActivity.class));
         });
 
-
         findViewById(R.id.btn_system_config).setOnClickListener(v -> {
             startActivity(new Intent(this, AdminSystemConfigActivity.class));
         });
+
+        // --- Quick Status Links ---
+
+        // 1. Unread Messages -> Admin Notification Activity
+        findViewById(R.id.btn_quick_msg).setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminNotificationActivity.class));
+        });
+
+        // 2. Pending Gradebook -> Admin Marks Entry Activity
+        findViewById(R.id.btn_quick_grade).setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminMarksEntryActivity.class));
+        });
+
+        // 3. Library Overdue -> Library Overdue Items Activity
+        findViewById(R.id.btn_quick_library).setOnClickListener(v -> {
+            startActivity(new Intent(this, LibraryOverdueItemsActivity.class));
+        });
+
         setupBottomNavigation();
     }
 

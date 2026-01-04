@@ -68,6 +68,26 @@ public class AdminStudentProfileActivity extends AppCompatActivity {
         if (btnCheckEligibility != null) {
             btnCheckEligibility.setOnClickListener(v -> showEligibilityDialog());
         }
+        CardView btnManageSubjects = findViewById(R.id.btn_manage_subjects);
+
+        if (btnManageSubjects != null) {
+            btnManageSubjects.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AdminManageSubjectsActivity.class);
+                intent.putExtra("STUDENT_ID", currentStudentId);
+                startActivity(intent);
+            });
+        }
+
+        // --- FIX: Add this block to make the Edit Button work ---
+        ImageView btnEdit = findViewById(R.id.btn_edit_profile);
+        if (btnEdit != null) {
+            btnEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminStudentProfileActivity.this, AdminEditProfileActivity.class);
+                // Pass the current student's ID so the edit screen knows who to load
+                intent.putExtra("USER_ID", currentStudentId);
+                startActivity(intent);
+            });
+        }
     }
 
     private void showEligibilityDialog() {

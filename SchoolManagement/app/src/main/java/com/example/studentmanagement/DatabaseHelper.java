@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Updated Version to trigger upgrade/recreation
-    private static final int DATABASE_VERSION = 32;
+    private static final int DATABASE_VERSION = 33;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -64,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT, " +
                 "email TEXT, " +
                 "phone_number TEXT, " +
+                "address TEXT, " +
                 "is_2fa_enabled INTEGER DEFAULT 0, " +
                 "secret_key TEXT, " +
                 "previous_school TEXT, " +
@@ -1422,13 +1423,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean updateUserProfile(String userId, String name, String email, String phone) {
+    public boolean updateUserProfile(String userId, String name, String email, String phone, String address, String emName, String emPhone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("full_name", name);
         values.put("email", email);
-        values.put("phone_number", phone); // Assuming this column exists, else add it in onCreate
-        return db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId}) > 0;
+        values.put("phone_number", phone);
+        values.put("address", address);
+        values.put("emergency_contact_name", emName);
+        values.put("emergency_contact_phone", emPhone);
+
+        int result = db.update(TABLE_USERS, values, "user_id = ?", new String[]{userId});
+        return result > 0;
     }
 
     // Method to Enable 2FA
@@ -1711,13 +1717,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_FEES, null, values);
     }
 
-    // Helper to get all classes
+
     public Cursor getAllClasses() {
         SQLiteDatabase db = this.getReadableDatabase();
-        {
-            Cursor cursor = db.rawQuery("SELECT * FROM class_table", null);
-        }
-        return null;
+        // FIXED: Use the correct table name (TABLE_CLASSES) and return the cursor
+        return db.rawQuery("SELECT * FROM " + TABLE_CLASSES, null);
     }
 
     public Cursor getAllStudentsWithClassDetails() {
@@ -1870,5 +1874,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         // IMPORTANT: Check your actual table name (e.g., 'student_table') and foreign key column ('parent_id')
         return db.rawQuery("SELECT * FROM student_table WHERE parent_id = ?", new String[]{parentId});
+    }
+
+    // ==========================================
+//       STUDENT SUBJECT MANAGEMENT
+// ==========================================
+
+    // 1. Get subjects a student is currently enrolled in
+    public Cursor getStudentEnrolledSubjects(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Joins Student-Subjects table with Subjects table to get names
+        String query = "SELECT ss.link_id, s.subject_id, s.subject_name, s.cost " +
+                "FROM " + TABLE_STUDENT_SUBJECTS + " ss " +
+                "JOIN " + TABLE_SUBJECTS + " s ON ss.subject_id = s.subject_id " +
+                "WHERE ss.student_id = ?";
+        return db.rawQuery(query, new String[]{studentId});
+    }
+
+    // 2. Remove a subject from a student
+    public boolean removeStudentSubject(String studentId, int subjectId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_STUDENT_SUBJECTS,
+                "student_id = ? AND subject_id = ?",
+                new String[]{studentId, String.valueOf(subjectId)}) > 0;
+    }
+
+    // 3. Helper to get a student's grade level (e.g., "Grade 10") to filter available subjects
+    public String getStudentGradeLevel(String studentId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT c.grade_level FROM " + TABLE_USERS + " u " +
+                "JOIN " + TABLE_CLASSES + " c ON u.class_id = c.class_id " +
+                "WHERE u.user_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{studentId});
+        String grade = null;
+        if (cursor.moveToFirst()) {
+            grade = cursor.getString(0);
+        }
+        cursor.close();
+        return grade;
     }
 }

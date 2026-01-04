@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -38,6 +37,18 @@
             android:textColor="#1B254B"
             android:gravity="center"/>
 
+        <ImageView
+            android:id="@+id/btn_edit_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_edit"
+            app:tint="#1B254B"
+            tools:ignore="ContentDescription"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"/>
+
     </LinearLayout>
 
     <ScrollView
@@ -53,7 +64,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Profile Identity Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +126,6 @@
                         android:textStyle="bold"
                         android:layout_marginTop="12dp"/>
 
-                    <!-- Action Quick Bar -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -158,7 +167,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Stats Quick View -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,7 +266,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Navigation Links -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -269,7 +276,6 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Class Schedule Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_schedule"
                 android:layout_width="match_parent"
@@ -329,7 +335,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Eligibility Card (Matches Style above) -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_check_eligibility"
                 android:layout_width="match_parent"
@@ -389,7 +394,63 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Detailed Information Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_manage_subjects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFF3E0"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/book"
+                        app:tint="#FF9800"
+                        android:background="@drawable/rounded_corner_white_bg"
+                        android:backgroundTint="#40FFFFFF"
+                        android:padding="10dp"
+                        android:layout_marginEnd="16dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Manage Enrolled Subjects"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#1B254B"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add or remove subjects"
+                            android:textSize="12sp"
+                            android:textColor="#FF9800"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/right_arrow__1_"
+                        app:tint="#1B254B"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -472,7 +533,6 @@
                         android:background="#F4F7FE"
                         android:layout_marginBottom="20dp"/>
 
-                    <!-- Contact Details Rows -->
                     <TextView android:text="EMAIL ADDRESS" android:textColor="#A3AED0" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/tv_profile_email"
@@ -498,6 +558,7 @@
 
                     <TextView android:text="RESIDENTIAL ADDRESS" android:textColor="#A3AED0" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/tv_profile_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="123 Beverly Hills, Los Angeles, CA"
@@ -508,7 +569,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Deactivation Button -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_delete_user"
                 android:layout_width="match_parent"

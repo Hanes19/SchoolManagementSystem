@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -53,7 +52,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Profile Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +113,6 @@
                         android:textStyle="bold"
                         android:layout_marginTop="12dp"/>
 
-                    <!-- Communication Actions -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -151,14 +148,12 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Stats Row (Staff Specific) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="20dp">
 
-                <!-- Stat 1: Employment Type -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -189,7 +184,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Stat 2: Rating -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -220,7 +214,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Stat 3: Status -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -251,7 +244,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Detailed Info -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -309,6 +301,7 @@
                             android:textColor="#A3AED0"
                             android:textSize="12sp"/>
                         <TextView
+                            android:id="@+id/tv_profile_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+44 (0) 7700 900461"
@@ -328,7 +321,9 @@
                             android:text="Shift"
                             android:textColor="#A3AED0"
                             android:textSize="12sp"/>
+
                         <TextView
+                            android:id="@+id/tv_profile_shift"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Day (08:00 AM - 05:00 PM)"
@@ -340,7 +335,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Danger Zone -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_delete_user"
                 android:layout_width="match_parent"

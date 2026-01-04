@@ -18,9 +18,11 @@ public class AdminParentProfileDetailsActivity extends AppCompatActivity {
     private String parentId;
     private TextView tvParentName;
     private ImageView ivProfileImage;
-    // Views commented out because they are missing from admin_parents_profile_details.xml
-    // private TextView tvParentEmail, tvParentPhone;
-    // private LinearLayout llChildrenContainer;
+
+    // UNCOMMENT THESE LINES to fix the error and display email/phone
+    private TextView tvParentEmail, tvParentPhone;
+    private LinearLayout llChildrenContainer; // <--- This was causing the "cannot find symbol" error
+
     private View btnSendMessage;
 
     @Override
@@ -41,41 +43,34 @@ public class AdminParentProfileDetailsActivity extends AppCompatActivity {
 
         // --- Initialize Views based on YOUR XML Layout ---
 
-        // 1. Back Button (ID in XML is btn_back)
+        // 1. Back Button
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         // 2. Parent Name & Image
         tvParentName = findViewById(R.id.tv_parent_name);
-        // Note: Check if iv_profile_image exists in your XML. If not, this might be null.
         ivProfileImage = findViewById(R.id.iv_profile_image);
 
-        // 3. Send Message Button (ID in XML is btn_contact_container)
+        // 3. Send Message Button
         btnSendMessage = findViewById(R.id.btn_contact_container);
         if (btnSendMessage != null) {
             btnSendMessage.setOnClickListener(v -> {
-                // Example action: Open SMS or Email
                 Toast.makeText(this, "Message feature pending", Toast.LENGTH_SHORT).show();
             });
         }
 
-        /* VIEWS MISSING IN XML:
-           The following lines are commented out because 'tv_parent_email', 'tv_parent_phone',
-           and 'll_children_container' do not exist in your current admin_parents_profile_details.xml.
-           To display this info, you must add these TextViews to the XML first.
-        */
-        // tvParentEmail = findViewById(R.id.tv_parent_email);
-        // tvParentPhone = findViewById(R.id.tv_parent_phone);
-        // llChildrenContainer = findViewById(R.id.ll_children_container);
+        // UNCOMMENT THESE LINES so the variables are initialized
+        tvParentEmail = findViewById(R.id.tv_parent_email);
+        tvParentPhone = findViewById(R.id.tv_parent_phone);
+        llChildrenContainer = findViewById(R.id.ll_children_container); // <--- Required for loadLinkedChildren()
 
         loadParentDetails();
-        // loadLinkedChildren(); // Commented out as the container is missing
+        loadLinkedChildren(); // Uncomment this to actually run the function
     }
 
     private void loadParentDetails() {
-        Cursor cursor = db.getParentById(parentId); // Ensure this method exists in DatabaseHelper
+        Cursor cursor = db.getParentById(parentId);
         if (cursor != null && cursor.moveToFirst()) {
             // Adjust column indices based on your database schema
-            // Assuming: 0=id, 1=name, 2=email, 3=phone, 4=image
             String name = cursor.getString(1);
             String imageUri = cursor.getString(4);
 
@@ -85,17 +80,15 @@ public class AdminParentProfileDetailsActivity extends AppCompatActivity {
                 Glide.with(this).load(Uri.parse(imageUri)).placeholder(R.drawable.profile_pic).into(ivProfileImage);
             }
 
-            /*
+            // Uncommented to display email and phone since the views are now active
             String email = cursor.getString(2);
             String phone = cursor.getString(3);
             if (tvParentEmail != null) tvParentEmail.setText(email);
             if (tvParentPhone != null) tvParentPhone.setText(phone);
-            */
 
             cursor.close();
         }
     }
-
 
     private void loadLinkedChildren() {
         if (llChildrenContainer == null) return;
@@ -108,10 +101,10 @@ public class AdminParentProfileDetailsActivity extends AppCompatActivity {
                 childView.setText("• " + studentName);
                 childView.setTextSize(16);
                 childView.setPadding(0, 8, 0, 8);
+                childView.setTextColor(android.graphics.Color.parseColor("#1B254B")); // Added color for visibility
                 llChildrenContainer.addView(childView);
             } while (childrenCursor.moveToNext());
             childrenCursor.close();
         }
     }
-
 }

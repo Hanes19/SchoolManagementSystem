@@ -30,7 +30,7 @@ public class AdminAnalyticsActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        tvStudents = findViewById(R.id  .tv_count_students);
+        tvStudents = findViewById(R.id.tv_count_students);
         tvTeachers = findViewById(R.id.tv_count_teachers);
         tvIncome = findViewById(R.id.tv_total_income);
         tvExpense = findViewById(R.id.tv_total_expense);

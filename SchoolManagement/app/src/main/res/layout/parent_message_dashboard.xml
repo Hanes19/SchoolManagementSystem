@@ -1,148 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_admin_bg">
+    android:orientation="vertical"
+    android:background="#F4F7FE"
+    android:padding="16dp">
 
     <LinearLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="24dp"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:layout_marginBottom="16dp">
         <ImageView
             android:id="@+id/btn_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/bck_btn"
-            app:tint="#1B254B"
-            tools:ignore="ContentDescription"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
+            android:padding="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="16dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Communication"
-                android:textColor="#A3AED0"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Teacher Messages"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#1B254B"/>
-        </LinearLayout>
+            android:text="Messages"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#1B254B"
+            android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/subject_selector_card"
+    <android.widget.EditText
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_corner_white_bg"
+        android:hint="Search messages..."
+        android:paddingHorizontal="16dp"
+        android:drawableStart="@drawable/search"
+        android:drawablePadding="12dp"
+        android:layout_marginBottom="16dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="20dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/timetable"
-                app:tint="#4318FF"/>
-
-            <TextView
-                android:id="@+id/tv_selected_subject"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:text="Filter by Subject: All Subjects"
-                android:textColor="#1B254B"
-                android:textStyle="bold"
-                android:textSize="14sp"/>
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@android:drawable/arrow_down_float"
-                app:tint="#A3AED0"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="12dp"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="#F4F7FE"
-        app:layout_constraintTop_toBottomOf="@id/subject_selector_card">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="20dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="#A3AED0"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Search teacher or message..."
-                android:background="@null"
-                android:layout_marginStart="12dp"
-                android:textSize="14sp"
-                android:textColor="#1B254B"
-                android:inputType="textPersonName"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <ScrollView
+    <ListView
+        android:id="@+id/lv_messages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/search_bar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="8dp"/>
 
-        <LinearLayout
-            android:id="@+id/ll_message_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingBottom="40dp">
-
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

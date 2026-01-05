@@ -1,89 +1,82 @@
 package com.example.studentmanagement;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherMessageActivity extends AppCompatActivity {
 
-    private DatabaseHelper db;
-    private LinearLayout llMessageContainer;
+    private RecyclerView rvMessages;
+    private MessageAdapter adapter;
+    private List<Message> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_message);
 
-        db = new DatabaseHelper(this);
-        llMessageContainer = findViewById(R.id.ll_message_container);
+        rvMessages = findViewById(R.id.rv_messages);
+        rvMessages.setLayoutManager(new LinearLayoutManager(this));
+
+        messageList = new ArrayList<>();
+        messageList.add(new Message("Mrs. Weasley", "Harry is sick today.", "08:30 AM"));
+        messageList.add(new Message("Lucius Malfoy", "Regarding Draco's grades...", "Yesterday"));
+
+        adapter = new MessageAdapter(messageList);
+        rvMessages.setAdapter(adapter);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-
-        findViewById(R.id.fab_new_message).setOnClickListener(v -> {
-            // For now, let's simulate sending a message to a parent
-            db.sendMessage("teach01", "parent01", "Mr. Langdon", "Homework Update", "Just a reminder about the homework due.");
-            Toast.makeText(this, "Test Message Sent!", Toast.LENGTH_SHORT).show();
-            loadMessages(); // Refresh
-        });
-
-        loadMessages();
     }
 
-    private void loadMessages() {
-        llMessageContainer.removeAllViews();
-        // Assuming "teach01" is the current logged-in teacher
-        Cursor cursor = db.getMessagesForUser("teach01");
+    // Simple Model Class
+    private static class Message {
+        String sender, text, time;
+        Message(String s, String t, String tm) { sender = s; text = t; time = tm; }
+    }
 
-        LayoutInflater inflater = LayoutInflater.from(this);
+    // Adapter Class
+    private class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+        private List<Message> list;
 
-        if (cursor.moveToFirst()) {
-            do {
-                String sender = cursor.getString(cursor.getColumnIndexOrThrow("sender_name"));
-                String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
-                String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
-                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"));
+        MessageAdapter(List<Message> list) { this.list = list; }
 
-                View itemView = inflater.inflate(R.layout.item_message_row, llMessageContainer, false);
-
-                // FIXED: IDs matched to item_message_row.xml
-                TextView tvSender = itemView.findViewById(R.id.tv_sender_name);
-                TextView tvPreview = itemView.findViewById(R.id.tv_message_preview);
-                TextView tvTime = itemView.findViewById(R.id.tv_timestamp); // Changed from tv_time
-
-                // FIXED: Removed tv_message_subject logic
-                tvSender.setText(sender);
-                tvPreview.setText(subject + ": " + body); // Combine Subject and Body
-
-                // Extract just time or date for brevity
-                try {
-                    if (timestamp.length() > 11) {
-                        tvTime.setText(timestamp.substring(11)); // "HH:mm" part
-                    } else {
-                        tvTime.setText(timestamp);
-                    }
-                } catch (Exception e) {
-                    tvTime.setText(timestamp);
-                }
-
-                // Optional: Hide action buttons if not needed for this view,
-                // or add listeners like in ParentMessageActivity
-                ImageView btnEmail = itemView.findViewById(R.id.btn_action_email);
-                ImageView btnCall = itemView.findViewById(R.id.btn_action_call);
-
-                btnEmail.setOnClickListener(v -> Toast.makeText(this, "Reply to " + sender, Toast.LENGTH_SHORT).show());
-                btnCall.setOnClickListener(v -> Toast.makeText(this, "Call " + sender, Toast.LENGTH_SHORT).show());
-
-                llMessageContainer.addView(itemView);
-
-            } while (cursor.moveToNext());
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_row, parent, false);
+            return new ViewHolder(v);
         }
-        cursor.close();
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Message msg = list.get(position);
+            holder.tvSender.setText(msg.sender);
+            holder.tvPreview.setText(msg.text);
+            holder.tvTime.setText(msg.time);
+        }
+
+        @Override
+        public int getItemCount() { return list.size(); }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvSender, tvPreview, tvTime;
+
+            ViewHolder(View itemView) {
+                super(itemView);
+                // FIX: Updated IDs to match item_message_row.xml
+                tvSender = itemView.findViewById(R.id.tv_notif_title); // Was tv_sender_name
+                tvPreview = itemView.findViewById(R.id.tv_notif_body); // Was tv_message_preview
+                tvTime = itemView.findViewById(R.id.tv_notif_time);    // Was tv_timestamp
+            }
+        }
     }
 }

@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (db.checkUser(userId, password)) {
-            // Check if 2FA is enabled
+            // Check if 2FA is enabled (Optional placeholder logic)
             boolean is2FA = false;
             try {
                 // is2FA = db.is2FAEnabled(userId);
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Verify", (dialog, which) -> {
             String otp = input.getText().toString();
-            if (otp.equals("1234")) {
+            if (otp.equals("1234")) { // Hardcoded for demo; replace with actual logic if needed
                 completeLogin(userId);
             } else {
                 Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show();
@@ -128,16 +128,34 @@ public class LoginActivity extends AppCompatActivity {
 
     private void routeUser(String role) {
         Intent intent = null;
-        if (role == null) return;
-        switch (role) {
-            case "Admin": intent = new Intent(this, AdminDashboardActivity.class); break;
-            case "Parent": intent = new Intent(this, ParentDashboardActivity.class); break;
-            case "Teacher": intent = new Intent(this, TeacherDashboardActivity.class); break;
-            case "Student": intent = new Intent(this, StudentDashboardActivity.class); break;
-            case "Staff": intent = new Intent(this, StaffDashboardActivity.class); break;
-            // --- ADDED LIBRARIAN CASE ---
-            case "Librarian": intent = new Intent(this, LibraryDashboardActivity.class); break;
+        if (role == null) {
+            Toast.makeText(this, "Role not found", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        switch (role) {
+            case "Admin":
+                intent = new Intent(this, AdminDashboardActivity.class);
+                break;
+            case "Parent":
+                intent = new Intent(this, ParentDashboardActivity.class);
+                break;
+            case "Teacher":
+                intent = new Intent(this, TeacherDashboardActivity.class);
+                break;
+            case "Student":
+                intent = new Intent(this, StudentDashboardActivity.class);
+                break;
+            case "Librarian":
+                intent = new Intent(this, LibraryDashboardActivity.class);
+                break;
+            case "Staff":
+            default:
+                // Routes "Nurse", "Caretaker", "Accountant", etc. to Staff Dashboard
+                intent = new Intent(this, StaffDashboardActivity.class);
+                break;
+        }
+
         if (intent != null) {
             startActivity(intent);
             finish();

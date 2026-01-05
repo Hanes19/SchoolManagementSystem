@@ -135,5 +135,6 @@
         <activity android:name=".TeacherNotificationActivity" />
         <activity android:name=".StudentProfileActivity" />
 
+
 </application>
 </manifest>

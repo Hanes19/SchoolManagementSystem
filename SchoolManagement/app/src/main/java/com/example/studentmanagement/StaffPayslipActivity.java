@@ -4,14 +4,17 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class StaffPayslipActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
-    private LinearLayout llList;
+    private SessionManager session;
+    private ListView lvPayslips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,33 +22,47 @@ public class StaffPayslipActivity extends AppCompatActivity {
         setContentView(R.layout.staff_my_payslips);
 
         db = new DatabaseHelper(this);
-        llList = findViewById(R.id.ll_payslip_list);
-
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        session = new SessionManager(this);
+        lvPayslips = findViewById(R.id.lv_payslips);
 
         loadPayslips();
+
+        if (findViewById(R.id.btn_back) != null) {
+            findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        }
     }
 
     private void loadPayslips() {
-        llList.removeAllViews();
-        Cursor cursor = db.getMyPayslips("stf001");
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        if (cursor.moveToFirst()) {
-            do {
-                String month = cursor.getString(cursor.getColumnIndexOrThrow("month"));
-                double net = cursor.getDouble(cursor.getColumnIndexOrThrow("net_salary"));
-
-                View itemView = inflater.inflate(R.layout.item_staff_payslip, llList, false);
-                TextView tvMonth = itemView.findViewById(R.id.tv_month);
-                TextView tvAmount = itemView.findViewById(R.id.tv_net_salary);
-
-                tvMonth.setText(month);
-                tvAmount.setText(String.format("$%.2f", net));
-
-                llList.addView(itemView);
-            } while (cursor.moveToNext());
+        Cursor cursor = db.getMyPayslips(session.getUserId());
+        if (cursor != null) {
+            PayslipAdapter adapter = new PayslipAdapter(cursor);
+            lvPayslips.setAdapter(adapter);
         }
-        cursor.close();
+    }
+
+    private class PayslipAdapter extends CursorAdapter {
+        public PayslipAdapter(Cursor cursor) {
+            super(StaffPayslipActivity.this, cursor, 0);
+        }
+
+        @Override
+        public View newView(android.content.Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.item_staff_payslip, parent, false);
+        }
+
+        @Override
+        public void bindView(View view, android.content.Context context, Cursor cursor) {
+            TextView month = view.findViewById(R.id.tv_payslip_month);
+            TextView amount = view.findViewById(R.id.tv_payslip_amount);
+            TextView status = view.findViewById(R.id.tv_payslip_status);
+
+            String mon = cursor.getString(cursor.getColumnIndexOrThrow("month"));
+            double net = cursor.getDouble(cursor.getColumnIndexOrThrow("net_salary"));
+            String stat = cursor.getString(cursor.getColumnIndexOrThrow("status"));
+
+            month.setText(mon);
+            amount.setText(String.format("$%.2f", net));
+            status.setText(stat);
+        }
     }
 }

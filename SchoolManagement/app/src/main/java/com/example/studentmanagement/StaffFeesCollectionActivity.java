@@ -2,77 +2,111 @@ package com.example.studentmanagement;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class StaffFeesCollectionActivity extends AppCompatActivity {
+
+    private DatabaseHelper db;
+    private SessionManager session;
+
+    private EditText etStudentId, etAmount;
+    private TextView tvStudentName, tvCurrentDue;
+    private Spinner spPaymentMethod;
+    private LinearLayout layoutPaymentSection;
+    private Button btnVerify, btnCollect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.staff_fees_collection);
+        setContentView(R.layout.staff_fees_collection); // Ensure XML name matches
 
-        setupHeader();
-        setupPaymentButton();
-    }
+        db = new DatabaseHelper(this);
+        session = new SessionManager(this);
 
-    private void setupHeader() {
-        ViewGroup root = findViewById(android.R.id.content);
-        LinearLayout header = findFirstLinearLayout(root);
+        // Init Views
+        etStudentId = findViewById(R.id.et_student_id);
+        btnVerify = findViewById(R.id.btn_verify_student);
 
-        if (header != null) {
-            // Back Button (Child 0)
-            if (header.getChildCount() > 0) {
-                header.getChildAt(0).setOnClickListener(v -> finish());
-            }
-            // Title (Child 1 or 2)
-            for (int i = 0; i < header.getChildCount(); i++) {
-                if (header.getChildAt(i) instanceof TextView) {
-                    ((TextView) header.getChildAt(i)).setText("Collect Fees");
-                    break;
-                }
-            }
+        layoutPaymentSection = findViewById(R.id.layout_payment_section);
+        tvStudentName = findViewById(R.id.tv_student_name);
+        tvCurrentDue = findViewById(R.id.tv_current_due);
+
+        etAmount = findViewById(R.id.et_amount);
+        spPaymentMethod = findViewById(R.id.spinner_payment_method);
+        btnCollect = findViewById(R.id.btn_collect_fee);
+
+        // Setup Spinner
+        String[] methods = {"Cash", "Bank Transfer", "Check", "Card"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, methods);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPaymentMethod.setAdapter(adapter);
+
+        // Hide payment section initially
+        layoutPaymentSection.setVisibility(View.GONE);
+
+        // Verify Student Listener
+        btnVerify.setOnClickListener(v -> verifyStudent());
+
+        // Collect Fee Listener
+        btnCollect.setOnClickListener(v -> processPayment());
+
+        // Back Button
+        if (findViewById(R.id.btn_back) != null) {
+            findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         }
     }
 
-    private void setupPaymentButton() {
-        // We look for a CardView that likely acts as the "Submit" button
-        // Usually it's at the bottom or has a specific background color
-        ViewGroup root = findViewById(android.R.id.content);
-        findAndSetupButton(root);
-    }
+    private void verifyStudent() {
+        String studentId = etStudentId.getText().toString().trim();
+        if (studentId.isEmpty()) {
+            Toast.makeText(this, "Enter Student ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    private void findAndSetupButton(View view) {
-        if (view instanceof CardView) {
-            // Assume the CardView with text inside is the button
-            // or just add listener to all CardViews that aren't the main container
-            // A simple hack for this layout: usually the last CardView is the action button
-            view.setOnClickListener(v -> {
-                Toast.makeText(this, "Payment Recorded Successfully!", Toast.LENGTH_SHORT).show();
-                finish();
-            });
-        } else if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                findAndSetupButton(group.getChildAt(i));
-            }
+        String name = db.getStudentName(studentId); // Helper method in DB
+        if (name != null) {
+            tvStudentName.setText("Student: " + name);
+
+            // Calculate Due (Total Fees - Total Paid)
+            double due = db.getOutstandingBalance(studentId); // Helper method in DB
+            tvCurrentDue.setText(String.format("Outstanding Balance: $%.2f", due));
+
+            layoutPaymentSection.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(this, "Student not found", Toast.LENGTH_SHORT).show();
+            layoutPaymentSection.setVisibility(View.GONE);
         }
     }
 
-    // --- Helper ---
-    private LinearLayout findFirstLinearLayout(View view) {
-        if (view instanceof LinearLayout) return (LinearLayout) view;
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                if (group.getChildAt(i) instanceof LinearLayout) return (LinearLayout) group.getChildAt(i);
-            }
+    private void processPayment() {
+        String studentId = etStudentId.getText().toString().trim();
+        String amountStr = etAmount.getText().toString().trim();
+        String method = spPaymentMethod.getSelectedItem().toString();
+
+        if (amountStr.isEmpty()) {
+            Toast.makeText(this, "Enter Amount", Toast.LENGTH_SHORT).show();
+            return;
         }
-        return null;
+
+        double amount = Double.parseDouble(amountStr);
+        String staffId = session.getUserId();
+
+        if (db.collectFee(studentId, staffId, amount, method)) {
+            Toast.makeText(this, "Payment Recorded Successfully!", Toast.LENGTH_LONG).show();
+
+            // Reset for next payment
+            etAmount.setText("");
+            layoutPaymentSection.setVisibility(View.GONE);
+            etStudentId.setText("");
+        } else {
+            Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

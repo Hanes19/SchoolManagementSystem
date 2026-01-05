@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F7FE"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/bck_btn"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Staff Name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#1B254B"/>
+
+    <TextView
+        android:id="@+id/tv_profile_role"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Role"
+        android:textColor="#A3AED0"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tv_profile_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="email@school.edu"
+        android:background="@drawable/rounded_corner_white_bg"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_profile_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Active"
+        android:background="@drawable/rounded_corner_white_bg"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btn_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Password"
+        android:backgroundTint="#4318FF"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:backgroundTint="#E53935"
+        android:layout_marginTop="12dp"/>
+
+</LinearLayout>

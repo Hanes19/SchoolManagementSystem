@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +17,8 @@ public class AdminExpenseDetailsActivity extends AppCompatActivity {
 
     // UI Components
     private TextView tvStatus, tvAmount, tvTitle, tvCategory, tvRequester, tvDate, tvDesc;
-    private Button btnApprove, btnReject;
+    // FIX: Changed from Button to TextView to match the XML layout
+    private TextView btnApprove, btnReject;
     private LinearLayout footerActions;
 
     @Override
@@ -52,6 +52,7 @@ public class AdminExpenseDetailsActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.tv_detail_date);
         tvDesc = findViewById(R.id.tv_detail_desc);
 
+        // FIX: These IDs now map correctly to TextViews
         btnApprove = findViewById(R.id.btn_approve);
         btnReject = findViewById(R.id.btn_reject);
         footerActions = findViewById(R.id.footer_actions);
@@ -73,10 +74,16 @@ public class AdminExpenseDetailsActivity extends AppCompatActivity {
             String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
             String desc = cursor.getString(cursor.getColumnIndexOrThrow("description"));
             String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
-            String requesterId = cursor.getString(cursor.getColumnIndexOrThrow("requested_by"));
 
-            // Get Requester Name
-            String requesterName = dbHelper.getUserName(requesterId);
+            // Safe handling for requester ID
+            int requesterIndex = cursor.getColumnIndex("requested_by");
+            String requesterId = (requesterIndex != -1) ? cursor.getString(requesterIndex) : null;
+
+            // Get Requester Name safely
+            String requesterName = "Unknown";
+            if (requesterId != null) {
+                requesterName = dbHelper.getUserName(requesterId);
+            }
 
             // Populate UI
             tvTitle.setText(title);
@@ -84,11 +91,11 @@ public class AdminExpenseDetailsActivity extends AppCompatActivity {
             tvAmount.setText(String.format("$%,.2f", amount));
             tvDate.setText(date);
             tvDesc.setText(desc);
-            tvRequester.setText(requesterName + " (" + requesterId + ")");
-            tvStatus.setText(status.toUpperCase());
+            tvRequester.setText(requesterName + (requesterId != null ? " (" + requesterId + ")" : ""));
+            tvStatus.setText(status != null ? status.toUpperCase() : "PENDING");
 
             // Style Status & Buttons based on state
-            updateUIForStatus(status);
+            updateUIForStatus(status != null ? status : "Pending");
 
             cursor.close();
         } else {
@@ -101,12 +108,13 @@ public class AdminExpenseDetailsActivity extends AppCompatActivity {
         switch (status) {
             case "Approved":
                 tvStatus.setTextColor(Color.parseColor("#4CAF50")); // Green
-                tvStatus.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
+                // Use ContextCompat or simple logic if getColorStateList issues arise
+                tvStatus.setBackgroundResource(android.R.color.transparent);
                 footerActions.setVisibility(View.GONE); // Hide buttons if already processed
                 break;
             case "Rejected":
                 tvStatus.setTextColor(Color.parseColor("#E53935")); // Red
-                tvStatus.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
+                tvStatus.setBackgroundResource(android.R.color.transparent);
                 footerActions.setVisibility(View.GONE); // Hide buttons
                 break;
             default: // Pending

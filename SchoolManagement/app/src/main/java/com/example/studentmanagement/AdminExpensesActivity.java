@@ -48,6 +48,7 @@ public class AdminExpensesActivity extends AppCompatActivity {
         loadExpenses();
     }
 
+
     private void loadExpenses() {
         llExpensesList.removeAllViews();
         Cursor cursor = db.getAllExpenses();
@@ -76,6 +77,8 @@ public class AdminExpensesActivity extends AppCompatActivity {
                 // Combine Date and Requester into the subtitle
                 tvCategory.setText(date + " • " + db.getUserName(requestedBy));
                 tvAmount.setText(String.format("$%.2f", amount));
+
+
 
                 // Style Amount Color based on Status
                 if ("Approved".equalsIgnoreCase(status)) {
@@ -109,6 +112,8 @@ public class AdminExpensesActivity extends AppCompatActivity {
         tvTotalClaimed.setText("$" + String.format("%.2f", total));
         tvPendingClaims.setText("$" + String.format("%.2f", pending));
     }
+
+
 
     private void showAddExpenseBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);

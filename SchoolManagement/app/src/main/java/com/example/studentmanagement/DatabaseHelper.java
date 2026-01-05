@@ -661,6 +661,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getUserName(String userId) {
+        // FIX: Handle null userId to prevent crash
+        if (userId == null) {
+            return "Unknown User";
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT full_name FROM users WHERE user_id = ?", new String[]{userId});
         if(cursor.moveToFirst()){

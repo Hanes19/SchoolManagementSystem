@@ -70,7 +70,6 @@
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:layout_marginBottom="24dp">
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -84,7 +83,6 @@
                         <TextView android:id="@+id/tv_active_issues_count" android:text="142" android:textColor="#4318FF" android:textStyle="bold" android:textSize="24sp" android:layout_marginTop="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -133,21 +131,8 @@
                         android:padding="20dp"
                         android:orientation="vertical"
                         android:gravity="center">
-                        <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:src="@drawable/book"
-                            app:tint="#4318FF"
-                            android:background="#F4F7FE"
-                            android:padding="10dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Book Catalog"
-                            android:textStyle="bold"
-                            android:textColor="#1B254B"
-                            android:layout_marginTop="12dp"
-                            android:textSize="14sp"/>
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/book" app:tint="#4318FF" android:background="#F4F7FE" android:padding="10dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Book Catalog" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -173,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
@@ -182,21 +168,8 @@
                         android:padding="20dp"
                         android:orientation="vertical"
                         android:gravity="center">
-                        <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:src="@drawable/peso"
-                            app:tint="#FF9800"
-                            android:background="#FFF3E0"
-                            android:padding="10dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Late Fees"
-                            android:textStyle="bold"
-                            android:textColor="#1B254B"
-                            android:layout_marginTop="12dp"
-                            android:textSize="14sp"/>
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@drawable/peso" app:tint="#FF9800" android:background="#FFF3E0" android:padding="10dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Late Fees" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -206,80 +179,47 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginStart="8dp"
+                    android:layout_marginBottom="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FFFFFF">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
                         android:orientation="vertical"
                         android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:src="@android:drawable/ic_menu_slideshow"
-                            app:tint="#9C27B0"
-                            android:background="#F3E5F5"
-                            android:padding="10dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="E-Resources"
-                            android:textStyle="bold"
-                            android:textColor="#1B254B"
-                            android:layout_marginTop="12dp"
-                            android:textSize="14sp"/>
-
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@android:drawable/ic_menu_slideshow" app:tint="#9C27B0" android:background="#F3E5F5" android:padding="10dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E-Resources" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_settings"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#FFFFFF">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="44dp" android:layout_height="44dp" android:src="@android:drawable/ic_menu_preferences" app:tint="#607D8B" android:background="#ECEFF1" android:padding="10dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Settings" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="14sp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_columnWeight="1" />
+
             </GridLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RECENT CIRCULATION"
-                android:textColor="#1B254B"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:letterSpacing="0.1"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_corner_white_bg"
-                android:padding="8dp">
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical">
-                    <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@android:drawable/checkbox_on_background" app:tint="#05CD99" android:background="#E6FFF5" android:padding="6dp"/>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                        <TextView android:text="Harry Potter returned" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="By Jason Smith • 10 mins ago" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                    <TextView android:text="DONE" android:textColor="#05CD99" android:textStyle="bold" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="12dp"/>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:gravity="center_vertical">
-                    <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@android:drawable/ic_dialog_alert" app:tint="#F44336" android:background="#FFEBEE" android:padding="6dp"/>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                        <TextView android:text="Organic Chemistry Overdue" android:textStyle="bold" android:textColor="#1B254B" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <TextView android:text="Student: Bruce Banner • 2 days late" android:textColor="#A3AED0" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                    <TextView android:text="-$15.00" android:textColor="#F44336" android:textStyle="bold" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

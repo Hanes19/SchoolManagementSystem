@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         session = new SessionManager(this);
 
+        // Check if user is already logged in
         if (session.isLoggedIn()) {
             routeUser(session.getRole());
         }
@@ -70,11 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (db.checkUser(userId, password)) {
-            // Check if 2FA is enabled for this user (Ensure check2FA method exists in DB)
-            // If method doesn't exist, this block defaults to false
+            // Check if 2FA is enabled
             boolean is2FA = false;
             try {
-                // Assuming you add 'public boolean is2FAEnabled(String id)' to DatabaseHelper
                 // is2FA = db.is2FAEnabled(userId);
             } catch (Exception e) { e.printStackTrace(); }
 
@@ -99,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Verify", (dialog, which) -> {
             String otp = input.getText().toString();
-            // Mock OTP check - in real app, verify against DB or Backend
             if (otp.equals("1234")) {
                 completeLogin(userId);
             } else {
@@ -137,6 +135,8 @@ public class LoginActivity extends AppCompatActivity {
             case "Teacher": intent = new Intent(this, TeacherDashboardActivity.class); break;
             case "Student": intent = new Intent(this, StudentDashboardActivity.class); break;
             case "Staff": intent = new Intent(this, StaffDashboardActivity.class); break;
+            // --- ADDED LIBRARIAN CASE ---
+            case "Librarian": intent = new Intent(this, LibraryDashboardActivity.class); break;
         }
         if (intent != null) {
             startActivity(intent);

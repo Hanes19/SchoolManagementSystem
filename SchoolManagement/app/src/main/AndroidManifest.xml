@@ -124,6 +124,7 @@
         <activity android:name=".LibraryActiveIssuesActivity" />
         <activity android:name=".LibraryEResourcesActivity" />
         <activity android:name=".LibraryAddEResourceActivity" />
+        <activity android:name=".TeacherProfileActivity" />
 
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".ChangePasswordActivity" />

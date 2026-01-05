@@ -146,13 +146,13 @@
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_lock_lock" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Two-Factor Auth" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switch_2fa"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:thumbTint="#FFFFFF"
-                        android:trackTint="#4318FF"/>
+                        app:trackTint="#4318FF"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -183,13 +183,13 @@
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_popup_reminder" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Notifications" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switch_notifications"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:thumbTint="#FFFFFF"
-                        android:trackTint="#4318FF"/>
+                        app:trackTint="#4318FF"/>
                 </LinearLayout>
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
@@ -203,7 +203,7 @@
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_view" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Dark Mode" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switch_dark_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

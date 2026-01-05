@@ -7,9 +7,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -27,43 +29,58 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_parent_directory);
 
-        // 1. Initialize Views
-        ImageView btnBack = findViewById(R.id.btn_back);
-        etSearch = findViewById(R.id.et_search_input);
-        CardView fabAddParent = findViewById(R.id.fab_add_parent);
+        setupViews();
+        setupSampleData();
+        populateList("");
+    }
 
-        // IMPORTANT: Ensure your XML has a LinearLayout with id 'parent_list_container' inside the ScrollView
-        // If not, rename the one inside the ScrollView to this ID.
-        listContainer = findViewById(R.id.parent_list_container);
-        if (listContainer == null) {
-            // Fallback if ID is missing in XML, try finding the first child of ScrollView's child
-            // Ideally, just add android:id="@+id/parent_list_container" to the XML LinearLayout
+    private void setupViews() {
+        // 1. Find Search Input
+        etSearch = findViewById(R.id.et_search_input);
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) { populateList(s.toString()); }
+                @Override public void afterTextChanged(Editable s) {}
+            });
         }
 
-        // 2. Setup Dummy Data
-        setupSampleData();
+        // 2. Find List Container (Safe Search)
+        listContainer = findViewById(R.id.parent_list_container);
+        if (listContainer == null) {
+            // Find the ScrollView's child if ID is missing
+            ViewGroup root = findViewById(android.R.id.content);
+            findContainerRecursive(root);
+        }
 
-        // 3. Load List
-        populateList("");
+        // 3. Find Back Button
+        View btnBack = findViewById(R.id.btn_back);
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // 4. Listeners
-        btnBack.setOnClickListener(v -> finish());
-        fabAddParent.setOnClickListener(v -> startActivity(new Intent(this, AdminAddParentActivity.class)));
+        // 4. Find Add Button
+        View fab = findViewById(R.id.fab_add_parent);
+        if (fab != null) fab.setOnClickListener(v -> startActivity(new Intent(this, AdminAddParentActivity.class)));
+    }
 
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                populateList(s.toString());
+    private void findContainerRecursive(View view) {
+        if (view instanceof ScrollView) {
+            ScrollView sv = (ScrollView) view;
+            if (sv.getChildCount() > 0 && sv.getChildAt(0) instanceof LinearLayout) {
+                listContainer = (LinearLayout) sv.getChildAt(0);
             }
-            @Override public void afterTextChanged(Editable s) {}
-        });
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                findContainerRecursive(group.getChildAt(i));
+            }
+        }
     }
 
     private void setupSampleData() {
-        allParents.add(new ParentModel("PAR001", "Mrs. Sarah Smith", "sarah.smith@email.com", "Jason Smith (10-A)"));
-        allParents.add(new ParentModel("PAR002", "Mr. Thomas Wayne", "thomas.wayne@email.com", "Bruce Wayne (11-B)"));
-        allParents.add(new ParentModel("PAR003", "Mrs. Molly Weasley", "molly@burrow.com", "Ron Weasley (10-A)"));
-        allParents.add(new ParentModel("PAR004", "Dr. Stephen Strange", "doc@strange.com", "Donna Strange (12-C)"));
+        allParents.clear();
+        allParents.add(new ParentModel("PAR001", "Mrs. Sarah Smith", "sarah.smith@email.com", "Jason Smith"));
+        allParents.add(new ParentModel("PAR002", "Mr. Thomas Wayne", "thomas.wayne@email.com", "Bruce Wayne"));
+        allParents.add(new ParentModel("PAR003", "Mrs. Molly Weasley", "molly@burrow.com", "Ron Weasley"));
     }
 
     private void populateList(String query) {
@@ -71,8 +88,7 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
         listContainer.removeAllViews();
 
         for (ParentModel parent : allParents) {
-            if (parent.name.toLowerCase().contains(query.toLowerCase()) ||
-                    parent.childInfo.toLowerCase().contains(query.toLowerCase())) {
+            if (parent.name.toLowerCase().contains(query.toLowerCase())) {
                 listContainer.addView(createParentCard(parent));
             }
         }
@@ -84,10 +100,11 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 30);
         card.setLayoutParams(params);
-        card.setRadius(40);
-        card.setCardBackgroundColor(Color.WHITE);
+        card.setRadius(30);
         card.setCardElevation(0);
+        card.setCardBackgroundColor(Color.WHITE);
 
+        // Click Listener -> Sends ID to Profile
         card.setOnClickListener(v -> {
             Intent intent = new Intent(this, AdminParentProfileDetailsActivity.class);
             intent.putExtra("PARENT_ID", parent.id);
@@ -101,13 +118,12 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
 
         ImageView img = new ImageView(this);
         img.setImageResource(R.drawable.profile);
-        img.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
+        img.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
         inner.addView(img);
 
         LinearLayout textLayout = new LinearLayout(this);
         textLayout.setOrientation(LinearLayout.VERTICAL);
         textLayout.setPadding(40, 0, 0, 0);
-        textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         TextView tvName = new TextView(this);
         tvName.setText(parent.name);
@@ -117,25 +133,16 @@ public class AdminParentDirectoryActivity extends AppCompatActivity {
 
         TextView tvChild = new TextView(this);
         tvChild.setText("Child: " + parent.childInfo);
-        tvChild.setTextSize(14);
-        tvChild.setTextColor(Color.parseColor("#A3AED0"));
+        tvChild.setTextColor(Color.GRAY);
 
         textLayout.addView(tvName);
         textLayout.addView(tvChild);
         inner.addView(textLayout);
 
-        // Call Icon
-        ImageView callIcon = new ImageView(this);
-        callIcon.setImageResource(android.R.drawable.ic_menu_call);
-        callIcon.setColorFilter(Color.parseColor("#4CAF50")); // Green
-        callIcon.setPadding(20,20,20,20);
-        inner.addView(callIcon);
-
         card.addView(inner);
         return card;
     }
 
-    // Helper Class
     static class ParentModel {
         String id, name, email, childInfo;
         ParentModel(String id, String name, String email, String childInfo) {

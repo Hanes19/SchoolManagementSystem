@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
     // Updated Version to trigger upgrade/recreation
-    private static final int DATABASE_VERSION = 33;
+    private static final int DATABASE_VERSION = 35;
 
     // Table Names
     private static final String TABLE_USERS = "users";
@@ -356,7 +356,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('admin01', 'Principal Skinner', '" + testPassHash + "', 'Admin', 'Active')");
         db.execSQL("INSERT OR IGNORE INTO classes (grade_level, section_name, room_number) VALUES ('Grade 10', 'Emerald', 'Rm 101')");
         db.execSQL("INSERT OR IGNORE INTO classes (grade_level, section_name, room_number) VALUES ('Grade 11', 'Ruby', 'Rm 104')");
-
+        db.execSQL("INSERT OR IGNORE INTO " + TABLE_USERS + " (user_id, full_name, password_hash, role, status) VALUES ('lib01', 'Madam Pince', '" + testPassHash + "', 'Librarian', 'Active')");
         // --- SEED SUBJECTS WITH COSTS ---
         // Grade 10 Subjects
         db.execSQL("INSERT INTO " + TABLE_SUBJECTS + " (subject_name, grade_level, cost) VALUES ('Mathematics 10', 'Grade 10', 300.00)");

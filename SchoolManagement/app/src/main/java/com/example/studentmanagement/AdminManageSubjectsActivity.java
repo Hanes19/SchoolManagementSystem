@@ -32,6 +32,13 @@ public class AdminManageSubjectsActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         studentId = getIntent().getStringExtra("STUDENT_ID");
 
+        // FIX: Prevent crash if no student ID is passed
+        if (studentId == null) {
+            Toast.makeText(this, "Error: No Student Selected", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         lvSubjects = findViewById(R.id.lv_subjects);
         tvBanner = findViewById(R.id.tv_student_name_banner);
 
@@ -49,14 +56,13 @@ public class AdminManageSubjectsActivity extends AppCompatActivity {
 
     private void loadSubjects() {
         Cursor cursor = db.getStudentEnrolledSubjects(studentId);
-        SubjectListAdapter adapter = new SubjectListAdapter(cursor);
-        lvSubjects.setAdapter(adapter);
+        if (cursor != null) {
+            SubjectListAdapter adapter = new SubjectListAdapter(cursor);
+            lvSubjects.setAdapter(adapter);
+        }
     }
 
     private void showAddSubjectDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add New Subject");
-
         // Get Grade Level to filter subjects
         String gradeLevel = db.getStudentGradeLevel(studentId);
         if (gradeLevel == null) {
@@ -69,37 +75,41 @@ public class AdminManageSubjectsActivity extends AppCompatActivity {
         List<String> subjectNames = new ArrayList<>();
         List<Integer> subjectIds = new ArrayList<>();
 
-        if (subjectsCursor.moveToFirst()) {
+        if (subjectsCursor != null && subjectsCursor.moveToFirst()) {
             do {
                 subjectNames.add(subjectsCursor.getString(subjectsCursor.getColumnIndexOrThrow("subject_name")));
                 subjectIds.add(subjectsCursor.getInt(subjectsCursor.getColumnIndexOrThrow("subject_id")));
             } while (subjectsCursor.moveToNext());
+            subjectsCursor.close();
         }
-        subjectsCursor.close();
 
         if (subjectNames.isEmpty()) {
             Toast.makeText(this, "No subjects found for " + gradeLevel, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Setup Spinner
-        View view = getLayoutInflater().inflate(R.layout.dialog_add_role, null); // Reusing generic dialog layout if exists, or create simple spinner layout
+        // Setup Dialog with Spinner
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add New Subject");
+
         Spinner spinner = new Spinner(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, subjectNames);
         spinner.setAdapter(adapter);
-        builder.setView(spinner);
 
-        // Add Padding to spinner for better look if adding programmatically
-        spinner.setPadding(50, 50, 50, 50);
+        // Add padding for better look
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        spinner.setPadding(padding, padding, padding, padding);
+
+        builder.setView(spinner);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
             int position = spinner.getSelectedItemPosition();
-            int selectedId = subjectIds.get(position);
-
-            // Check if already enrolled (Optional: DatabaseHelper could handle unique constraint)
-            db.enrollStudentInSubject(studentId, selectedId);
-            Toast.makeText(this, "Subject Added", Toast.LENGTH_SHORT).show();
-            loadSubjects();
+            if (position >= 0) {
+                int selectedId = subjectIds.get(position);
+                db.enrollStudentInSubject(studentId, selectedId);
+                Toast.makeText(this, "Subject Added", Toast.LENGTH_SHORT).show();
+                loadSubjects();
+            }
         });
 
         builder.setNegativeButton("Cancel", null);
@@ -114,22 +124,23 @@ public class AdminManageSubjectsActivity extends AppCompatActivity {
 
         @Override
         public View newView(android.content.Context context, Cursor cursor, ViewGroup parent) {
-            // FIXED: Uses the new layout created above
             return LayoutInflater.from(context).inflate(R.layout.item_subject_row, parent, false);
         }
 
         @Override
         public void bindView(View view, android.content.Context context, Cursor cursor) {
-            TextView tvName = view.findViewById(R.id.tv_role_name); // Assuming IDs from item_role_card
+            TextView tvName = view.findViewById(R.id.tv_role_name);
             TextView tvDesc = view.findViewById(R.id.tv_role_desc);
             ImageView btnDelete = view.findViewById(R.id.btn_delete_role);
 
+            // Capture data for the listener
             String subjectName = cursor.getString(cursor.getColumnIndexOrThrow("subject_name"));
             int subjectId = cursor.getInt(cursor.getColumnIndexOrThrow("subject_id"));
 
             tvName.setText(subjectName);
-            tvDesc.setText("Enrolled"); // Or show cost if available
+            tvDesc.setText("Enrolled");
 
+            // Setup Delete Action
             btnDelete.setOnClickListener(v -> {
                 new AlertDialog.Builder(context)
                         .setTitle("Delete Subject")
@@ -137,7 +148,7 @@ public class AdminManageSubjectsActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", (dialog, which) -> {
                             if (db.removeStudentSubject(studentId, subjectId)) {
                                 Toast.makeText(context, "Removed", Toast.LENGTH_SHORT).show();
-                                loadSubjects();
+                                loadSubjects(); // Refresh List
                             }
                         })
                         .setNegativeButton("No", null)

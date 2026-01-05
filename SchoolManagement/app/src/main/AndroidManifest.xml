@@ -40,6 +40,7 @@
         <activity android:name=".TeacherAddHomeworkActivity" />
         <activity android:name=".TeacherGradebookActivity" />
         <activity android:name=".TeacherMessageActivity" />
+        <activity android:name=".TeacherProfileActivity" />
 
         <activity android:name=".StaffDashboardActivity" />
         <activity android:name=".StaffLeaveActivity" />
@@ -101,6 +102,9 @@
         <activity android:name=".AdminClassTimetableActivity" />
         <activity android:name=".AdminMasterTimetableActivity" />
         <activity android:name=".AdminAcademicSessionActivity" />
+        <activity android:name=".AdminAddAcademicSessionActivity" />
+        <activity android:name=".AdminAddParentActivity" />
+        <activity android:name=".AdminManageSubjectsActivity" />
 
         <activity android:name=".AdminExamDashboardActivity" />
         <activity android:name=".AdminExamCategoriesActivity" />
@@ -124,16 +128,10 @@
         <activity android:name=".LibraryActiveIssuesActivity" />
         <activity android:name=".LibraryEResourcesActivity" />
         <activity android:name=".LibraryAddEResourceActivity" />
-        <activity android:name=".TeacherProfileActivity" />
 
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".AdminAddAcademicSessionActivity" />
-        <activity android:name=".AdminSystemConfigActivity" />
-        <activity android:name=".AdminAddParentActivity" />
-        <activity android:name=".AdminManageSubjectsActivity" />
-
     </application>
 
 </manifest>

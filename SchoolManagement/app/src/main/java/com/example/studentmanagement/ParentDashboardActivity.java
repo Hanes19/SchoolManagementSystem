@@ -15,31 +15,47 @@ public class ParentDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.parent_dashboard);
+        setContentView(R.layout.parent_dashboard); // Links to your XML layout
 
         db = new DatabaseHelper(this);
-        // Assuming "parent01" is logged in. Get this from SessionManager in real app.
+
+        // 1. Identify the Child: In a real app, you'd get the parent ID from a session.
+        // Here we simulate it or fetch a hardcoded link.
         linkedChildId = db.getLinkedChildId("parent01");
 
+        // 2. Display Child's Name
         tvChildName = findViewById(R.id.tv_child_name);
         if(tvChildName != null) {
-            tvChildName.setText(db.getStudentName(linkedChildId));
+            String name = db.getStudentName(linkedChildId);
+            tvChildName.setText(name != null ? name : "Unknown Student");
         }
 
-        // Navigation
-        setupNav(R.id.card_attendance, ParentAttendanceActivity.class);
-        setupNav(R.id.card_grades, ParentGradesActivity.class);
-        setupNav(R.id.card_fees, ParentFeesActivity.class);
-        // Reuse Student Schedule if layout is similar, or create ParentScheduleActivity
-        // setupNav(R.id.card_schedule, StudentScheduleActivity.class);
+        // 3. Setup Navigation Functions
+        setupNavigation();
     }
 
-    private void setupNav(int id, Class<?> cls) {
-        CardView card = findViewById(id);
+    private void setupNavigation() {
+        // Helper function to make code cleaner
+        setNavListener(R.id.btn_attendance, ParentAttendanceActivity.class);
+        setNavListener(R.id.card_grades, ParentGradesActivity.class);
+        setNavListener(R.id.btn_fees_history, ParentFeesActivity.class);
+        setNavListener(R.id.btn_contact_teacher, ParentMessageActivity.class);
+
+        // Logout Function
+        findViewById(R.id.btn_logout).setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void setNavListener(int cardId, Class<?> targetActivity) {
+        CardView card = findViewById(cardId);
         if (card != null) {
             card.setOnClickListener(v -> {
-                Intent intent = new Intent(this, cls);
-                intent.putExtra("STUDENT_ID", linkedChildId);
+                Intent intent = new Intent(this, targetActivity);
+                intent.putExtra("STUDENT_ID", linkedChildId); // Pass the child's ID to the next screen
                 startActivity(intent);
             });
         }

@@ -29,20 +29,21 @@ public class ParentFeesActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
+        // Mock Pay Button Function
         findViewById(R.id.btn_pay_now).setOnClickListener(v ->
-                Toast.makeText(this, "Payment Gateway Integration Required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Redirecting to Payment Gateway...", Toast.LENGTH_SHORT).show()
         );
 
-        loadFeeDetails();
+        loadFeeData();
     }
 
-    private void loadFeeDetails() {
-        if (llHistory == null) return;
+    private void loadFeeData() {
         llHistory.removeAllViews();
         Cursor cursor = db.getStudentFees(studentId);
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        double totalDue = 1500.00; // Mock initial due, or calculate from DB
+        // In a real app, fetch total due from DB. Here we calculate a running total or use a mock.
+        double totalDue = 1500.00;
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -50,26 +51,23 @@ public class ParentFeesActivity extends AppCompatActivity {
                 double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
-                // Inflate the shared row layout
-                View view = inflater.inflate(R.layout.item_expense_row, llHistory, false);
+                // Inflate 'item_expense_row.xml'
+                View row = inflater.inflate(R.layout.item_expense_row, llHistory, false);
 
-                // FIXED: Use the correct IDs from item_expense_row.xml
-                TextView tvTitle = view.findViewById(R.id.tv_expense_title);
-                TextView tvAmount = view.findViewById(R.id.tv_expense_amount);   // Changed from tv_amount
-                TextView tvDate = view.findViewById(R.id.tv_expense_category);   // Reusing category field for date
+                TextView tvTitle = row.findViewById(R.id.tv_expense_title);
+                TextView tvAmount = row.findViewById(R.id.tv_expense_amount);
+                TextView tvDate = row.findViewById(R.id.tv_expense_category);
 
                 tvTitle.setText(desc);
-                tvAmount.setText("-$" + amount);
+                tvAmount.setText("-$" + amount); // Show as payment
                 tvDate.setText(date);
 
-                totalDue -= amount;
-                llHistory.addView(view);
+                totalDue -= amount; // Deduct payments from due
+                llHistory.addView(row);
             } while (cursor.moveToNext());
             cursor.close();
         }
 
-        if (tvTotalDue != null) {
-            tvTotalDue.setText(String.format("$%.2f", Math.max(0, totalDue)));
-        }
+        tvTotalDue.setText(String.format("$%.2f", Math.max(0, totalDue)));
     }
 }

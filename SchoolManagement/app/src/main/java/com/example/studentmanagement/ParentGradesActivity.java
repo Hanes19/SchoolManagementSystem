@@ -21,8 +21,6 @@ public class ParentGradesActivity extends AppCompatActivity {
 
         studentId = getIntent().getStringExtra("STUDENT_ID");
         db = new DatabaseHelper(this);
-
-        // Find the container (ID added in XML below)
         llList = findViewById(R.id.ll_grades_list);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -31,9 +29,8 @@ public class ParentGradesActivity extends AppCompatActivity {
     }
 
     private void loadGrades() {
-        if (llList == null) return;
         llList.removeAllViews();
-
+        // Fetch "All" semesters
         Cursor cursor = db.getStudentGrades(studentId, "All");
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -41,19 +38,19 @@ public class ParentGradesActivity extends AppCompatActivity {
             do {
                 String subject = cursor.getString(cursor.getColumnIndexOrThrow("subject"));
                 String grade = cursor.getString(cursor.getColumnIndexOrThrow("grade"));
+                String semester = cursor.getString(cursor.getColumnIndexOrThrow("semester"));
 
-                // Reuse the row layout
-                View view = inflater.inflate(R.layout.item_expense_row, llList, false);
+                View row = inflater.inflate(R.layout.item_expense_row, llList, false);
 
-                // FIXED: Use correct IDs from item_expense_row.xml
-                TextView tvSubject = view.findViewById(R.id.tv_expense_title);
-                TextView tvGrade = view.findViewById(R.id.tv_expense_amount);    // Correct ID for right-side text
-                TextView tvDesc = view.findViewById(R.id.tv_expense_category);   // Correct ID for subtitle
+                TextView tvSubject = row.findViewById(R.id.tv_expense_title);
+                TextView tvGrade = row.findViewById(R.id.tv_expense_amount);
+                TextView tvSem = row.findViewById(R.id.tv_expense_category);
 
                 tvSubject.setText(subject);
                 tvGrade.setText(grade);
+                tvSem.setText(semester);
 
-                // Color code the grade
+                // Logic: Color Coding
                 if ("A".equals(grade) || "A+".equals(grade)) {
                     tvGrade.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                 } else if ("F".equals(grade)) {
@@ -62,9 +59,7 @@ public class ParentGradesActivity extends AppCompatActivity {
                     tvGrade.setTextColor(getResources().getColor(android.R.color.black));
                 }
 
-                tvDesc.setText("Midterm 2025");
-
-                llList.addView(view);
+                llList.addView(row);
             } while (cursor.moveToNext());
             cursor.close();
         }

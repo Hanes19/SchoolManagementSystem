@@ -10,7 +10,6 @@ public class ParentAttendanceActivity extends AppCompatActivity {
 
     private DatabaseHelper db;
     private TextView tvPercentage, tvStatus;
-    private CalendarView calendarView;
     private String studentId;
 
     @Override
@@ -23,36 +22,37 @@ public class ParentAttendanceActivity extends AppCompatActivity {
 
         tvPercentage = findViewById(R.id.tv_attendance_percentage);
         tvStatus = findViewById(R.id.tv_today_status);
-        calendarView = findViewById(R.id.calendar_view);
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish()); // Ensure header back btn has this ID
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        loadAttendanceStats();
+        calculateAndDisplayAttendance();
     }
 
-    private void loadAttendanceStats() {
+    private void calculateAndDisplayAttendance() {
         Cursor cursor = db.getStudentAttendance(studentId);
         int totalDays = 0;
         int presentDays = 0;
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 totalDays++;
+                // Assuming database has a 'status' column with "Present", "Absent", etc.
                 String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
                 if ("Present".equalsIgnoreCase(status)) {
                     presentDays++;
                 }
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
 
+        // Calculate Percentage
         if (totalDays > 0) {
             int percentage = (presentDays * 100) / totalDays;
             tvPercentage.setText(percentage + "%");
         } else {
-            tvPercentage.setText("0%");
+            tvPercentage.setText("N/A"); // No records yet
         }
 
-        tvStatus.setText("Total Present: " + presentDays + " / " + totalDays);
+        tvStatus.setText(presentDays + " Days Present");
     }
 }

@@ -661,10 +661,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getUserName(String userId) {
-        // FIX: Handle null userId to prevent crash
-        if (userId == null) {
-            return "Unknown User";
-        }
+        if (userId == null) return "Unknown"; // Safety Check
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT full_name FROM users WHERE user_id = ?", new String[]{userId});
@@ -1914,7 +1911,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getStudentEnrolledSubjects(String studentId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // --- FIX: Change 'ss.link_id' to 'ss.link_id AS _id' ---
+        if (studentId == null) return null; // Safety Check
+
+        // Join to get Subject Names for the student
         String query = "SELECT ss.link_id AS _id, s.subject_id, s.subject_name, s.cost " +
                 "FROM " + TABLE_STUDENT_SUBJECTS + " ss " +
                 "JOIN " + TABLE_SUBJECTS + " s ON ss.subject_id = s.subject_id " +
@@ -1922,7 +1921,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.rawQuery(query, new String[]{studentId});
     }
-
     public boolean addPayroll(String userId, String month, double basic, double allowances, double deductions, double net, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

@@ -41,8 +41,17 @@ public class AdminMainMenuActivity extends AppCompatActivity {
         setupLink(R.id.btn_module_fees, AdminFeesBillingActivity.class, null);
         setupLink(R.id.btn_module_payroll, AdminPayrollActivity.class, null);
 
-        // This button now exists in the XML, so this line is valid
+        // --- ADDED THIS LINE (Expenses) ---
+        setupLink(R.id.btn_module_expenses, AdminExpensesActivity.class, null);
+
         setupLink(R.id.btn_module_library, LibraryDashboardActivity.class, null);
+
+        // ==========================================
+        // 4. GENERAL (ADDED SECTION)
+        // ==========================================
+        // --- ADDED THESE LINES (Config & Settings) ---
+        setupLink(R.id.btn_general_config, AdminSystemConfigActivity.class, null);
+        setupLink(R.id.btn_general_settings, AdminSettingsActivity.class, null);
     }
 
     private void setupLink(int id, Class<?> targetActivity, String typeExtra) {

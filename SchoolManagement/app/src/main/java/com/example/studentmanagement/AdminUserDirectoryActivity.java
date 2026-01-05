@@ -11,8 +11,17 @@ public class AdminUserDirectoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Start with Students by default
-        loadDirectory("Student");
+
+        // 1. Retrieve the type passed from the Main Menu (e.g., "Teacher", "Staff")
+        String type = getIntent().getStringExtra("type");
+
+        // 2. Default to "Student" only if no type was passed
+        if (type == null || type.isEmpty()) {
+            type = "Student";
+        }
+
+        // 3. Load the correct directory
+        loadDirectory(type);
     }
 
     private void loadDirectory(String type) {

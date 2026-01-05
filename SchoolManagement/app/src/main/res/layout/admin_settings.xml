@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -49,7 +48,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Profile Summary Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_school_profile"
                 android:layout_width="match_parent"
@@ -82,6 +80,7 @@
                         android:layout_marginStart="16dp">
 
                         <TextView
+                            android:id="@+id/tv_profile_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Admin User"
@@ -90,6 +89,7 @@
                             android:textSize="18sp"/>
 
                         <TextView
+                            android:id="@+id/tv_profile_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="admin@school.edu"
@@ -105,7 +105,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Section: Account -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +122,6 @@
                 android:background="@drawable/rounded_corner_white_bg"
                 android:padding="8dp">
 
-                <!-- Change Password -->
                 <LinearLayout
                     android:id="@+id/btn_change_password"
                     android:layout_width="match_parent"
@@ -138,7 +136,6 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                <!-- Two-Factor Auth -->
                 <LinearLayout
                     android:id="@+id/btn_2fa"
                     android:layout_width="match_parent"
@@ -148,11 +145,17 @@
                     android:padding="16dp">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_lock_lock" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Two-Factor Auth" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
-                    <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+
+                    <Switch
+                        android:id="@+id/switch_2fa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:thumbTint="#FFFFFF"
+                        android:trackTint="#4318FF"/>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Section: Application -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,7 +174,6 @@
                 android:background="@drawable/rounded_corner_white_bg"
                 android:padding="8dp">
 
-                <!-- Notifications -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,12 +182,18 @@
                     android:padding="16dp">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_popup_reminder" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Notifications" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
-                    <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:thumbTint="#FFFFFF" android:trackTint="#4318FF"/>
+
+                    <Switch
+                        android:id="@+id/switch_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:thumbTint="#FFFFFF"
+                        android:trackTint="#4318FF"/>
                 </LinearLayout>
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                <!-- Dark Mode -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,12 +202,16 @@
                     android:padding="16dp">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_view" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Dark Mode" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
-                    <Switch android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+
+                    <Switch
+                        android:id="@+id/switch_dark_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"/>
                 </LinearLayout>
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                <!-- Language -->
                 <LinearLayout
                     android:id="@+id/btn_language"
                     android:layout_width="match_parent"
@@ -209,12 +221,19 @@
                     android:padding="16dp">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_mapmode" app:tint="#1B254B"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Language" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="English" android:textColor="#A3AED0" android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_current_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="English"
+                        android:textColor="#A3AED0"
+                        android:layout_marginEnd="8dp"/>
+
                     <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" android:rotation="0" app:tint="#A3AED0"/>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Section: Support -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,7 +252,6 @@
                 android:background="@drawable/rounded_corner_white_bg"
                 android:padding="8dp">
 
-                <!-- Help Center -->
                 <LinearLayout
                     android:id="@+id/btn_help"
                     android:layout_width="match_parent"
@@ -248,7 +266,6 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                <!-- Privacy Policy -->
                 <LinearLayout
                     android:id="@+id/btn_privacy"
                     android:layout_width="match_parent"
@@ -262,7 +279,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Log Out Button -->
             <TextView
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"

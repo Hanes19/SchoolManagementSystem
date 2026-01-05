@@ -1936,4 +1936,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM payroll WHERE user_id = ? AND month = ?", new String[]{userId, month});
     }
+
+    // Add this to your DatabaseHelper class
+    public boolean updateTwoFactorStatus(String userId, boolean isEnabled) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("is_2fa_enabled", isEnabled ? 1 : 0);
+        // If enabling, you might want to generate a secret key if null,
+        // but for now we just toggle the flag.
+        return db.update("users", values, "user_id = ?", new String[]{userId}) > 0;
+    }
 }

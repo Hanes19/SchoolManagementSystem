@@ -793,23 +793,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllExpenses() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT e.id, e.title, e.amount, e.date, e.category, e.status, e.requested_by, u.full_name " +
+        // FIX: Change 'e.id' to 'e.expense_id AS id' to match the table definition and Activity expectation
+        String query = "SELECT e.expense_id AS id, e.title, e.amount, e.date, e.category, e.status, e.requested_by, u.full_name " +
                 "FROM " + TABLE_EXPENSES + " e " +
                 "LEFT JOIN " + TABLE_USERS + " u ON e.requested_by = u.user_id " +
                 "ORDER BY e.date DESC";
         return db.rawQuery(query, null);
     }
-
     public Cursor getExpenseById(int expenseId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE id = ?", new String[]{String.valueOf(expenseId)});
+        // FIX: Change 'id = ?' to 'expense_id = ?'
+        return db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE expense_id = ?", new String[]{String.valueOf(expenseId)});
     }
 
     public boolean updateExpenseStatus(int expenseId, String newStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("status", newStatus);
-        int rows = db.update(TABLE_EXPENSES, values, "id = ?", new String[]{String.valueOf(expenseId)});
+        // FIX: Change 'id = ?' to 'expense_id = ?'
+        int rows = db.update(TABLE_EXPENSES, values, "expense_id = ?", new String[]{String.valueOf(expenseId)});
         return rows > 0;
     }
 

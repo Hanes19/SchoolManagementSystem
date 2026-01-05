@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,6 +13,7 @@ import androidx.cardview.widget.CardView;
 public class StudentAttendanceActivity extends AppCompatActivity {
 
     private LinearLayout listContainer;
+    private TextView tvPercentage, tvSummary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,58 +22,72 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
         setupHeader();
         findContainer();
-        loadSampleData();
+        loadSampleAttendance();
     }
 
     private void setupHeader() {
-        ViewGroup root = findViewById(android.R.id.content);
-        LinearLayout header = findHeaderLayout(root);
-        if (header != null && header.getChildCount() > 0) {
-            header.getChildAt(0).setOnClickListener(v -> finish());
-            // Try to set title
-            for(int i=0; i<header.getChildCount(); i++){
-                if(header.getChildAt(i) instanceof TextView){
-                    ((TextView)header.getChildAt(i)).setText("Attendance History");
-                    break;
-                }
-            }
-        }
+        View back = findViewById(R.id.btn_back_attendance);
+        if(back != null) back.setOnClickListener(v -> finish());
+
+        tvPercentage = findViewById(R.id.tv_attendance_percentage);
+        tvSummary = findViewById(R.id.tv_attendance_summary);
     }
 
     private void findContainer() {
         ViewGroup root = findViewById(android.R.id.content);
-        ScrollView scrollView = findScrollView(root);
-        if (scrollView != null && scrollView.getChildCount() > 0) {
-            if (scrollView.getChildAt(0) instanceof LinearLayout) {
-                listContainer = (LinearLayout) scrollView.getChildAt(0);
+        findScrollViewRecursive(root);
+    }
+
+    private void findScrollViewRecursive(View view) {
+        if (view instanceof android.widget.ScrollView) {
+            android.widget.ScrollView sv = (android.widget.ScrollView) view;
+            if (sv.getChildCount() > 0 && sv.getChildAt(0) instanceof LinearLayout) {
+                listContainer = (LinearLayout) sv.getChildAt(0);
+            }
+            return;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                findScrollViewRecursive(group.getChildAt(i));
+                if (listContainer != null) return;
             }
         }
     }
 
-    private void loadSampleData() {
+    private void loadSampleAttendance() {
         if (listContainer == null) return;
 
-        // Add Month Header
-        addMonthHeader("October 2023");
-        addAttendanceRow("Oct 25, 2023", "Present", "#4CAF50");
-        addAttendanceRow("Oct 24, 2023", "Present", "#4CAF50");
-        addAttendanceRow("Oct 23, 2023", "Absent", "#F44336");
-        addAttendanceRow("Oct 22, 2023", "Present", "#4CAF50");
-        addAttendanceRow("Oct 21, 2023", "Weekend", "#9E9E9E");
+        // --- SAMPLE HEADER ---
+        TextView header = new TextView(this);
+        header.setText("October 2025");
+        header.setTextSize(18);
+        header.setPadding(0, 40, 0, 20);
+        header.setTextColor(Color.parseColor("#1B254B"));
+        header.setTypeface(null, android.graphics.Typeface.BOLD);
+        listContainer.addView(header);
 
-        addMonthHeader("September 2023");
-        addAttendanceRow("Sep 30, 2023", "Late", "#FF9800");
-        addAttendanceRow("Sep 29, 2023", "Present", "#4CAF50");
-    }
+        // --- SAMPLE DATA ---
+        addAttendanceRow("Oct 25, 2025", "Present", "#4CAF50");
+        addAttendanceRow("Oct 24, 2025", "Present", "#4CAF50");
+        addAttendanceRow("Oct 23, 2025", "Absent", "#F44336");
+        addAttendanceRow("Oct 22, 2025", "Present", "#4CAF50");
+        addAttendanceRow("Oct 21, 2025", "Late", "#FF9800");
 
-    private void addMonthHeader(String month) {
-        TextView tv = new TextView(this);
-        tv.setText(month);
-        tv.setTextSize(16);
-        tv.setPadding(16, 32, 16, 16);
-        tv.setTextColor(Color.parseColor("#1B254B"));
-        tv.setTypeface(null, android.graphics.Typeface.BOLD);
-        listContainer.addView(tv);
+        TextView header2 = new TextView(this);
+        header2.setText("September 2025");
+        header2.setTextSize(18);
+        header2.setPadding(0, 40, 0, 20);
+        header2.setTextColor(Color.parseColor("#1B254B"));
+        header2.setTypeface(null, android.graphics.Typeface.BOLD);
+        listContainer.addView(header2);
+
+        addAttendanceRow("Sep 30, 2025", "Present", "#4CAF50");
+        addAttendanceRow("Sep 29, 2025", "Present", "#4CAF50");
+
+        // Hardcoded Stats for the sample
+        if(tvPercentage != null) tvPercentage.setText("92%");
+        if(tvSummary != null) tvSummary.setText("22 Present out of 24 days");
     }
 
     private void addAttendanceRow(String date, String status, String colorHex) {
@@ -105,30 +119,5 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         inner.addView(tvStatus);
         card.addView(inner);
         listContainer.addView(card);
-    }
-
-    // --- Helpers ---
-    private LinearLayout findHeaderLayout(View view) {
-        if (view instanceof LinearLayout) return (LinearLayout) view;
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                LinearLayout res = findHeaderLayout(group.getChildAt(i));
-                if (res != null) return res;
-            }
-        }
-        return null;
-    }
-
-    private ScrollView findScrollView(View view) {
-        if (view instanceof ScrollView) return (ScrollView) view;
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                ScrollView res = findScrollView(group.getChildAt(i));
-                if (res != null) return res;
-            }
-        }
-        return null;
     }
 }

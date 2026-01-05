@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Teacher Profile"
+            android:text="My Profile"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#1B254B"
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mr. Walter White"
+            android:text="Jason Statham"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#1B254B"/>
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chemistry Department"
+            android:text="Grade 12 - Diamond"
             android:textSize="14sp"
             android:textColor="#A3AED0"
             android:layout_marginBottom="32dp"/>

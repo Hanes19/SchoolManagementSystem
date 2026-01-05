@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_admin_bg">
 
-    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -45,14 +44,17 @@
                 android:letterSpacing="0.05"/>
         </LinearLayout>
 
-        <!-- Notification & Profile -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/btn_notifications"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginEnd="12dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardBackgroundColor="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,10 +65,14 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/btn_profile"
             android:layout_width="45dp"
             android:layout_height="45dp"
             app:cardCornerRadius="22.5dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -90,7 +96,6 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Next Class / Grading Progress Summary Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +168,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Classroom Tools Section (Updated with Messages) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -181,7 +185,6 @@
                 android:alignmentMode="alignMargins"
                 android:layout_marginBottom="28dp">
 
-                <!-- Attendance -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_attendance_tool"
                     android:layout_width="0dp"
@@ -190,14 +193,16 @@
                     android:layout_marginEnd="6dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
                         <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@drawable/blackboard" app:tint="#4318FF" android:background="#F4F7FE" android:padding="8dp" tools:ignore="ContentDescription"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Atten." android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Gradebook -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_gradebook_tool"
                     android:layout_width="0dp"
@@ -206,14 +211,16 @@
                     android:layout_marginHorizontal="6dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
                         <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@android:drawable/star_on" app:tint="#FFB547" android:background="#FFF8E1" android:padding="8dp" tools:ignore="ContentDescription"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grades" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- NEW: Messages (Communication) -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btn_messages_tool"
                     android:layout_width="0dp"
@@ -222,7 +229,10 @@
                     android:layout_marginStart="6dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFFFFF">
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:orientation="vertical" android:gravity="center">
                         <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@android:drawable/ic_dialog_email" app:tint="#9C27B0" android:background="#F3E5F5" android:padding="8dp" tools:ignore="ContentDescription"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Messages" android:textStyle="bold" android:textColor="#1B254B" android:layout_marginTop="12dp" android:textSize="11sp"/>
@@ -230,7 +240,6 @@
                 </androidx.cardview.widget.CardView>
             </GridLayout>
 
-            <!-- Quick Access Links -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -249,7 +258,15 @@
                 android:padding="8dp"
                 android:layout_marginBottom="28dp">
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                <LinearLayout
+                    android:id="@+id/btn_quick_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/timetable" app:tint="#4318FF" tools:ignore="ContentDescription"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="My Full Schedule" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
                     <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0" tools:ignore="ContentDescription"/>
@@ -257,14 +274,21 @@
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F4F7FE" android:layout_marginHorizontal="16dp"/>
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:gravity="center_vertical">
+                <LinearLayout
+                    android:id="@+id/btn_quick_homework"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
                     <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_edit" app:tint="#4318FF" tools:ignore="ContentDescription"/>
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Homework / Assignments" android:textColor="#1B254B" android:textStyle="bold" android:layout_marginStart="16dp"/>
                     <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_play" app:tint="#A3AED0" tools:ignore="ContentDescription"/>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Reminders / To-Do -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,7 +299,6 @@
                 android:letterSpacing="0.1"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Reminder Item -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

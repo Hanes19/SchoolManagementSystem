@@ -8,29 +8,17 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class TeacherDashboardActivity extends AppCompatActivity {
-
-    // 1. Declare SessionManager
-    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_dashboard);
 
-        // 2. Initialize SessionManager
-        session = new SessionManager(getApplicationContext());
-
-        // Check if user is logged in (Optional but good practice)
-        if (!session.isLoggedIn()) {
-            session.logoutUser();
-        }
-
         setupHeader();
         setupCards();
-        setupLogout();
+        setupProfileButton();
     }
 
     private void setupHeader() {
@@ -38,20 +26,13 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         LinearLayout header = findFirstLinearLayout(root);
 
         if (header != null) {
-            // Note: In your XML, the text container is actually at index 0, not 1.
-            // Child 0 = LinearLayout (Text), Child 1 = Notification, Child 2 = Profile
-            if (header.getChildCount() > 0 && header.getChildAt(0) instanceof LinearLayout) {
-                LinearLayout textContainer = (LinearLayout) header.getChildAt(0);
-
-                if (textContainer.getChildCount() > 1) {
-                    // Update Teacher Name
-                    if (textContainer.getChildAt(1) instanceof TextView) {
-                        ((TextView) textContainer.getChildAt(1)).setText("Mr. Walter White");
-                    }
-                    // Update Next Class Info
-                    if (textContainer.getChildCount() > 2 && textContainer.getChildAt(2) instanceof TextView) {
-                        ((TextView) textContainer.getChildAt(2)).setText("Next: Chemistry 101 (Room 302)");
-                    }
+            if (header.getChildCount() > 1 && header.getChildAt(1) instanceof LinearLayout) {
+                LinearLayout textContainer = (LinearLayout) header.getChildAt(1);
+                if (textContainer.getChildCount() > 0 && textContainer.getChildAt(0) instanceof TextView) {
+                    ((TextView) textContainer.getChildAt(0)).setText("Mr. Walter White");
+                }
+                if (textContainer.getChildCount() > 1 && textContainer.getChildAt(1) instanceof TextView) {
+                    ((TextView) textContainer.getChildAt(1)).setText("Next: Chemistry 101 (Room 302)");
                 }
             }
         }
@@ -62,34 +43,23 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         GridLayout grid = findGridLayout(root);
 
         if (grid != null) {
-            // Card 0: Attendance
             setCardClickListener(grid, 0, TeacherAttendanceActivity.class);
-            // Card 1: Gradebook
             setCardClickListener(grid, 1, TeacherGradebookActivity.class);
-            // Card 2: Schedule
             setCardClickListener(grid, 2, TeacherScheduleActivity.class);
-            // Card 3: Homework
             setCardClickListener(grid, 3, TeacherHomeworkActivity.class);
         }
     }
 
-    private void setupLogout() {
+    private void setupProfileButton() {
         ViewGroup root = findViewById(android.R.id.content);
         LinearLayout header = findFirstLinearLayout(root);
 
         if (header != null && header.getChildCount() > 0) {
-            // 3. Target the Profile Picture (Last child in the header layout)
-            View profileView = header.getChildAt(header.getChildCount() - 1);
-
-            profileView.setOnClickListener(v -> {
-                // 4. Call logout from SessionManager
-                // This clears preferences and redirects to LoginActivity
-                session.logoutUser();
-            });
+            View lastChild = header.getChildAt(header.getChildCount() - 1);
+            // Navigate to Profile Activity
+            lastChild.setOnClickListener(v -> startActivity(new Intent(this, TeacherProfileActivity.class)));
         }
     }
-
-    // --- Helper Methods ---
 
     private void setCardClickListener(GridLayout grid, int index, Class<?> destination) {
         if (grid.getChildCount() > index) {
@@ -119,7 +89,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
             for (int i = 0; i < group.getChildCount(); i++) {
                 View child = group.getChildAt(i);
                 if (child instanceof LinearLayout) return (LinearLayout) child;
-
                 LinearLayout result = findFirstLinearLayout(child);
                 if (result != null) return result;
             }

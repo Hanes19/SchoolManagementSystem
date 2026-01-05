@@ -1951,4 +1951,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // but for now we just toggle the flag.
         return db.update("users", values, "user_id = ?", new String[]{userId}) > 0;
     }
+    public boolean addStaff(String id, String name, String role, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", id);
+        values.put("full_name", name);
+        values.put("role", "Staff");
+
+        values.put("role", role); // Storing "Nurse", "Caretaker" etc.
+        values.put("email", email);
+        values.put("status", "Active");
+        values.put("password_hash", SecurityUtil.hashPassword("123456")); // Default pass
+        long result = db.insert(TABLE_USERS, null, values);
+        return result != -1;
+    }
 }

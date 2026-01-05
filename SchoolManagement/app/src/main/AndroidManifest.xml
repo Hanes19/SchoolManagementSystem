@@ -132,6 +132,8 @@
         <activity android:name=".AssignmentsActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-    </application>
+        <activity android:name=".TeacherNotificationActivity" />
+        <activity android:name=".StudentProfileActivity" />
 
+</application>
 </manifest>

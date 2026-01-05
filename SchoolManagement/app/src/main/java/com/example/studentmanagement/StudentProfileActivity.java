@@ -5,14 +5,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TeacherProfileActivity extends AppCompatActivity {
+public class StudentProfileActivity extends AppCompatActivity {
 
     SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_profile);
+        setContentView(R.layout.activity_student_profile);
 
         // Initialize Session Manager
         session = new SessionManager(getApplicationContext());
@@ -25,7 +25,7 @@ public class TeacherProfileActivity extends AppCompatActivity {
             btnLogout.setOnClickListener(v -> {
                 // Clear session and redirect to Login
                 session.logoutUser();
-                finish();
+                finish(); // Close this activity
             });
         }
     }
